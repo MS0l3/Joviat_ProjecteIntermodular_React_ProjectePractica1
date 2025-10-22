@@ -1,21 +1,24 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import Pantalla_Formulario_Registro from "./Screen/Pantalla_Formulario_Registro";
+import Pantalla_Seleccion from "./Screen/Pantalla_Seleccion";
+
+const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen
+          name="Pantalla_Formulario_Registro"
+          component={Pantalla_Formulario_Registro}
+        />
+        <Stack.Screen
+          name="Pantalla_Seleccion"
+          component={Pantalla_Seleccion}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
-
-const styles = 
-StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

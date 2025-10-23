@@ -4,19 +4,23 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  Alert,
   KeyboardAvoidingView,
   Platform,
-  ScrollView
+  ScrollView,
+  Image,
+  Modal
 } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import styles from './LoginScreen.styles';
 
 const LoginScreen = () => {
+  const navigation = useNavigation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [loginError, setLoginError] = useState('');
+  const [firebaseErrorModal, setFirebaseErrorModal] = useState(false);
 
   // Validar formato de correo electrónico
   const validateEmail = (email) => {
@@ -66,7 +70,17 @@ const LoginScreen = () => {
 
   // Navegar a la pantalla de recuperación de contraseña
   const handleForgotPassword = () => {
-    Alert.alert('Recuperar contrasenya', 'Aquesta funcionalitat estarà disponible aviat');
+    navigation.navigate('ForgotPassword');
+  };
+
+  // Mostrar error de conexión Firebase (para pruebas)
+  const handleTestFirebaseError = () => {
+    setFirebaseErrorModal(true);
+  };
+
+  // Cerrar modal de error Firebase
+  const handleCloseFirebaseError = () => {
+    setFirebaseErrorModal(false);
   };
 
   return (
@@ -78,19 +92,13 @@ const LoginScreen = () => {
         contentContainerStyle={styles.scrollContainer}
         showsVerticalScrollIndicator={false}
       >
-        {/* Header con logo */}
-        <View style={styles.header}>
-          <Text style={styles.title}>DANGER ZONE</Text>
-          <View style={styles.timeContainer}>
-            <Text style={styles.time}>9:30</Text>
-          </View>
-        </View>
-
-        {/* Logo placeholder - Reemplazar con tu imagen en assets */}
+        {/* Logo real de la aplicación */}
         <View style={styles.logoContainer}>
-          <View style={styles.logoPlaceholder}>
-            <Text style={styles.logoText}>LOGO</Text>
-          </View>
+          <Image 
+            source={require('../../assets/Logo_DangerZone.png')}
+            style={styles.logo}
+            resizeMode="contain"
+          />
         </View>
 
         {/* Formulario de inicio de sesión CON FONDO #CBD5E1 */}
@@ -102,7 +110,6 @@ const LoginScreen = () => {
               style={[
                 styles.input, 
                 emailError ? styles.inputError : {},
-                !emailError && email ? styles.inputSuccess : {}
               ]}
               placeholder="danger@danger.com"
               placeholderTextColor="#999"
@@ -120,7 +127,6 @@ const LoginScreen = () => {
               style={[
                 styles.input, 
                 passwordError ? styles.inputError : {},
-                !passwordError && password ? styles.inputSuccess : {}
               ]}
               placeholder="Password"
               placeholderTextColor="#999"
@@ -157,9 +163,44 @@ const LoginScreen = () => {
           </View>
         </View>
 
+        {/* Botón de prueba para error Firebase */}
+        <TouchableOpacity 
+          style={styles.testButton} 
+          onPress={handleTestFirebaseError}
+          activeOpacity={0.8}
+        >
+          <Text style={styles.testButtonText}>Prova Error Firebase</Text>
+        </TouchableOpacity>
+
         {/* Espacio adicional para el teclado */}
         <View style={styles.bottomSpace} />
       </ScrollView>
+
+      {/* Modal de error de conexión Firebase */}
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={firebaseErrorModal}
+        onRequestClose={handleCloseFirebaseError}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContainer}>
+            <View style={styles.modalContent}>
+              <Text style={styles.modalTitle}>Error de connexió</Text>
+              <Text style={styles.modalText}>
+                Error firebase etc
+              </Text>
+              <TouchableOpacity 
+                style={styles.modalButton} 
+                onPress={handleCloseFirebaseError}
+                activeOpacity={0.8}
+              >
+                <Text style={styles.modalButtonText}>Acceptar</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </KeyboardAvoidingView>
   );
 };

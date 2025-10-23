@@ -8,7 +8,8 @@ import {
   Platform,
   ScrollView,
   Image,
-  Modal
+  Modal,
+  ActivityIndicator
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import styles from './LoginScreen.styles';
@@ -21,6 +22,7 @@ const LoginScreen = () => {
   const [passwordError, setPasswordError] = useState('');
   const [loginError, setLoginError] = useState('');
   const [firebaseErrorModal, setFirebaseErrorModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   // Validar formato de correo electrónico
   const validateEmail = (email) => {
@@ -47,7 +49,7 @@ const LoginScreen = () => {
   };
 
   // Manejar el proceso de inicio de sesión
-  const handleLogin = () => {
+  const handleLogin = async () => {
     // Validaciones básicas
     if (!email) {
       setEmailError('Introdueix el teu correu electrònic');
@@ -64,18 +66,37 @@ const LoginScreen = () => {
       return;
     }
 
-    // Simular error de credenciales (esto se quitará cuando conectes Firebase)
-    setLoginError('El correu o la contrasenya són incorrectes');
+    // Activar loading y deshabilitar interacción
+    setIsLoading(true);
+    setLoginError('');
+
+    // Simular proceso de login (2 segundos de delay)
+    try {
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      // Simular error de credenciales (esto se quitará cuando conectes Firebase)
+      setLoginError('El correu o la contrasenya són incorrectes');
+    } catch (error) {
+      // En caso de error de conexión real
+      setFirebaseErrorModal(true);
+    } finally {
+      // Desactivar loading sin importar el resultado
+      setIsLoading(false);
+    }
   };
 
   // Navegar a la pantalla de recuperación de contraseña
   const handleForgotPassword = () => {
-    navigation.navigate('ForgotPassword');
+    if (!isLoading) {
+      navigation.navigate('ForgotPassword');
+    }
   };
 
   // Mostrar error de conexión Firebase (para pruebas)
   const handleTestFirebaseError = () => {
-    setFirebaseErrorModal(true);
+    if (!isLoading) {
+      setFirebaseErrorModal(true);
+    }
   };
 
   // Cerrar modal de error Firebase
@@ -110,6 +131,7 @@ const LoginScreen = () => {
               style={[
                 styles.input, 
                 emailError ? styles.inputError : {},
+                isLoading ? styles.disabledInput : {}
               ]}
               placeholder="danger@danger.com"
               placeholderTextColor="#999"
@@ -118,6 +140,7 @@ const LoginScreen = () => {
               keyboardType="email-address"
               autoCapitalize="none"
               autoCorrect={false}
+              editable={!isLoading}
             />
             {emailError ? <Text style={styles.errorText}>{emailError}</Text> : null}
 
@@ -127,6 +150,7 @@ const LoginScreen = () => {
               style={[
                 styles.input, 
                 passwordError ? styles.inputError : {},
+                isLoading ? styles.disabledInput : {}
               ]}
               placeholder="Password"
               placeholderTextColor="#999"
@@ -134,6 +158,7 @@ const LoginScreen = () => {
               onChangeText={handlePasswordChange}
               secureTextEntry
               autoCapitalize="none"
+              editable={!isLoading}
             />
             {passwordError ? <Text style={styles.errorText}>{passwordError}</Text> : null}
 
@@ -148,28 +173,51 @@ const LoginScreen = () => {
             <TouchableOpacity 
               style={styles.forgotPasswordButton}
               onPress={handleForgotPassword}
+              disabled={isLoading}
             >
-              <Text style={styles.forgotPasswordText}>T'has oblidat de la contrasenya?</Text>
+              <Text style={[
+                styles.forgotPasswordText,
+                isLoading ? styles.disabledText : {}
+              ]}>
+                T'has oblidat de la contrasenya?
+              </Text>
             </TouchableOpacity>
 
-            {/* Botón de acceso */}
+            {/* Botón de acceso o Loading */}
             <TouchableOpacity 
-              style={styles.loginButton} 
+              style={[
+                styles.loginButton,
+                isLoading ? styles.loadingButton : {}
+              ]} 
               onPress={handleLogin}
               activeOpacity={0.8}
+              disabled={isLoading}
             >
-              <Text style={styles.loginButtonText}>Accedir</Text>
+              {isLoading ? (
+                <ActivityIndicator size="small" color="#fff" />
+              ) : (
+                <Text style={styles.loginButtonText}>Accedir</Text>
+              )}
             </TouchableOpacity>
           </View>
         </View>
 
         {/* Botón de prueba para error Firebase */}
         <TouchableOpacity 
-          style={styles.testButton} 
+          style={[
+            styles.testButton,
+            isLoading ? styles.disabledTestButton : {}
+          ]} 
           onPress={handleTestFirebaseError}
           activeOpacity={0.8}
+          disabled={isLoading}
         >
-          <Text style={styles.testButtonText}>Prova Error Firebase</Text>
+          <Text style={[
+            styles.testButtonText,
+            isLoading ? styles.disabledText : {}
+          ]}>
+            Prova Error Firebase
+          </Text>
         </TouchableOpacity>
 
         {/* Espacio adicional para el teclado */}

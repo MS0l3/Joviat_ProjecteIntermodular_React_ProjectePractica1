@@ -51,6 +51,11 @@ const styles = StyleSheet.create({
     borderColor: '#B3261E',
     backgroundColor: '#FFF5F5',
   },
+  disabledInput: {
+    backgroundColor: '#f0f0f0',
+    borderColor: '#e0e0e0',
+    opacity: 0.7,
+  },
   errorText: {
     color: '#B3261E',
     fontSize: 14,
@@ -85,6 +90,11 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     alignItems: 'center',
     marginTop: 10,
+    minHeight: 56,
+    justifyContent: 'center',
+  },
+  loadingButton: {
+    backgroundColor: '#c6716dff',
   },
   loginButtonText: {
     color: '#fff',
@@ -101,10 +111,17 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginHorizontal: 10,
   },
+  disabledTestButton: {
+    backgroundColor: '#9CA3AF',
+    opacity: 0.7,
+  },
   testButtonText: {
     color: '#fff',
     fontSize: 14,
     fontWeight: '600',
+  },
+  disabledText: {
+    color: '#9CA3AF',
   },
   bottomSpace: {
     height: 30,

@@ -99,7 +99,7 @@ export default StyleSheet.create({
     backgroundColor: "#CBD5E1",
     width: "90%",
     alignSelf: "center",
-    marginBottom: 55,
+    marginBottom: 30,
     paddingVertical: 10,
     borderRadius: 25,
   },
@@ -113,7 +113,7 @@ export default StyleSheet.create({
   },
 
   tabButtonActivo: {
-    backgroundColor: "#c0c0c0ff",
+    backgroundColor: "#FFF8F7",
     borderWidth: 1,
     padding: 2,
     borderColor: "#B3261E",

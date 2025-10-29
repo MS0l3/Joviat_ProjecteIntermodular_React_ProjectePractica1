@@ -13,7 +13,7 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import styles from "./Style_Formulario_Registro";
+import styles from "../Styles/Style_Formulario_Registro";
 import logo from "../../assets/Logo_DangerZone.png";
 
 export default function Pantalla_Formulario_Registro() {

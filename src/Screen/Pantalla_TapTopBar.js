@@ -11,14 +11,20 @@ import styles from "../Styles/Style_TapTopBar.js"; // Estilos separados en su ar
 export default function Pantalla_TapTopBar() {
   const navigation = useNavigation();
 
-  // -------------------------------------------------------------
-  // 🧩 VARIABLES DE CONFIGURACIÓN RÁPIDA
-  // Aquí puedes cambiar los valores fácilmente según la pantalla donde copies esto
+   // 💡 CONSTANTE RETROCESO
+  // Cambia esto a "true" cuando quieras mostrar el modo AJUSTES
+  const isSettingsMode = false; // ← Cambia a true para activar el engranaje
 
-  // 🔹 BOTÓN ROJO SUPERIOR IZQUIERDO:
-  // Cambia "retroceso" por "ajustes" para que cambie el icono automáticamente
-  const botonRojoTipo = "retroceso"; // opciones: "retroceso" | "ajustes"
-
+  // 🔄 FUNCIONALIDAD DINÁMICA DEL BOTÓN
+  const handleButtonPress = () => {
+    if (isSettingsMode) {
+      // Si está en modo ajustes, te lleva a la pantalla de ajustes
+      navigation.navigate("Pantalla_Ajustes"); // 👈 cambia aquí el nombre
+    } else {
+      // Si está en modo retroceso, simplemente vuelve atrás
+      navigation.goBack();
+    }
+  };
   // 🔹 NOMBRE DE LA PANTALLA A LA QUE LLEVA EL BOTÓN DE LA MARCA:
   const pantallaMarca = "Pantalla_Principal"; // 👉 cambia este nombre según tu pantalla principal
 
@@ -40,23 +46,20 @@ export default function Pantalla_TapTopBar() {
          Contiene: Botón retroceso/ajustes, logo con texto y botón usuario
       ------------------------------------------------------------- */}
       <View style={styles.headerContainer}>
-        {/* 🔴 BOTÓN ROJO (RETROCESO o AJUSTES)
-            Cambia su icono dependiendo del valor de "botonRojoTipo"
-        */}
-        <TouchableOpacity
-          style={styles.botonRojo}
-          onPress={() =>
-            botonRojoTipo === "retroceso"
-              ? navigation.goBack()
-              : navigation.navigate("Pantalla_Ajustes") // 👉 cambia si tu pantalla de ajustes tiene otro nombre
-          }
-        >
-          {botonRojoTipo === "retroceso" ? (
-            <Ionicons name="arrow-back" size={24} color="#FFF" />
-          ) : (
-            <Ionicons name="settings-outline" size={24} color="#000" />
-          )}
-        </TouchableOpacity>
+        {/* 🔴 BOTÓN ROJO DINÁMICO (Retroceso / Ajustes) */}
+      <TouchableOpacity
+        style={[
+          styles.redButton,
+          isSettingsMode && styles.settingsButton, // cambia el estilo si es modo ajustes
+        ]}
+        onPress={handleButtonPress}
+      >
+        <Ionicons
+          name={isSettingsMode ? "settings-outline" : "arrow-back"}
+          size={24}
+          color={isSettingsMode ? "black" : "white"}
+        />
+      </TouchableOpacity>
 
         {/* 🔸 BOTÓN INVISIBLE DE LA MARCA */}
         <TouchableOpacity

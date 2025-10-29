@@ -13,19 +13,27 @@ export default StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     backgroundColor: "#CBD5E1",
-    width: "100%",
-    paddingHorizontal: 15,
+    width: "95%",
+    paddingHorizontal: 20,
     paddingVertical: 8,
     borderBottomLeftRadius: 15,
     borderBottomRightRadius: 15,
-    marginTop: 20
+    borderTopLeftRadius: 15,
+    borderTopRightRadius: 15,
+    marginTop: 40,
 
   },
 
-  botonRojo: {
-    backgroundColor: "#B3261E",
-    borderRadius: 8,
-    padding: 8,
+   // 🔴 ESTILO POR DEFECTO: BOTÓN ROJO DE RETROCESO
+  redButton: {
+    backgroundColor: "#B3261E", // rojo
+    borderRadius: 10,
+    padding: 10,
+  },
+
+  // ⚙️ ESTILO ADICIONAL PARA EL MODO AJUSTES
+  settingsButton: {
+    backgroundColor: "#CBD5E1", // gris claro
   },
 
   botonMarca: {
@@ -34,7 +42,7 @@ export default StyleSheet.create({
   },
 
   textoMarca: {
-    color: "#000",
+    color: "#B3261E",
     fontSize: 20,
     fontWeight: "bold",
   },
@@ -51,6 +59,7 @@ export default StyleSheet.create({
     borderRadius: 20,
     marginVertical: 20,
     overflow: "hidden",
+    marginHorizontal: 10,
   },
 
   switchButton: {
@@ -62,6 +71,7 @@ export default StyleSheet.create({
   switchButtonActivo: {
     backgroundColor: "#B3261E",
     borderRadius: 20,
+  
   },
 
   switchText: {
@@ -78,7 +88,7 @@ export default StyleSheet.create({
     flex: 1,
     width: "100%",
     justifyContent: "center",
-    alignItems: "center",
+    alignItems: "top",
   },
 
   // 🔻 TABBAR
@@ -89,7 +99,7 @@ export default StyleSheet.create({
     backgroundColor: "#CBD5E1",
     width: "90%",
     alignSelf: "center",
-    marginBottom: 30,
+    marginBottom: 55,
     paddingVertical: 10,
     borderRadius: 25,
   },
@@ -103,9 +113,11 @@ export default StyleSheet.create({
   },
 
   tabButtonActivo: {
-    backgroundColor: "#FFF8F7",
+    backgroundColor: "#c0c0c0ff",
     borderWidth: 1,
+    padding: 2,
     borderColor: "#B3261E",
+    marginHorizontal: 10,
   },
 
   tabText: {

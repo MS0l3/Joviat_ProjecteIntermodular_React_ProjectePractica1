@@ -1,0 +1,85 @@
+import { StyleSheet } from 'react-native';
+
+export default StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#FFF7F7',
+    paddingTop: 50,
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: '#CBD5E1',
+    borderRadius: 12,
+    marginHorizontal: 20,
+    paddingVertical: 12,
+    paddingHorizontal: 15,
+    marginBottom: 25,
+  },
+  backButton: {
+    backgroundColor: '#b91c1c',
+    borderRadius: 8,
+    paddingVertical: 6,
+    paddingHorizontal: 14,
+    borderWidth: 1,
+    borderColor: '#7a0f0f',
+    shadowColor: '#000',
+    shadowOpacity: 0.25,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 3,
+    elevation: 4,
+  },
+  headerTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#b62929ff',
+  },
+  section: {
+    marginBottom: 25,
+    marginHorizontal: 20,
+  },
+  sectionTitle: {
+    fontSize: 17,
+    fontWeight: '600',
+    marginBottom: 10,
+    color: '#333',
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    shadowColor: '#000',
+    shadowOpacity: 0.05,
+    shadowOffset: { width: 0, height: 1 },
+    shadowRadius: 2,
+    elevation: 1,
+  },
+  label: {
+    fontSize: 14,
+    color: '#333',
+  },
+  pickerContainer: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 10,
+    backgroundColor: '#fff',
+    paddingHorizontal: 10,
+    height: 70, // 🔧 més gran perquè es mostri bé
+    justifyContent: 'center',
+  },
+  slider: {
+    width: '100%',
+    alignSelf: 'center',
+  },
+  sliderValue: {
+    alignSelf: 'center',
+    fontSize: 14,
+    color: '#555',
+    marginTop: 5,
+  },
+});

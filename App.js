@@ -3,7 +3,7 @@ import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import Identificacio from './screens/identificacio';
+import Identificacio from './Screen/identificacio';
 
 
 const Stack = createNativeStackNavigator(); // 👈 això crea la constant Stack

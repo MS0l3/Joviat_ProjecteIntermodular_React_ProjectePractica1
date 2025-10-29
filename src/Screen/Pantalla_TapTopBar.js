@@ -13,13 +13,13 @@ export default function Pantalla_TapTopBar() {
 
    // 💡 CONSTANTE RETROCESO
   // Cambia esto a "true" cuando quieras mostrar el modo AJUSTES
-  const isSettingsMode = false; // ← Cambia a true para activar el engranaje
+  const isSettingsMode = true; // ← Cambia a true para activar el engranaje o a "false" para activar el modo go.back
 
   // 🔄 FUNCIONALIDAD DINÁMICA DEL BOTÓN
   const handleButtonPress = () => {
     if (isSettingsMode) {
       // Si está en modo ajustes, te lleva a la pantalla de ajustes
-      navigation.navigate("Pantalla_Ajustes"); // 👈 cambia aquí el nombre
+      navigation.navigate("configuracio"); // 👈 cambia aquí el nombre
     } else {
       // Si está en modo retroceso, simplemente vuelve atrás
       navigation.goBack();

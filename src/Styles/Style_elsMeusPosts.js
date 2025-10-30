@@ -1,0 +1,85 @@
+import { StyleSheet } from 'react-native';
+
+export default StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#FFF7F7',
+    paddingTop: 50,
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: '#CBD5E1',
+    borderRadius: 30,
+    marginHorizontal: 20,
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+  },
+  backButton: {
+    backgroundColor: '#b91c1c',
+    borderRadius: 8,
+    paddingVertical: 6,
+    paddingHorizontal: 10,
+  },
+  headerTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#b22222',
+  },
+  title: {
+    fontSize: 22,
+    fontWeight: '600',
+    textAlign: 'center',
+    marginVertical: 25,
+    color: '#333',
+  },
+  listContainer: {
+    backgroundColor: '#9CA3AF',
+    marginHorizontal: 20,
+    borderRadius: 40,
+    padding: 10,
+    height: 450,
+  },
+  postItem: {
+    backgroundColor: '#CBD5E1',
+    borderRadius: 10,
+    padding: 15,
+    marginVertical: 5,
+    marginHorizontal: 5,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#b91c1c',
+  },
+  postTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#000',
+  },
+  postAddress: {
+    fontSize: 14,
+    color: '#333',
+  },
+  bottomBar: {
+    position: 'absolute',
+    bottom: 20,
+    left: 20,
+    right: 20,
+    backgroundColor: '#CBD5E1',
+    borderRadius: 30,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    paddingVertical: 10,
+  },
+  navButton: {
+    alignItems: 'center',
+  },
+  navText: {
+    fontSize: 12,
+    color: '#000',
+    marginTop: 3,
+  },
+});

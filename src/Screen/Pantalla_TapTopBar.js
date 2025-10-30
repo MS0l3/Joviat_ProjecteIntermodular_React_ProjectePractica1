@@ -6,6 +6,8 @@ import { View, Text, TouchableOpacity, SafeAreaView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons"; // Para los iconos (ojo, engranaje, usuario, etc.)
 import styles from "../Styles/Style_TapTopBar.js"; // Estilos separados en su archivo propio
+import Celda from "./Celda"; //Componente de las celdas
+
 // -------------------------------------------------------------
 
 export default function Pantalla_TapTopBar() {
@@ -124,10 +126,18 @@ export default function Pantalla_TapTopBar() {
          Aquí puedes añadir lo que quieras según la pantalla.
          Este espacio cambia entre pantallas.
       ------------------------------------------------------------- */}
-      <View style={styles.mainContent}>
-        <Text style={{ textAlign: "center", color: "#000" }}>
-          Contenido de la pantalla aquí
-        </Text>
+      {/* ✅ CONTENEDOR SCROLLABLE DE 3 COLS */}
+      <View style={{ flex: 1 }}>
+        <ScrollView contentContainerStyle={{ flexDirection: "row", flexWrap: "wrap" }}>
+          
+          {/* ✅ EJEMPLOS DE CELDAS */}
+          <Celda TipoCrimen={1} peligrosidad={3} lat={41.39} lon={2.17} navigateTo="DetalleMapa"/>
+          <Celda TipoCrimen={2} peligrosidad={4} lat={41.40} lon={2.15} navigateTo="DetalleMapa"/>
+          <Celda TipoCrimen={5} peligrosidad={2} lat={41.41} lon={2.16} navigateTo="DetalleMapa"/>
+          <Celda TipoCrimen={4} peligrosidad={5} lat={41.42} lon={2.18} navigateTo="DetalleMapa"/>
+          <Celda TipoCrimen={3} peligrosidad={1} lat={41.43} lon={2.12} navigateTo="DetalleMapa"/>
+
+        </ScrollView>
       </View>
 
       {/* -------------------------------------------------------------

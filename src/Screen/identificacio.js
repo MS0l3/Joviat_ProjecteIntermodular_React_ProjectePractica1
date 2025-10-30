@@ -6,7 +6,7 @@ export default function Identificacio({ navigation }) {
   return (
     <View style={styles.container}>
       <Image
-        source={require('../assets/danger_zone.png')}
+        source={require('../../assets/danger_zone.png')}
         style={styles.logo}
         resizeMode="contain"
       />

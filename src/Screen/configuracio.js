@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Switch, TouchableOpacity } from 'react-native';
 import Slider from '@react-native-community/slider';
+import { FlatList, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import * as NavigationBar from 'expo-navigation-bar';
 import { Picker } from '@react-native-picker/picker';

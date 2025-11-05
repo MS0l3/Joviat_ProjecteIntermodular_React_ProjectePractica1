@@ -1,54 +1,31 @@
-// App.js
-// ✅ Configura navegación principal y el botón dinámico según pantalla
-
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
-import { TouchableOpacity, Text } from "react-native";
 
-import MapScreen from "./src/screens/MapScreen";
-import ListScreen from "./src/screens/ListScreen";
-import SettingsScreen from "./src/screens/SettingsScreen";
+import MapaScreen from "./src/Screen/MapaScreen";
+import ListScreen from "./src/Screen/ListScreen";
+import SettingsScreen from "./src/Screen/SettingsScreen";
+import DetalleUbicacion from "./src/Screen/DetalleUbicacion";
+import AddAlertScreen from "./src/Screen/AddAlertScreen";
+import FavoritosScreen from "./src/Screen/FavoritosScreen";
 
-const Tab = createBottomTabNavigator();
+import NavigationLayout from "./src/Components/NavigationLayout";
+
 const Stack = createStackNavigator();
 
-// ✅ TabBar
-function TabNavigator() {
-  return (
-    <Tab.Navigator>
-      <Tab.Screen name="Mapa" component={MapScreen} />
-      <Tab.Screen name="Lista" component={ListScreen} />
-    </Tab.Navigator>
-  );
-}
-
-// ✅ TopBar + botón dinámico
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator
-        screenOptions={({ navigation, route }) => ({
-          headerRight: () => (
-            <TouchableOpacity
-              style={{ marginRight: 15 }}
-              onPress={() =>
-                route.name === "Settings"
-                  ? navigation.goBack()
-                  : navigation.navigate("Settings")
-              }
-            >
-              <Text>
-                {route.name === "Settings" ? "Volver" : "Ajustes"}
-              </Text>
-            </TouchableOpacity>
-          ),
-        })}
-      >
-        <Stack.Screen name="Home" component={TabNavigator} options={{ title: "Inicio" }} />
-        <Stack.Screen name="Settings" component={SettingsScreen} options={{ title: "Ajustes" }} />
-      </Stack.Navigator>
+      <NavigationLayout>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="Mapa" component={MapaScreen} />
+          <Stack.Screen name="Lista" component={ListScreen} />
+          <Stack.Screen name="Detalle" component={DetalleUbicacion} />
+          <Stack.Screen name="Settings" component={SettingsScreen} />
+          <Stack.Screen name="AddAlert" component={AddAlertScreen} />
+          <Stack.Screen name="Favoritos" component={FavoritosScreen} />
+        </Stack.Navigator>
+      </NavigationLayout>
     </NavigationContainer>
   );
 }

@@ -1,226 +1,144 @@
 // ============================================================================
-// ✅ ARCHIVO DE ESTILOS GLOBAL — TODA LA UI AQUÍ
+// 📁 GlobalStyles.js
+// ✅ Todos los estilos de la aplicación en un solo archivo
 // ============================================================================
 
 import { StyleSheet } from "react-native";
 
-// ============================================================================
-// 🎨 PALETA DE COLORES — CAMBIA AQUÍ Y CAMBIA TODA LA APP
-// ============================================================================
+// 🎨 PALETA DE COLORES GLOBAL
 const COLORS = {
-  fondo: "#F6EDED",
-  blanco: "#FFFFFF",
-  texto: "#000000",
-  acento: "orange",
-  peligro: "#E41B17",
-  grisSuave: "#D9D9D9",
-  grisOscuro: "#707070",
-  rojoUI: "#B80000",
+  fondo: "#FFF8F7",
+  gris: "#CBD5E1",
+  rojo: "#B3261E",
+  negro: "#000",
+  blanco: "#FFF",
+  peligro: "#FFB300",
 };
 
 // ============================================================================
-// 📏 MEDIDAS / SPACING / SIZES
-// ============================================================================
-const SIZES = {
-  border: 10,
-  padding: 12,
-  paddingSmall: 8,
-  tabBtnHeight: 45,
-  mapMiniHeight: 90,
-  fontXS: 11,
-  fontSmall: 13,
-  fontMedium: 16,
-  fontLarge: 20,
-};
-
-// ============================================================================
-// 🔥 SOMBRAS UNIVERSALES
-// ============================================================================
-const SHADOW = {
-  elevation: 3,
-  shadowColor: "#000",
-  shadowOpacity: 0.2,
-  shadowRadius: 3,
-};
-
-// ============================================================================
-// 🧱 ESTILOS PRINCIPALES
+// ✅ EXPORT DE ESTILOS GLOBALES — SIN REPETIR IMPORTS
 // ============================================================================
 export const STYLES = StyleSheet.create({
-
-  // 📌 CONTENEDOR PRINCIPAL
+  // ============================ PANTALLA BASE ===============================
   pantalla: {
     flex: 1,
     backgroundColor: COLORS.fondo,
   },
 
-  // ========================================================================
-  // 🎛️ TOP BAR — BOTÓN Ajustes/Volver + Marca + Usuario
-  // ========================================================================
-  topBarWrapper: {
-    width: "100%",
-    paddingHorizontal: SIZES.padding,
-    paddingTop: SIZES.padding,
+  container: {
+    flex: 1,
+    backgroundColor: COLORS.fondo,
+  },
+
+  // =========================== TOP BAR SUPERIOR =============================
+
+  headerContainer: {
     flexDirection: "row",
     alignItems: "center",
+    backgroundColor: COLORS.gris,
+    width: "95%",
+    paddingHorizontal: 20,
+    paddingVertical: 8,
+    borderRadius: 15,
+    marginTop: 45,
     justifyContent: "space-between",
   },
 
-  // 🔙 Botón Rojo (Volver / Ajustes según variable)
-  topBtn: {
-    backgroundColor: COLORS.rojoUI,
+  redButton: {
+    backgroundColor: COLORS.rojo,
+    borderRadius: 10,
     padding: 10,
-    borderRadius: SIZES.border,
-    ...SHADOW,
   },
 
-  topBtnIcon: {
-    fontSize: 22,
-    color: COLORS.blanco,
+  settingsButton: {
+    backgroundColor: COLORS.gris,
   },
 
-  // 🏷️ Zona palabras de marca (Botón invisible)
-  brandTouchArea: {
-    padding: 10,
-    borderRadius: SIZES.border,
-  },
+  botonMarca: { flex: 1, alignItems: "center" },
+  textoMarca: { color: COLORS.rojo, fontSize: 20, fontWeight: "bold" },
 
-  brandText: {
-    fontWeight: "900",
-    fontSize: SIZES.fontLarge,
-  },
+  botonUsuario: { backgroundColor: "transparent", padding: 8 },
 
-  // 👤 Botón usuario
-  userBtn: {
-    backgroundColor: COLORS.grisSuave,
-    padding: 10,
-    borderRadius: SIZES.border,
-    ...SHADOW,
-  },
-
-  userIcon: {
-    fontSize: 22,
-    color: COLORS.texto,
-  },
-
-  // ========================================================================
-  // 📍 SWITCH "MAPA / LISTA"
-  // ========================================================================
+  // ============================ SWITCH MAPA / LISTA =========================
   switchContainer: {
     flexDirection: "row",
-    backgroundColor: COLORS.grisSuave,
-    margin: 12,
-    borderRadius: SIZES.border,
+    backgroundColor: COLORS.gris,
+    borderRadius: 20,
+    marginVertical: 15,
+    overflow: "hidden",
   },
 
-  switchBtn: {
+  switchButton: {
     flex: 1,
-    paddingVertical: 8,
-    borderRadius: SIZES.border,
     alignItems: "center",
-    justifyContent: "center",
+    paddingVertical: 8,
   },
 
-  switchBtnActive: {
-    backgroundColor: COLORS.blanco,
-    borderWidth: 2,
-    borderColor: COLORS.rojoUI,
+  switchButtonActivo: {
+    backgroundColor: COLORS.rojo,
   },
 
-  switchText: {
-    fontSize: SIZES.fontSmall,
-    fontWeight: "600",
-  },
+  switchText: { color: COLORS.negro, fontWeight: "600" },
+  switchTextActivo: { color: COLORS.blanco, fontWeight: "700" },
 
-  // ========================================================================
-  // 🗂️ GRID DE UBICACIONES (3 columnas)
-  // ========================================================================
+  // ============================ GRID DE CELDAS ==============================
   gridContainer: {
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "space-between",
-    paddingHorizontal: SIZES.padding,
-    paddingTop: SIZES.padding,
+    padding: 12,
   },
 
   celda: {
     width: "31%",
-    marginVertical: 6,
-    borderRadius: SIZES.border,
     backgroundColor: COLORS.blanco,
-    overflow: "hidden",
-    ...SHADOW,
+    borderRadius: 12,
+    marginBottom: 10,
+    elevation: 2,
   },
 
-  // ========================================================================
-  // 🗺️ MAPAS
-  // ========================================================================
-  mapaMini: {
-    width: "100%",
-    height: SIZES.mapMiniHeight,
-  },
+  mapaMini: { width: "100%", height: 90 },
 
-  mapaGrande: {
-    flex: 1,
-  },
-
-  // ========================================================================
-  // ✏️ TEXTOS DENTRO DE CELDAS
-  // ========================================================================
   textoNombre: {
+    fontSize: 13,
     fontWeight: "700",
-    fontSize: SIZES.fontSmall,
     textAlign: "center",
-    paddingVertical: 3,
-    color: COLORS.texto,
+    paddingTop: 3,
   },
 
   textoPeligro: {
-    fontSize: SIZES.fontMedium,
     textAlign: "center",
     paddingBottom: 5,
-    color: COLORS.acento,
+    color: COLORS.peligro,
   },
 
-  titulo: {
-    textAlign: "center",
-    fontWeight: "800",
-    fontSize: SIZES.fontLarge,
-    paddingBottom: 10,
-  },
+  // ============================ MAPA GRANDE ================================
+  mapaGrande: { flex: 1, width: "100%" },
 
-  // ========================================================================
-  // ⬇️ TABBAR INFERIOR (3 botones)
-  // ========================================================================
+  detalleInfo: { padding: 12, backgroundColor: COLORS.blanco, width: "100%" },
+  detalleTitulo: { fontSize: 18, fontWeight: "bold", textAlign: "center" },
+
+  // ============================ TABBAR =====================================
   tabBar: {
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    right: 0,
-    backgroundColor: COLORS.grisSuave,
     flexDirection: "row",
     justifyContent: "space-around",
-    paddingVertical: 5,
-    ...SHADOW,
+    backgroundColor: COLORS.gris,
+    width: "90%",
+    marginBottom: 35,
+    paddingVertical: 10,
+    borderRadius: 25,
   },
 
-  tabBtn: {
-    flex: 1,
-    height: SIZES.tabBtnHeight,
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: SIZES.border,
-    marginHorizontal: 5,
+  tabButton: { alignItems: "center", flex: 1, paddingVertical: 6 },
+  tabButtonActivo: {
+    backgroundColor: COLORS.fondo,
+    borderWidth: 1,
+    borderColor: COLORS.rojo,
+    borderRadius: 20,
+    padding: 2,
+    marginHorizontal: 10,
   },
 
-  tabBtnActive: {
-    backgroundColor: COLORS.blanco,
-    borderWidth: 2,
-    borderColor: COLORS.rojoUI,
-  },
-
-  tabBtnText: {
-    fontSize: SIZES.fontSmall,
-    fontWeight: "700",
-  },
+  tabText: { fontSize: 13 },
+  tabTextActivo: { color: COLORS.rojo, fontWeight: "700" },
 });

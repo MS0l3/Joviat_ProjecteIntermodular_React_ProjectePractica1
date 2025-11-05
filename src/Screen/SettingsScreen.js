@@ -3,12 +3,15 @@
 
 import React from "react";
 import { View, Text } from "react-native";
-import styles from "../../styles";
+import { STYLES } from "../Styles/GlobalStyles";
 
 export default function SettingsScreen() {
   return (
-    <View style={styles.container}>
-      <Text>Pantalla de ajustes</Text>
-    </View>
-  );
+    <NavigationLayout>
+      <View style={STYLES.container}>
+        <Text>Pantalla de ajustes</Text>
+      </View>
+  </NavigationLayout>
+
+    );
 }

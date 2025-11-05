@@ -1,71 +1,178 @@
-import React, { useEffect } from 'react';
-import { View, Text, TouchableOpacity, FlatList } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import * as NavigationBar from 'expo-navigation-bar';
-import styles from '../Styles/Style_elsMeusPosts';
+// ✅ IMPORTS PRINCIPALES PARA ESTA PANTALLA
+import React, { useState } from "react";
+import { View, Text, TouchableOpacity, SafeAreaView, FlatList } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { Ionicons } from "@expo/vector-icons";
+import styles from "../Styles/Style_TapTopBar.js";
+import preferitsStyles from "../Styles/Style_elsMeusPosts.js";
+import Celda from "./Celda.js";
 
-export default function ElsMeusPosts({ navigation }) {
-  useEffect(() => {
-    NavigationBar.setVisibilityAsync('hidden');
-    NavigationBar.setBehaviorAsync('overlay-swipe');
-  }, []);
+export default function elsMeusPosts() {
+  console.log("🔄 Render de elsMeusPosts. isSettingsMode = ", isSettingsMode);
+  const navigation = useNavigation();
 
-  const dadesExemple = [
-    { id: '1', titol: 'Robatori ⚠️⚠️⚠️', direccio: 'Carrer casavendrals 45' },
-    { id: '2', titol: 'Baralles ⚠️⚠️', direccio: 'Carrer legalitos 152' },
-    { id: '3', titol: 'Robatori ⚠️⚠️⚠️', direccio: 'Carrer de las puntañas, 15' },
-    { id: '4', titol: 'Desordre públic ⚠️', direccio: 'Camí del mirasol' },
-    { id: '5', titol: 'Baralles ⚠️⚠️', direccio: 'Carretera san martí' },
-  ];
+  // 💡 CONSTANTE RETROCESO
+  // Cambia esto a "true" cuando quieras mostrar el modo AJUSTES (⚙️)
+  const isSettingsMode = false; // ← canvia a true per veure l’engranatge
 
-  const renderItem = ({ item }) => (
-    <TouchableOpacity style={styles.postItem}>
-      <View>
-        <Text style={styles.postTitle}>{item.titol}</Text>
-        <Text style={styles.postAddress}>{item.direccio}</Text>
-      </View>
-      <Ionicons name="chevron-forward-outline" size={20} color="#000" />
-    </TouchableOpacity>
-  );
+  // 🔄 FUNCIONALIDAD DEL BOTÓN SUPERIOR IZQUIERDO
+  const handleButtonPress = () => {
+    if (isSettingsMode) {
+      navigation.navigate("Pantalla_Ajustes");
+    } else {
+      navigation.goBack();
+    }
+  };
+
+  // 🔹 NOMBRE DE LAS PANTALLAS
+  const pantallaMarca = "Pantalla_Principal";
+  const pantallaUsuario = "Pantalla_Usuario";
+
+  // 🔹 ESTADO DE LA TABBAR
+  const [selectedTab, setSelectedTab] = useState("");
+
+  // 🔹 DATOS DE EJEMPLO
+  const [postsPreferits, setPostsPreferits] = useState([
+    { id: '1', tipoCrimen: 'Assassinat', peligrosidad: 5, ubicacion: 'C/ Casavendrals 45', imagenUrl: 'https://picsum.photos/200/200?random=1' },
+    { id: '2', tipoCrimen: 'Assetjament', peligrosidad: 5, ubicacion: 'C/ Legalitos 152', imagenUrl: 'https://picsum.photos/200/200?random=2' },
+    { id: '3', tipoCrimen: 'Robatori', peligrosidad: 4, ubicacion: 'C/ de les Puntañes, 15', imagenUrl: 'https://picsum.photos/200/200?random=3' },
+  ]);
+
+  // 🔹 FUNCIÓN PARA MANEJAR EL CLICK EN UNA CELDA
+  const handlePressCelda = (item) => {
+    console.log('Celda presionada:', item);
+    // navigation.navigate("Pantalla_PostDetalle", { postId: item.id });
+  };
 
   return (
-    <View style={styles.container}>
-      {/* Capçalera */}
-      <View style={styles.header}>
-        <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-          <Ionicons name="arrow-back" size={20} color="#fff" />
+    <SafeAreaView style={styles.container}>
+      {/* -------------------------------------------------------------
+         🟥 CABECERA SUPERIOR
+      ------------------------------------------------------------- */}
+      <View style={styles.headerContainer}>
+        {/* ⬅️ BOTÓN ENRERE / AJUSTES */}
+        <TouchableOpacity
+          style={[styles.settingsButton,styles.redButton]}
+          onPress={handleButtonPress}
+        >
+          <Ionicons
+            name={isSettingsMode ? "settings-outline" : "arrow-back-outline"}
+            size={24}
+            color="white"
+          />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>DangerZone</Text>
-        <Ionicons name="settings-outline" size={22} color="#444" />
+
+        {/* 🔸 BOTÓN MARCA */}
+        <TouchableOpacity
+          style={styles.botonMarca}
+          onPress={() => navigation.navigate(pantallaMarca)}
+        >
+          <Text style={styles.textoMarca}>DangerZone</Text>
+        </TouchableOpacity>
+
+        {/* 👤 BOTÓN USUARIO */}
+        <TouchableOpacity
+          style={styles.botonUsuario}
+          onPress={() => navigation.navigate(pantallaUsuario)}
+        >
+          <Ionicons name="person-circle-outline" size={26} color="#000" />
+        </TouchableOpacity>
       </View>
 
-      <Text style={styles.title}>Els meus posts</Text>
+      {/* -------------------------------------------------------------
+         🏷️ TÍTOL “ELS MEUS POSTS”
+      ------------------------------------------------------------- */}
+      <Text style={preferitsStyles.titol}>Els meus posts</Text>
 
-      {/* Contenidor llista */}
-      <View style={styles.listContainer}>
-        <FlatList
-          data={dadesExemple}
-          keyExtractor={(item) => item.id}
-          renderItem={renderItem}
-          showsVerticalScrollIndicator={false}
-        />
+      {/* -------------------------------------------------------------
+         📍 CONTINGUT PRINCIPAL - LLISTA DE POSTS
+      ------------------------------------------------------------- */}
+      <View style={styles.mainContent}>
+        <View style={preferitsStyles.recuadroLista}>
+          {postsPreferits.length > 0 ? (
+            <FlatList
+              data={postsPreferits}
+              keyExtractor={(item) => item.id}
+              renderItem={({ item }) => (
+                <Celda
+                  tipoCrimen={item.tipoCrimen}
+                  peligrosidad={item.peligrosidad}
+                  ubicacion={item.ubicacion}
+                  imagenUrl={item.imagenUrl}
+                  onPress={() => handlePressCelda(item)}
+                />
+              )}
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={preferitsStyles.listaContent}
+            />
+          ) : (
+            <View style={preferitsStyles.emptyState}>
+              <Text style={preferitsStyles.emptyStateText}>
+                Encara no tens cap post guardat als preferits
+              </Text>
+            </View>
+          )}
+        </View>
       </View>
 
-      {/* Barra inferior */}
-      <View style={styles.bottomBar}>
-        <TouchableOpacity style={styles.navButton}>
-          <Ionicons name="location-outline" size={20} color="#000" />
-          <Text style={styles.navText}>Explorar</Text>
+      {/* -------------------------------------------------------------
+         🔻 MENÚ INFERIOR (TABBAR)
+      ------------------------------------------------------------- */}
+      <View style={styles.tabBar}>
+        <TouchableOpacity
+          style={[styles.tabButton, selectedTab === "Explorar" && styles.tabButtonActivo]}
+          onPress={() => {
+            setSelectedTab("Explorar");
+            navigation.navigate("Pantalla_Explorar");
+          }}
+        >
+          <Ionicons
+            name="location-outline"
+            size={20}
+            color={selectedTab === "Explorar" ? "#B3261E" : "#000"}
+          />
+          <Text
+            style={[styles.tabText, selectedTab === "Explorar" && styles.tabTextActivo]}
+          >
+            Explorar
+          </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.navButton}>
-          <Ionicons name="heart-outline" size={20} color="#000" />
-          <Text style={styles.navText}>Preferits</Text>
+
+        <TouchableOpacity
+          style={[styles.tabButton, selectedTab === "Preferits" && styles.tabButtonActivo]}
+          onPress={() => setSelectedTab("Preferits")}
+        >
+          <Ionicons
+            name="bookmark-outline"
+            size={20}
+            color={selectedTab === "Preferits" ? "#B3261E" : "#000"}
+          />
+          <Text
+            style={[styles.tabText, selectedTab === "Preferits" && styles.tabTextActivo]}
+          >
+            Preferits
+          </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.navButton}>
-          <Ionicons name="add-outline" size={22} color="#000" />
-          <Text style={styles.navText}>Afegir Alertes</Text>
+
+        <TouchableOpacity
+          style={[styles.tabButton, selectedTab === "AfegirAlertes" && styles.tabButtonActivo]}
+          onPress={() => {
+            setSelectedTab("AfegirAlertes");
+            navigation.navigate("Pantalla_AfegirAlertes");
+          }}
+        >
+          <Ionicons
+            name="add-circle-outline"
+            size={22}
+            color={selectedTab === "AfegirAlertes" ? "#B3261E" : "#000"}
+          />
+          <Text
+            style={[styles.tabText, selectedTab === "AfegirAlertes" && styles.tabTextActivo]}
+          >
+            Afegir Alertes
+          </Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }

@@ -1,85 +1,44 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from "react-native";
 
 export default StyleSheet.create({
-  container: {
+  // 🟦 RECUADRO PARA LA LISTA DE PREFERITS
+  recuadroLista: {
+    backgroundColor: '#8C8C8C',
+    borderRadius: 12,
+    marginHorizontal: 10,
+    marginTop: 10,
+    marginBottom: 20,
     flex: 1,
-    backgroundColor: '#FFF7F7',
-    paddingTop: 50,
+    overflow: 'hidden',
+    borderWidth: 2,
+    borderColor: '#e0e0e0',
+    padding: 8, // 👈 Añadimos padding interno para separar las celdas del borde
   },
-  header: {
-    flexDirection: 'row',
+
+  listaContent: {
+    paddingVertical: 4, // 👈 Menos padding vertical ya que las celdas tienen su propio espacio
+  },
+
+  emptyState: {
+    flex: 1,
+    justifyContent: 'center',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    backgroundColor: '#CBD5E1',
-    borderRadius: 30,
-    marginHorizontal: 20,
-    paddingHorizontal: 15,
-    paddingVertical: 10,
+    padding: 40,
   },
-  backButton: {
-    backgroundColor: '#b91c1c',
-    borderRadius: 8,
-    paddingVertical: 6,
-    paddingHorizontal: 10,
-  },
-  headerTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#b22222',
-  },
-  title: {
-    fontSize: 22,
-    fontWeight: '600',
-    textAlign: 'center',
-    marginVertical: 25,
-    color: '#333',
-  },
-  listContainer: {
-    backgroundColor: '#9CA3AF',
-    marginHorizontal: 20,
-    borderRadius: 40,
-    padding: 10,
-    height: 450,
-  },
-  postItem: {
-    backgroundColor: '#CBD5E1',
-    borderRadius: 10,
-    padding: 15,
-    marginVertical: 5,
-    marginHorizontal: 5,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#b91c1c',
-  },
-  postTitle: {
+
+  emptyStateText: {
+    color: '#666',
     fontSize: 16,
-    fontWeight: '600',
-    color: '#000',
+    textAlign: 'center',
+    lineHeight: 22,
   },
-  postAddress: {
-    fontSize: 14,
-    color: '#333',
-  },
-  bottomBar: {
-    position: 'absolute',
-    bottom: 20,
-    left: 20,
-    right: 20,
-    backgroundColor: '#CBD5E1',
-    borderRadius: 30,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    paddingVertical: 10,
-  },
-  navButton: {
-    alignItems: 'center',
-  },
-  navText: {
-    fontSize: 12,
-    color: '#000',
-    marginTop: 3,
-  },
+  titol: {
+  fontSize: 22,
+  fontWeight: 'bold',
+  color: '#000',
+  textAlign: 'center',
+  marginTop: 10,
+  marginBottom: 5,
+},
+
 });

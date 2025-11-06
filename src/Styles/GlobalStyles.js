@@ -1,23 +1,39 @@
 // ============================================================================
-// 📁 GlobalStyles.js
-// ✅ Todos los estilos de la aplicación en un solo archivo
+// 📁 GlobalStyles.js — archivo único de estilos para toda la app
+// ============================================================================
+// Incluye colores, fuentes, grids, botones, mapa, topbar, tabbar, etc.
+// Se importa como:  import { STYLES } from "../Styles/GlobalStyles";
 // ============================================================================
 
 import { StyleSheet } from "react-native";
 
-// 🎨 PALETA DE COLORES GLOBAL
+// 🎨 PALETA DE COLORES PRINCIPAL
 const COLORS = {
-  fondo: "#FFF8F7",
-  gris: "#CBD5E1",
+  fondo: "#F6EDED",    // color de fondo general
+  blanco: "#FFFFFF",
+  negro: "#000000",
+  grisClaro: "#CBD5E1",
+  grisMedio: "#A1A1A1",
+  grisOscuro: "#707070",
   rojo: "#B3261E",
-  negro: "#000",
-  blanco: "#FFF",
-  peligro: "#FFB300",
+  naranja: "#FF9800",
+};
+
+// ⚙️ MEDIDAS GENERALES
+const SIZES = {
+  border: 10,
+  padding: 10,
+  fontXS: 10,
+  fontSM: 12,
+  fontMD: 14,
+  fontLG: 18,
+  mapMini: 70, // altura mini mapa
 };
 
 // ============================================================================
-// ✅ EXPORT DE ESTILOS GLOBALES — SIN REPETIR IMPORTS
+// ✅ ESTILOS GLOBALES (para toda la app)
 // ============================================================================
+
 export const STYLES = StyleSheet.create({
   // ============================ PANTALLA BASE ===============================
   pantalla: {
@@ -25,47 +41,114 @@ export const STYLES = StyleSheet.create({
     backgroundColor: COLORS.fondo,
   },
 
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.fondo,
+  // ========================================================================
+  // 🗂️ GRID DE UBICACIONES
+  // ========================================================================
+  gridContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+    padding: 10,
+  },
+
+  // 🔲 Cada celda de mapa
+  celda: {
+    width: "31%", // tres por fila
+    backgroundColor: COLORS.blanco,
+    borderRadius: 12,
+    marginVertical: 8,
+    overflow: "hidden",
+    elevation: 3, // sombra
+  },
+
+  // ========================================================================
+  // 🗺️ MAPA EN CELDA
+  // ========================================================================
+  mapaContainer: {
+    width: "100%",
+    aspectRatio: 1, // 🔲 cuadrado perfecto
+  },
+
+  mapaMini: {
+    width: "100%",
+    height: "100%",
+  },
+
+  // ========================================================================
+  // 🏷️ PIE INFORMATIVO DE LA CELDA
+  // ========================================================================
+  celdaPie: {
+    backgroundColor: COLORS.blanco,
+    paddingVertical: 6,
+    paddingHorizontal: 4,
+    borderTopWidth: 1,
+    borderColor: COLORS.gris,
+  },
+
+  textoNombre: {
+    fontWeight: "500",
+    fontSize: 12,
+    textAlign: "left",
+    color: COLORS.negro,
+  },
+
+  textoPeligro: {
+    fontSize: 12,
+    textAlign: "left",
   },
 
   // =========================== TOP BAR SUPERIOR =============================
-
   headerContainer: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: COLORS.gris,
+    justifyContent: "space-between",
+    backgroundColor: COLORS.grisClaro,
     width: "95%",
-    paddingHorizontal: 20,
+    paddingHorizontal: 15,
     paddingVertical: 8,
     borderRadius: 15,
     marginTop: 45,
-    justifyContent: "space-between",
+    alignSelf: "center",
   },
 
   redButton: {
     backgroundColor: COLORS.rojo,
-    borderRadius: 10,
+    borderRadius: SIZES.border,
     padding: 10,
   },
 
   settingsButton: {
-    backgroundColor: COLORS.gris,
+    backgroundColor: COLORS.grisClaro,
+    borderRadius: SIZES.border,
+    padding: 10,
   },
 
-  botonMarca: { flex: 1, alignItems: "center" },
-  textoMarca: { color: COLORS.rojo, fontSize: 20, fontWeight: "bold" },
+  botonMarca: {
+    flex: 1,
+    alignItems: "center",
+  },
 
-  botonUsuario: { backgroundColor: "transparent", padding: 8 },
+  textoMarca: {
+    color: COLORS.rojo,
+    fontSize: SIZES.fontLG,
+    fontWeight: "bold",
+  },
+
+  botonUsuario: {
+    backgroundColor: COLORS.blanco,
+    padding: 8,
+    borderRadius: SIZES.border,
+  },
 
   // ============================ SWITCH MAPA / LISTA =========================
   switchContainer: {
     flexDirection: "row",
-    backgroundColor: COLORS.gris,
+    backgroundColor: COLORS.grisClaro,
     borderRadius: 20,
     marginVertical: 15,
     overflow: "hidden",
+    width: "90%",
+    alignSelf: "center",
   },
 
   switchButton: {
@@ -78,67 +161,98 @@ export const STYLES = StyleSheet.create({
     backgroundColor: COLORS.rojo,
   },
 
-  switchText: { color: COLORS.negro, fontWeight: "600" },
-  switchTextActivo: { color: COLORS.blanco, fontWeight: "700" },
-
-  // ============================ GRID DE CELDAS ==============================
-  gridContainer: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "space-between",
-    padding: 12,
+  switchText: {
+    color: COLORS.negro,
+    fontWeight: "600",
   },
 
-  celda: {
-    width: "31%",
-    backgroundColor: COLORS.blanco,
-    borderRadius: 12,
-    marginBottom: 10,
-    elevation: 2,
-  },
-
-  mapaMini: { width: "100%", height: 90 },
-
-  textoNombre: {
-    fontSize: 13,
+  switchTextActivo: {
+    color: COLORS.blanco,
     fontWeight: "700",
-    textAlign: "center",
-    paddingTop: 3,
   },
 
-  textoPeligro: {
-    textAlign: "center",
-    paddingBottom: 5,
-    color: COLORS.peligro,
+  // ============================================================================
+  // 🗺️ MAPA GRANDE Y DETALLE
+  // ============================================================================
+  mapaDetalleContainer: {
+    width: "100%",
+    height: 300, // altura del mapa grande
+    borderBottomWidth: 1,
+    borderColor: "#CCC",
   },
 
-  // ============================ MAPA GRANDE ================================
-  mapaGrande: { flex: 1, width: "100%" },
+  mapaGrande: {
+    flex: 1,
+  },
 
-  detalleInfo: { padding: 12, backgroundColor: COLORS.blanco, width: "100%" },
-  detalleTitulo: { fontSize: 18, fontWeight: "bold", textAlign: "center" },
+  // 🧾 Información del detalle debajo del mapa
+  detalleInfo: {
+    padding: 16,
+    backgroundColor: "#FFFFFF",
+  },
 
-  // ============================ TABBAR =====================================
+  detalleTitulo: {
+    fontSize: 22,
+    fontWeight: "bold",
+    textAlign: "center",
+    marginBottom: 8,
+    color: "#B3261E",
+  },
+
+  textoPeligroDetalle: {
+    fontSize: 16,
+    textAlign: "center",
+    marginBottom: 8,
+    color: "#FFB300",
+  },
+
+  detalleUbicacion: {
+    textAlign: "center",
+    fontSize: 14,
+    marginBottom: 10,
+    color: "#555",
+  },
+
+  detalleDescripcion: {
+    fontSize: 14,
+    lineHeight: 20,
+    textAlign: "justify",
+    color: "#333",
+  },
+
+  // ============================ TAB BAR INFERIOR ============================
   tabBar: {
     flexDirection: "row",
     justifyContent: "space-around",
-    backgroundColor: COLORS.gris,
+    backgroundColor: COLORS.grisClaro,
     width: "90%",
-    marginBottom: 35,
-    paddingVertical: 10,
+    alignSelf: "center",
+    marginBottom: 25,
+    paddingVertical: 8,
     borderRadius: 25,
   },
 
-  tabButton: { alignItems: "center", flex: 1, paddingVertical: 6 },
+  tabButton: {
+    alignItems: "center",
+    flex: 1,
+    paddingVertical: 6,
+  },
+
   tabButtonActivo: {
     backgroundColor: COLORS.fondo,
     borderWidth: 1,
     borderColor: COLORS.rojo,
     borderRadius: 20,
-    padding: 2,
-    marginHorizontal: 10,
+    paddingVertical: 6,
   },
 
-  tabText: { fontSize: 13 },
-  tabTextActivo: { color: COLORS.rojo, fontWeight: "700" },
+  tabText: {
+    fontSize: 13,
+    color: COLORS.negro,
+  },
+
+  tabTextActivo: {
+    color: COLORS.rojo,
+    fontWeight: "700",
+  },
 });

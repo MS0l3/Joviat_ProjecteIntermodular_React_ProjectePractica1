@@ -6,6 +6,7 @@ import { View, Text, TouchableOpacity, SafeAreaView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons"; // Para los iconos (ojo, engranaje, usuario, etc.)
 import styles from "../Styles/Style_TapTopBar.js"; // Estilos separados en su archivo propio
+import MapComponent from "./MapComponent"; // 👈 AÑADE ESTA IMPORTACIÓN
 // -------------------------------------------------------------
 
 export default function Pantalla_TapTopBar() {
@@ -121,13 +122,17 @@ export default function Pantalla_TapTopBar() {
 
       {/* -------------------------------------------------------------
          📍 CONTENIDO PRINCIPAL
-         Aquí puedes añadir lo que quieras según la pantalla.
-         Este espacio cambia entre pantallas.
+         Aquí se muestra el componente del mapa
       ------------------------------------------------------------- */}
       <View style={styles.mainContent}>
-        <Text style={{ textAlign: "center", color: "#000" }}>
-          Contenido de la pantalla aquí
-        </Text>
+        {switchSeleccion === "Mapa" ? (
+          <MapComponent />
+        ) : (
+          <View style={styles.listaContainer}>
+            <Text style={styles.listaTexto}>Vista de lista aquí</Text>
+            {/* Aquí irá el componente de lista cuando lo desarrolles */}
+          </View>
+        )}
       </View>
 
       {/* -------------------------------------------------------------

@@ -19,8 +19,7 @@ export default function MapComponent() {
       latitude: 41.3851,
       longitude: 2.1734,
       type: "crime",
-      severity: "high",
-      icon: "▲▲▲▲▲▲"
+      severity: "high"
     },
     {
       id: 2,
@@ -28,8 +27,7 @@ export default function MapComponent() {
       description: "Restaurant",
       latitude: 41.3874,
       longitude: 2.1686,
-      type: "establishment",
-      severity: "none"
+      type: "establishment"
     },
     {
       id: 3,
@@ -37,8 +35,7 @@ export default function MapComponent() {
       description: "Edifici universitari",
       latitude: 41.3865,
       longitude: 2.1665,
-      type: "building",
-      severity: "none"
+      type: "building"
     },
     {
       id: 4,
@@ -46,8 +43,7 @@ export default function MapComponent() {
       description: "Botiga",
       latitude: 41.3848,
       longitude: 2.1702,
-      type: "establishment",
-      severity: "none"
+      type: "establishment"
     },
     {
       id: 5,
@@ -55,8 +51,7 @@ export default function MapComponent() {
       description: "Carrer residencial",
       latitude: 41.3839,
       longitude: 2.1721,
-      type: "street",
-      severity: "none"
+      type: "street"
     },
     {
       id: 6,
@@ -64,8 +59,7 @@ export default function MapComponent() {
       description: "Centre mèdic",
       latitude: 41.3882,
       longitude: 2.1715,
-      type: "establishment",
-      severity: "none"
+      type: "establishment"
     }
   ];
 
@@ -75,21 +69,6 @@ export default function MapComponent() {
     longitude: 2.1734,
     latitudeDelta: 0.02,
     longitudeDelta: 0.02,
-  };
-
-  const getMarkerColor = (type, severity) => {
-    if (type === "crime") {
-      if (severity === "high") return "#B3261E"; // Rojo para crímenes graves
-      return "#FF6B35"; // Naranja para otros incidentes
-    }
-    return "#4A90E2"; // Azul para establecimientos normales
-  };
-
-  const getMarkerIcon = (type) => {
-    if (type === "crime") return "warning";
-    if (type === "establishment") return "business";
-    if (type === "building") return "business";
-    return "location";
   };
 
   const handleMarkerPress = (location) => {
@@ -131,18 +110,13 @@ export default function MapComponent() {
             description={location.description}
             onPress={() => handleMarkerPress(location)}
           >
-            <View style={[
-              styles.markerContainer,
-              { backgroundColor: getMarkerColor(location.type, location.severity) }
-            ]}>
-              <Ionicons 
-                name={getMarkerIcon(location.type)} 
-                size={16} 
-                color="white" 
-              />
-              {location.icon && (
-                <Text style={styles.markerIconText}>{location.icon}</Text>
-              )}
+            <View style={styles.markerContainer}>
+              <View style={[
+                styles.markerPin,
+                location.type === "crime" && styles.markerPinCrime
+              ]}>
+                <View style={styles.markerDot} />
+              </View>
             </View>
           </Marker>
         ))}
@@ -156,16 +130,15 @@ export default function MapComponent() {
         <Ionicons name="locate" size={24} color="#B3261E" />
       </TouchableOpacity>
 
-      {/* Información del marcador seleccionado */}
+      {/* Placeholder para la tarjeta informativa (se implementará en otra rama) */}
       {selectedLocation && (
-        <View style={styles.infoCard}>
-          <Text style={styles.infoTitle}>{selectedLocation.title}</Text>
-          <Text style={styles.infoDescription}>{selectedLocation.description}</Text>
-          {selectedLocation.type === "crime" && (
-            <View style={styles.severityIndicator}>
-              <Text style={styles.severityText}>Alta severitat</Text>
-            </View>
-          )}
+        <View style={styles.infoCardPlaceholder}>
+          <Text style={styles.infoCardText}>
+            Component Bombolla - En desarrollo
+          </Text>
+          <Text style={styles.infoCardSubtext}>
+            {selectedLocation.title}
+          </Text>
         </View>
       )}
     </View>
@@ -175,38 +148,51 @@ export default function MapComponent() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: '100%',
+    width: '95%',
+    borderRadius: 15,
+    overflow: 'hidden',
+    marginHorizontal: 10,
+    marginVertical: 5,
   },
   map: {
     width: '100%',
     height: '100%',
   },
   markerContainer: {
-    padding: 8,
-    borderRadius: 20,
-    borderWidth: 2,
-    borderColor: 'white',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  markerPin: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    backgroundColor: '#B3261E',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 2,
+    borderColor: 'white',
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 2,
     },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
     elevation: 5,
   },
-  markerIconText: {
-    color: 'white',
-    fontSize: 8,
-    fontWeight: 'bold',
-    marginTop: 2,
+  markerPinCrime: {
+    backgroundColor: '#B3261E', // Rojo para crímenes
+  },
+  markerDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: 'white',
   },
   locationButton: {
     position: 'absolute',
-    top: 20,
-    right: 20,
+    top: 15,
+    right: 15,
     backgroundColor: 'white',
     padding: 12,
     borderRadius: 25,
@@ -219,14 +205,17 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
   },
-  infoCard: {
+  infoCardPlaceholder: {
     position: 'absolute',
-    bottom: 100,
+    bottom: 20,
     left: 20,
     right: 20,
-    backgroundColor: 'white',
+    backgroundColor: '#FFF8F7',
     padding: 16,
     borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#B3261E',
+    alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -236,27 +225,16 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
   },
-  infoTitle: {
-    fontSize: 16,
+  infoCardText: {
+    fontSize: 14,
     fontWeight: 'bold',
     color: '#B3261E',
+    textAlign: 'center',
     marginBottom: 4,
   },
-  infoDescription: {
-    fontSize: 14,
-    color: '#666',
-    marginBottom: 8,
-  },
-  severityIndicator: {
-    backgroundColor: '#FFF8F7',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 6,
-    alignSelf: 'flex-start',
-  },
-  severityText: {
+  infoCardSubtext: {
     fontSize: 12,
-    color: '#B3261E',
-    fontWeight: '600',
+    color: '#666',
+    textAlign: 'center',
   },
 });

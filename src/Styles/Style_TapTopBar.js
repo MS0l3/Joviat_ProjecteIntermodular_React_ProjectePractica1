@@ -18,9 +18,11 @@ export default StyleSheet.create({
     paddingVertical: 8,
     borderBottomLeftRadius: 15,
     borderBottomRightRadius: 15,
+    marginTop: 25,
     borderTopLeftRadius: 15,
     borderTopRightRadius: 15,
     marginTop: 40,
+
   },
 
    // 🔴 ESTILO POR DEFECTO: BOTÓN ROJO DE RETROCESO
@@ -56,52 +58,38 @@ export default StyleSheet.create({
     flexDirection: "row",
     backgroundColor: "#CBD5E1",
     borderRadius: 20,
-    marginVertical: 15,
+    marginVertical: 20,
     overflow: "hidden",
     marginHorizontal: 10,
-    width: "95%",
   },
 
   switchButton: {
     flex: 1,
     alignItems: "center",
-    paddingVertical: 10,
+    paddingVertical: 8,
   },
 
   switchButtonActivo: {
     backgroundColor: "#B3261E",
     borderRadius: 20,
+  
   },
 
   switchText: {
     color: "#000",
     fontWeight: "600",
-    fontSize: 16,
   },
 
   switchTextActivo: {
     color: "#FFF",
   },
 
-  // 📍 CONTENIDO PRINCIPAL
+  // 📍 CONTENIDO
   mainContent: {
     flex: 1,
     width: "100%",
-    marginBottom: 10, // Espacio para la tabbar
-  },
-
-  // Estilos para la vista de lista
-  listaContainer: {
-    flex: 1,
     justifyContent: "center",
-    alignItems: "center",
-    padding: 20,
-  },
-
-  listaTexto: {
-    fontSize: 18,
-    color: "#666",
-    textAlign: "center",
+    alignItems: "top",
   },
 
   // 🔻 TABBAR
@@ -110,10 +98,10 @@ export default StyleSheet.create({
     justifyContent: "space-around",
     alignItems: "center",
     backgroundColor: "#CBD5E1",
-    width: "95%",
+    width: "90%",
     alignSelf: "center",
-    marginBottom: 20,
-    paddingVertical: 12,
+    marginBottom: 30,
+    paddingVertical: 10,
     borderRadius: 25,
   },
 

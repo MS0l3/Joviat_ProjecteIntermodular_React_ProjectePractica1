@@ -1,0 +1,172 @@
+// ============================================================================
+// 🎨 Style_TapTopBar.js
+// ✅ Estilos globales para la pantalla con barra superior (TopBar),
+// switch Mapa/Llista y barra inferior (TabBar).
+// ============================================================================
+
+import { StyleSheet } from "react-native";
+
+// ============================================================================
+// 💡 NOTA IMPORTANTE
+// Este archivo debe importarse así en la pantalla:
+// import styles from "../Styles/Style_TapTopBar.js";
+// ============================================================================
+
+export default StyleSheet.create({
+  // ==========================================================================
+  // 🧱 CONTENEDOR PRINCIPAL
+  // ==========================================================================
+    container: {
+      flex: 1,
+      backgroundColor: "#FEF7FF", // Fondo general claro
+      alignItems: "center", // Centra el contenido horizontalmente
+    },
+
+  // ==========================================================================
+  // 🟥 CABECERA SUPERIOR (TopBar)
+  // Contiene el botón rojo / ajustes, la marca central y el botón usuario
+  // ==========================================================================
+  headerContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    backgroundColor: "#CBD5E1", // gris suave
+    width: "95%",
+    paddingHorizontal: 20,
+    paddingVertical: 8,
+    borderRadius: 15, // esquinas redondeadas
+    marginTop: 45,
+  },
+
+  // 🔴 Botón rojo por defecto (retroceso)
+  redButton: {
+    backgroundColor: "#B3261E",
+    borderRadius: 10,
+    padding: 10,
+  },
+
+  // ⚙️ Modo ajustes (botón gris)
+  settingsButton: {
+    backgroundColor: "#CBD5E1",
+  },
+
+  // 🔸 Botón central de marca (DangerZone)
+  botonMarca: {
+    flex: 1,
+    alignItems: "center",
+  },
+  textoMarca: {
+    color: "#B3261E",
+    fontSize: 20,
+    fontWeight: "bold",
+  },
+
+  // 👤 Botón usuario (derecha)
+  botonUsuario: {
+    backgroundColor: "transparent",
+    padding: 8,
+  },
+
+  // ==========================================================================
+  // ⚙️ SWITCH MAPA / LLISTA
+  // ==========================================================================
+  switchContainer: {
+    flexDirection: "row",
+    backgroundColor: "#CBD5E1",
+    borderRadius: 20,
+    marginVertical: 20,
+    overflow: "hidden",
+    marginHorizontal: 10,
+  },
+
+  switchButton: {
+    flex: 1,
+    alignItems: "center",
+    paddingVertical: 8,
+  },
+
+  switchButtonActivo: {
+    backgroundColor: "#B3261E", // rojo DangerZone
+    borderRadius: 20,
+  },
+
+  switchText: {
+    color: "#000",
+    fontWeight: "600",
+  },
+
+  switchTextActivo: {
+    color: "#FFF",
+  },
+
+  // ==========================================================================
+  // 📍 CONTENIDO CENTRAL (mainContent)
+  // Aquí se monta la pantalla de Lista o Mapa según el switch
+  // ==========================================================================
+
+  // 📋 ESTILOS PARA LISTA DE CELDAS Y GRID
+  listaContainer: {
+    flex: 1,
+    backgroundColor: "#FEF7FF",
+    paddingBottom: 70, // deja espacio para la TabBar
+  },
+
+  gridContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+    paddingHorizontal: 10,
+    paddingTop: 10,
+  },
+
+  celdaWrapper: {
+    width: "31%", // 3 columnas exactas
+    marginVertical: 6,
+    borderRadius: 10,
+    overflow: "hidden",
+    backgroundColor: "#FFF",
+    elevation: 3, // sombra ligera en Android
+  },
+
+  
+  // ==========================================================================
+  // 🔻 TABBAR INFERIOR (3 botones)
+  // ==========================================================================
+  tabBar: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+    backgroundColor: "#CBD5E1",
+    width: "90%",
+    alignSelf: "center",
+    marginBottom: 35,
+    paddingVertical: 10,
+    borderRadius: 25,
+  },
+
+  tabButton: {
+    alignItems: "center",
+    justifyContent: "center",
+    flex: 1,
+    paddingVertical: 6,
+    borderRadius: 20,
+  },
+
+  tabButtonActivo: {
+    backgroundColor: "#FFF8F7", // fondo claro
+    borderWidth: 1,
+    borderColor: "#B3261E",
+    padding: 2,
+    marginHorizontal: 10,
+  },
+
+  tabText: {
+    color: "#000",
+    fontSize: 13,
+  },
+
+  tabTextActivo: {
+    color: "#B3261E",
+    fontWeight: "bold",
+  },
+});

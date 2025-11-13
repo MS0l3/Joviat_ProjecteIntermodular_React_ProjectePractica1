@@ -6,7 +6,7 @@
 import React from "react";
 import { View, Text, ScrollView } from "react-native";
 import MapView, { Marker } from "react-native-maps";
-import { STYLES } from "../Styles/GlobalStyles"; // 🎨 estilos globales
+import styles from "../Styles/Style_TapTopBar"; // 🎨 estilos globales
 
 // ============================================================================
 // 🧠 Reutilizamos la función de peligrosidad
@@ -22,7 +22,7 @@ export default function DetalleScreen({ route }) {
     tipoCrimen = 1,
     peligrosidad = 3,
     ubicacion = "Ubicación no disponible",
-    coordenadas = { lat: 41.3851, lng: 2.1734 },
+    coordenadas = { latitude: 41.3851, longitude: 2.1734 },
   } = route.params || {};
 
   // 📋 Diccionario de tipos de crimen (igual que en CeldaMapa)
@@ -35,11 +35,11 @@ export default function DetalleScreen({ route }) {
   };
 
   return (
-    <ScrollView style={STYLES.pantalla}>
+    <ScrollView style={styles.pantalla}>
       {/* 🗺️ Mapa grande e interactivo */}
-      <View style={STYLES.mapaDetalleContainer}>
+      <View style={styles.mapaDetalleContainer}>
         <MapView
-          style={STYLES.mapaGrande}
+          style={styles.mapaGrande}
           region={{
             latitude: coordenadas.lat,
             longitude: coordenadas.lng,
@@ -63,15 +63,15 @@ export default function DetalleScreen({ route }) {
       </View>
 
       {/* 📋 Información del crimen */}
-      <View style={STYLES.detalleInfo}>
-        <Text style={STYLES.detalleTitulo}>{crimenes[tipoCrimen]}</Text>
-        <Text style={STYLES.textoPeligroDetalle}>
+      <View style={styles.detalleInfo}>
+        <Text style={styles.detalleTitulo}>{crimenes[tipoCrimen]}</Text>
+        <Text style={styles.textoPeligroDetalle}>
           Peligrosidad: {renderPeligrosidad(peligrosidad)}
         </Text>
-        <Text style={STYLES.detalleUbicacion}>{ubicacion}</Text>
+        <Text style={styles.detalleUbicacion}>{ubicacion}</Text>
 
         {/* 🧾 Ejemplo de descripción (puedes sustituirla luego) */}
-        <Text style={STYLES.detalleDescripcion}>
+        <Text style={styles.detalleDescripcion}>
           Esta zona ha sido identificada como de riesgo por informes recientes.
           Se recomienda precaución al transitar por la zona, especialmente de
           noche o en condiciones de baja visibilidad.

@@ -7,12 +7,13 @@ import { PeligrosidadTriangulos } from './PeligrosidadTriangulos';
 
 const { width, height } = Dimensions.get('window');
 
-// Componente MarkerAnimado - SOLUCIÓN AL PROBLEMA DEL CONTENEDOR
+// Componente MarkerAnimado - SOLO CAMBIOS NECESARIOS
 const MarkerAnimado = ({ post, isSelected, onPress }) => {
   const scaleAnim = useRef(new Animated.Value(1)).current;
   const pulseAnim = useRef(new Animated.Value(0)).current;
 
   const handlePress = () => {
+    // Animación de pulse al presionar (ORIGINAL)
     Animated.sequence([
       Animated.timing(scaleAnim, {
         toValue: 1.3,
@@ -29,6 +30,7 @@ const MarkerAnimado = ({ post, isSelected, onPress }) => {
     onPress();
   };
 
+  // Animación de pulse continua para marcadores seleccionados (ORIGINAL)
   React.useEffect(() => {
     if (isSelected) {
       Animated.loop(
@@ -50,18 +52,19 @@ const MarkerAnimado = ({ post, isSelected, onPress }) => {
     }
   }, [isSelected]);
 
+  // ESTILOS DE ANIMACIÓN ORIGINALES
   const pulseStyle = {
     transform: [
       { 
         scale: pulseAnim.interpolate({
           inputRange: [0, 1],
-          outputRange: [1, 1.2]
+          outputRange: [1, 1.2] // ORIGINAL
         }) 
       }
     ],
     opacity: pulseAnim.interpolate({
       inputRange: [0, 1],
-      outputRange: [1, 0.7]
+      outputRange: [1, 0.7] // ORIGINAL
     })
   };
 
@@ -78,31 +81,31 @@ const MarkerAnimado = ({ post, isSelected, onPress }) => {
         longitude: post.longitude
       }}
       onPress={handlePress}
-      // SOLUCIÓN: Usar tracksViewChanges para forzar actualizaciones
-      tracksViewChanges={false}
     >
-      {/* SOLUCIÓN: Contenedor absoluto que escape las limitaciones del Marker */}
-      <View style={styles.markerAbsoluteContainer}>
-        {/* Anillo exterior - POSICIONADO ABSOLUTAMENTE */}
+      {/* SOLO CAMBIO: Contenedor más grande para evitar cortes */}
+      <View style={styles.markerOuterContainer}>
+        {/* Anillo exterior para marcadores seleccionados (ORIGINAL) */}
         {isSelected && (
           <Animated.View 
             style={[
-              styles.markerRingAbsolute, // Estilo absoluto
+              styles.markerRing,
               pulseStyle,
               getMarkerColor(post.peligrosidad)
             ]} 
           />
         )}
         
-        {/* Marcador principal - CENTRADO EN EL PUNTO DEL MAPA */}
+        {/* Marcador principal con animación de scale (ORIGINAL) */}
         <Animated.View 
           style={[
-            styles.markerPinCentered, // Centrado en el punto del mapa
+            styles.markerPin,
             getMarkerColor(post.peligrosidad),
             { transform: [{ scale: scaleAnim }] }
           ]}
         >
           <View style={styles.markerDot} />
+          
+          {/* Icono interior según tipo de crimen (ORIGINAL) */}
           <View style={styles.markerIcon}>
             <Ionicons 
               name={getMarkerIcon(post.tipoCrimen)} 
@@ -116,7 +119,7 @@ const MarkerAnimado = ({ post, isSelected, onPress }) => {
   );
 };
 
-// Función para obtener icono según tipo de crimen
+// Función para obtener icono según tipo de crimen (ORIGINAL)
 const getMarkerIcon = (tipoCrimen) => {
   const iconMap = {
     'Assassinat': 'skull',
@@ -129,11 +132,12 @@ const getMarkerIcon = (tipoCrimen) => {
   return iconMap[tipoCrimen] || 'warning';
 };
 
-// Componente Bombolla (sin cambios)
+// Componente Bombolla (ORIGINAL)
 const Bombolla = ({ post, onClose, onObrir }) => {
   const slideAnim = useRef(new Animated.Value(300)).current;
 
   React.useEffect(() => {
+    // Animación de entrada (ORIGINAL)
     Animated.spring(slideAnim, {
       toValue: 0,
       tension: 50,
@@ -146,9 +150,10 @@ const Bombolla = ({ post, onClose, onObrir }) => {
     <Animated.View 
       style={[
         styles.bombollaContainer,
-        { transform: [{ translateY: slideAnim }] }
+        { transform: [{ translateY: slideAnim }] } // ORIGINAL
       ]}
     >
+      {/* Cabecera con tipo de crimen y peligrosidad (ORIGINAL) */}
       <View style={styles.bombollaHeader}>
         <Text style={styles.bombollaTitulo}>{post.tipoCrimen}</Text>
         <PeligrosidadTriangulos 
@@ -157,17 +162,21 @@ const Bombolla = ({ post, onClose, onObrir }) => {
         />
       </View>
 
+      {/* Ubicación en rojo (ORIGINAL) */}
       <Text style={styles.bombollaUbicacion}>{post.ubicacion}</Text>
 
+      {/* Descripción del crimen (ORIGINAL) */}
       <Text style={styles.bombollaDescripcion}>
         {post.descripcion || `Incident de ${post.tipoCrimen.toLowerCase()} reportat a ${post.ubicacion}`}
       </Text>
 
+      {/* Botón Obrir (ORIGINAL) */}
       <TouchableOpacity style={styles.botonObrir} onPress={onObrir}>
         <Text style={styles.botonObrirText}>Obrir</Text>
         <Ionicons name="arrow-forward" size={16} color="#FFF" />
       </TouchableOpacity>
 
+      {/* Botón para cerrar (X) (ORIGINAL) */}
       <TouchableOpacity style={styles.botonCerrar} onPress={onClose}>
         <Ionicons name="close" size={20} color="#666" />
       </TouchableOpacity>
@@ -179,7 +188,7 @@ export default function MapComponent() {
   const mapRef = useRef(null);
   const [selectedPost, setSelectedPost] = useState(null);
 
-  // Datos de ejemplo
+  // Datos de ejemplo (ORIGINAL)
   const locations = [
     {
       id: '1',
@@ -300,6 +309,7 @@ export default function MapComponent() {
         ))}
       </MapView>
 
+      {/* Botón para centrar en ubicación del usuario (ORIGINAL) */}
       <TouchableOpacity 
         style={styles.locationButton}
         onPress={focusOnUserLocation}
@@ -307,6 +317,7 @@ export default function MapComponent() {
         <Ionicons name="locate" size={24} color="#B3261E" />
       </TouchableOpacity>
 
+      {/* Bombolla (tarjeta informativa) (ORIGINAL) */}
       {selectedPost && (
         <Bombolla 
           post={selectedPost} 
@@ -323,34 +334,32 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
     borderRadius: 15,
+    // SOLO CAMBIO: Eliminar overflow hidden
+    // overflow: 'hidden', // ← ESTO ES LO ÚNICO QUE QUITAMOS
     marginHorizontal: 10,
     marginVertical: 5,
   },
   map: {
     width: '100%',
     height: '100%',
-    borderRadius: 15,
+    borderRadius: 15, // Mover borderRadius aquí para mantener el diseño
   },
-  // SOLUCIÓN: Contenedor absoluto que escapa las limitaciones del Marker
-  markerAbsoluteContainer: {
-    position: 'relative',
-    width: 80,  // Área más grande para las animaciones
-    height: 80,
+  // SOLO CAMBIO: Contenedor más grande para los marcadores
+  markerOuterContainer: {
     alignItems: 'center',
     justifyContent: 'center',
+    width: 50, // Espacio suficiente para la animación
+    height: 50,
   },
-  // Anillo con posición absoluta dentro del contenedor
-  markerRingAbsolute: {
+  // TODOS LOS DEMÁS ESTILOS SE MANTIENEN ORIGINALES
+  markerRing: {
     position: 'absolute',
     width: 40,
     height: 40,
     borderRadius: 20,
     opacity: 0.3,
-    top: 20,  // Centrado en el área de 80x80
-    left: 20,
   },
-  // Marcador centrado en el punto exacto del mapa
-  markerPinCentered: {
+  markerPin: {
     width: 24,
     height: 24,
     borderRadius: 12,
@@ -364,10 +373,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 3,
     elevation: 5,
-    // Centrado en el punto del mapa (40,40 en el contenedor de 80x80)
-    position: 'absolute',
-    top: 28,
-    left: 28,
+    position: 'relative',
   },
   markerPinAlto: { backgroundColor: '#B3261E' },
   markerPinMedio: { backgroundColor: '#FF6B35' },

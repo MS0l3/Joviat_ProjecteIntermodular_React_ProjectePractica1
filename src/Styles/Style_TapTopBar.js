@@ -16,11 +16,12 @@ export default StyleSheet.create({
   // ==========================================================================
   // 🧱 CONTENEDOR PRINCIPAL
   // ==========================================================================
-    container: {
-      flex: 1,
-      backgroundColor: "#FEF7FF", // Fondo general claro
-      alignItems: "center", // Centra el contenido horizontalmente
-    },
+      container: {
+    flex: 1,
+    backgroundColor: "#FEF7FF",
+    justifyContent: "space-between", // importante
+    alignItems: "center",
+  },
 
   // ==========================================================================
   // 🟥 CABECERA SUPERIOR (TopBar)
@@ -35,7 +36,7 @@ export default StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 8,
     borderRadius: 15, // esquinas redondeadas
-    marginTop: 45,
+    marginTop: 5,
   },
 
   // 🔴 Botón rojo por defecto (retroceso)
@@ -108,7 +109,7 @@ export default StyleSheet.create({
   listaContainer: {
     flex: 1,
     backgroundColor: "#FEF7FF",
-    paddingBottom: 70, // deja espacio para la TabBar
+    paddingBottom: 0, // deja espacio para la TabBar
   },
 
   gridContainer: {
@@ -128,10 +129,20 @@ export default StyleSheet.create({
     elevation: 3, // sombra ligera en Android
   },
 
+
   
   // ==========================================================================
   // 🔻 TABBAR INFERIOR (3 botones)
   // ==========================================================================
+
+  mainContent: {
+    flex: 1,
+    width: "100%",
+    justifyContent: "center",
+    alignItems: "top",
+  },
+
+
   tabBar: {
     flexDirection: "row",
     justifyContent: "space-around",
@@ -139,7 +150,7 @@ export default StyleSheet.create({
     backgroundColor: "#CBD5E1",
     width: "90%",
     alignSelf: "center",
-    marginBottom: 35,
+    marginBottom: 15,
     paddingVertical: 10,
     borderRadius: 25,
   },

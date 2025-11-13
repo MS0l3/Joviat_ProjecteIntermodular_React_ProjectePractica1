@@ -1,20 +1,35 @@
-// src/Components/CeldaMapa.js
+// ============================================================================
+// ✅ Componente: CeldaMapa
+// 📍 Muestra un mapa pequeño con marcador, el tipo de crimen y la peligrosidad
+// ============================================================================
+
 import React from "react";
-import { View, Text } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import MapView, { Marker } from "react-native-maps";
+import { useNavigation } from "@react-navigation/native";
 import styles from "../Styles/Style_TapTopBar";
 
 export default function CeldaMapa({
   ubicacion = "Ubicación desconocida",
   peligrosidad = 3,
   tipoCrimen = 1,
-  coordenadas = { latitude: 41.3851, longitude: 2.1734 },
+  coordenadas = { latitude: 41.3851, longitude: 2.1734 }, // Barcelona por defecto
   interactivo = false,
 }) {
-  // función para mostrar triángulos
-  const renderPeligrosidad = (nivel) => "▲".repeat(nivel);
+  const navigation = useNavigation();
 
-  // Diccionario de crimenes
+  // --------------------------------------------------------------------------
+  // 🔹 Asegurar que las coordenadas siempre tengan latitude/longitude
+  // (Por compatibilidad si se pasan como lat/lng)
+  // --------------------------------------------------------------------------
+  const safeCoords = {
+    latitude: coordenadas.latitude ?? coordenadas.lat ?? 41.3851,
+    longitude: coordenadas.longitude ?? coordenadas.lng ?? 2.1734,
+  };
+
+  // --------------------------------------------------------------------------
+  // 🔹 Diccionario de tipos de crimen
+  // --------------------------------------------------------------------------
   const crimenes = {
     1: "Robo",
     2: "Asalto",
@@ -23,29 +38,51 @@ export default function CeldaMapa({
     5: "Incendio",
   };
 
+  // --------------------------------------------------------------------------
+  // 🔹 Función auxiliar para renderizar peligrosidad
+  // --------------------------------------------------------------------------
+  const renderPeligrosidad = (nivel) => "▲".repeat(Math.min(nivel, 5));
+
+  // --------------------------------------------------------------------------
+  // 🔹 Al pulsar una celda → ir a DetalleScreen con todos los datos
+  // --------------------------------------------------------------------------
+  const handlePress = () => {
+    navigation.navigate("DetalleScreen", {
+      ubicacion,
+      peligrosidad,
+      tipoCrimen,
+      coordenadas: safeCoords,
+    });
+  };
+
+  // --------------------------------------------------------------------------
+  // 🔹 Render principal
+  // --------------------------------------------------------------------------
   return (
-    <View style={styles.celda}>
-      {/* Mapa miniatura */}
+    <TouchableOpacity style={styles.celda} onPress={handlePress}>
+      {/* 🗺️ Mapa miniatura */}
       <MapView
         style={{ width: "100%", height: 100 }}
         scrollEnabled={interactivo}
         zoomEnabled={interactivo}
         pitchEnabled={false}
         rotateEnabled={false}
+        pointerEvents={interactivo ? "auto" : "none"} // evita interacción si no toca
         initialRegion={{
-          latitude: coordenadas.lat || 41.3851,
-          longitude: coordenadas.lng || 2.1734,
-          latitudeDelta: 0.05,
-          longitudeDelta: 0.05,
+          latitude: safeCoords.latitude,
+          longitude: safeCoords.longitude,
+          latitudeDelta: 0.02,
+          longitudeDelta: 0.02,
         }}
-
       >
-        <Marker coordinate={coordenadas} title={crimenes[tipoCrimen]} />
+        <Marker coordinate={safeCoords} title={crimenes[tipoCrimen]} />
       </MapView>
 
-      {/* Nombre y peligrosidad */}
+      {/* 📋 Nombre del crimen */}
       <Text style={styles.textoNombre}>{crimenes[tipoCrimen]}</Text>
+
+      {/* ⚠️ Peligrosidad */}
       <Text style={styles.textoPeligro}>{renderPeligrosidad(peligrosidad)}</Text>
-    </View>
+    </TouchableOpacity>
   );
 }

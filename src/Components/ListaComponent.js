@@ -10,6 +10,7 @@ import React from "react";
 import { View, ScrollView, TouchableOpacity } from "react-native";
 import styles from "../Styles/Style_TapTopBar"; // Estilos globales
 import CeldaMapa from "./CeldaMapa"; // Componente de cada celda individual
+import DetalleScreen from "../Screen/DetalleScreen" // Detalle peligros
 
 // ============================================================================
 // 📍 DATOS TEMPORALES DE EJEMPLO (puedes sustituir por tus datos reales)
@@ -23,6 +24,12 @@ const ubicacionesDemo = [
   { id: 6, tipoCrimen: 2, peligrosidad: 3, ubicacion: "Zaragoza", coordenadas: { latitude: 41.6488, longitude: -0.8891 } },
   { id: 7, tipoCrimen: 1, peligrosidad: 2, ubicacion: "Granada", coordenadas: { latitude: 37.1773, longitude: -3.5986 } },
   { id: 8, tipoCrimen: 3, peligrosidad: 4, ubicacion: "Málaga", coordenadas: { latitude: 36.7213, longitude: -4.4214 } },
+  { id: 9, tipoCrimen: 2, peligrosidad: 1, ubicacion: "Málaga", coordenadas: { latitude: 40.8456, longitude: -5.2523 } },
+  { id: 10, tipoCrimen: 2, peligrosidad: 3, ubicacion: "Zaragoza", coordenadas: { latitude: 41.6488, longitude: -0.8891 } },
+  { id: 11, tipoCrimen: 1, peligrosidad: 2, ubicacion: "Granada", coordenadas: { latitude: 37.1773, longitude: -3.5986 } },
+  { id: 12, tipoCrimen: 3, peligrosidad: 4, ubicacion: "Málaga", coordenadas: { latitude: 36.7213, longitude: -4.4214 } },
+  { id: 13, tipoCrimen: 2, peligrosidad: 1, ubicacion: "Málaga", coordenadas: { latitude: 40.8456, longitude: -5.2523 } },
+  
 ];
 
 // ============================================================================
@@ -37,7 +44,7 @@ export default function ListaComponent({ data = ubicacionesDemo, onItemPress }) 
           <TouchableOpacity
             key={item.id}
             style={styles.celdaWrapper}
-            onPress={() => onItemPress?.(item)} // 👉 si se pasa una función, la llama
+            onPress={() => onItemPress?.(DetalleScreen)} // 👉 si se pasa una función, la llama
             activeOpacity={0.85}
           >
             {/* Cada celda es su propio mapa + info */}

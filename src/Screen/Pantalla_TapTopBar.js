@@ -49,7 +49,7 @@ export default function Pantalla_TapTopBar() {
   // 🧱 INTERFAZ
   // ========================================================================
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, { justifyContent: "space-between" }]}>
       {/* ======================================================
         🟥 CABECERA SUPERIOR (Botón, Marca, Usuario)
       ====================================================== */}

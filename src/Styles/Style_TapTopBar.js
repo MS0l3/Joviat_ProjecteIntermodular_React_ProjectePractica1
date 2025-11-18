@@ -51,16 +51,21 @@ export default StyleSheet.create({
     backgroundColor: "#CBD5E1",
   },
 
-  // 🔸 Botón central de marca (DangerZone)
-  botonMarca: {
-    flex: 1,
-    alignItems: "center",
-  },
-  textoMarca: {
-    color: "#B3261E",
-    fontSize: 20,
-    fontWeight: "bold",
-  },
+  // 🔸 Barra de busqueda por cuidades (centro)
+  searchContainer: {
+  flex: 1,
+  marginHorizontal: 10,
+},
+
+searchInput: {
+  backgroundColor: "#FFF",
+  height: 40,
+  borderRadius: 10,
+  paddingHorizontal: 12,
+  fontSize: 16,
+  borderColor: "#B3261E",
+  borderWidth: 1,
+},
 
   // 👤 Botón usuario (derecha)
   botonUsuario: {

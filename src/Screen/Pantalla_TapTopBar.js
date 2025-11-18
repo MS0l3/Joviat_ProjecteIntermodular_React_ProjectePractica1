@@ -34,13 +34,15 @@ export default function Pantalla_TapTopBar() {
   // 💡 Estado para el botón rojo (modo ajustes o volver)
   const isSettingsMode = true;
 
-  // ========================================================================
-  // 🎛️ FUNCIONES DE NAVEGACIÓN
-  // ========================================================================
+// ========================================================================
+// 🎛️ FUNCIONES DE NAVEGACIÓN
+// ========================================================================
   const handleButtonPress = () => {
     if (isSettingsMode) navigation.navigate("Pantalla_Ajustes");
     else navigation.goBack();
   };
+
+  const [searchText, setSearchText] = useState("");
 
   const pantallaMarca = "Pantalla_Principal";
   const pantallaUsuario = "Pantalla_Usuario";
@@ -69,13 +71,16 @@ export default function Pantalla_TapTopBar() {
           />
         </TouchableOpacity>
 
-        {/* Marca DangerZone */}
-        <TouchableOpacity
-          style={styles.botonMarca}
-          onPress={() => navigation.navigate(pantallaMarca)}
-        >
-          <Text style={styles.textoMarca}>DangerZone</Text>
-        </TouchableOpacity>
+        {/* Buscador Ciudades */}
+        <View style={styles.searchContainer}>
+          <TextInput
+            style={styles.searchInput}
+            placeholder="Buscar Ciudad..."
+            placeholderTextColor="#555"
+            value={searchText}
+            onChangeText={(text) => setSearchText(text)}
+          />
+        </View>
 
         {/* Botón Usuario */}
         <TouchableOpacity
@@ -134,7 +139,7 @@ export default function Pantalla_TapTopBar() {
             Aquí iría el mapa 🗺️
           </Text>
         ) : (
-          <ListaScreen /> // ✅ Aquí se renderiza tu lista completa
+          <ListaScreen filtro={searchText} /> // ✅ Aquí se renderiza tu lista completa
         )}
       </View>
       {/* ======================================================

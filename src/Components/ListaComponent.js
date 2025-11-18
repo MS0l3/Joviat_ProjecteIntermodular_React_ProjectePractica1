@@ -33,6 +33,15 @@ const ubicacionesDemo = [
 ];
 
 // ============================================================================
+// 🔎 COMPONENTE FILTRADO POR UBICACIÓN - Fltrado de ciudades
+// ============================================================================
+
+const datosFiltrados = datos.filter((item) =>
+  item.ubicacion.toLowerCase().includes(filtro.toLowerCase())
+);
+
+
+// ============================================================================
 // 🧠 COMPONENTE PRINCIPAL — Lista de ubicaciones
 // ============================================================================
 export default function ListaComponent({ data = ubicacionesDemo, onItemPress }) {
@@ -40,11 +49,18 @@ export default function ListaComponent({ data = ubicacionesDemo, onItemPress }) 
     <View style={styles.listaContainer}>
       {/* Scroll vertical para todas las celdas */}
       <ScrollView contentContainerStyle={styles.gridContainer}>
-        {data.map((item) => (
+        {dataFiltrada.map((item) => (
           <TouchableOpacity
             key={item.id}
             style={styles.celdaWrapper}
-            onPress={() => onItemPress?.(DetalleScreen)} // 👉 si se pasa una función, la llama
+            onPress={() =>
+              onItemPress?.({
+                ubicacion: item.ubicacion,
+                peligrosidad: item.peligrosidad,
+                tipoCrimen: item.tipoCrimen,
+                coordenadas: item.coordenadas,
+              })
+            }
             activeOpacity={0.85}
           >
             {/* Cada celda es su propio mapa + info */}
@@ -53,7 +69,7 @@ export default function ListaComponent({ data = ubicacionesDemo, onItemPress }) 
               peligrosidad={item.peligrosidad}
               ubicacion={item.ubicacion}
               coordenadas={item.coordenadas}
-              interactivo={false} // ⚙️ No se puede mover en la lista
+              interactivo={false}
             />
           </TouchableOpacity>
         ))}

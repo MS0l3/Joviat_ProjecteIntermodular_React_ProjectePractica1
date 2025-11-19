@@ -9,6 +9,7 @@ import 'react-native-gesture-handler';
 
 import Configuracio from './src/Screen/configuracio';
 import Identificacio from './src/Screen/identificacio';
+import Pantalla_Formulario_Registro from "./src/Screen/Pantalla_Formulario_Registro";
 
 
 const Stack = createNativeStackNavigator(); // 👈 això crea la constant Stack
@@ -44,6 +45,7 @@ export default function App() {
           <Stack.Screen name="Pantalla_Preferits" component={Pantalla_Preferits} />
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
+          <Stack.Screen name="Pantalla_Formulario_Registro" component={Pantalla_Formulario_Registro} />
         </Stack.Navigator>
       </SafeAreaView>
     </NavigationContainer>

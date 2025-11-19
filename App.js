@@ -22,6 +22,12 @@ LogBox.ignoreLogs([
 import Pantalla_TapTopBar from "./src/Screen/Pantalla_TapTopBar";
 
 
+// 📦 IMPORTA AQUÍ TODAS TUS PANTALLAS
+import Pantalla_TapTopBar from "./src/Screen/Pantalla_TapTopBar";
+import Pantalla_Preferits from "./src/Screen/Pantalla_Preferits";
+
+
+// 🧭 COMPONENTE PRINCIPAL DE NAVEGACIÓN
 export default function App() {
   return (
     <NavigationContainer>
@@ -29,6 +35,7 @@ export default function App() {
         <Stack.Screen name="Identificacio" component={Identificacio} />
         <Stack.Screen name="Configuracio" component={Configuracio} />
         <Stack.Screen name="Pantalla_TapTopBar" component={Pantalla_TapTopBar} />
+        <Stack.Screen name="Pantalla_Preferits" component={Pantalla_Preferits} />
       </Stack.Navigator>
     </NavigationContainer>
   );

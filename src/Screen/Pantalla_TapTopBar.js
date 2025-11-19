@@ -127,6 +127,9 @@ export default function Pantalla_TapTopBar() {
       ------------------------------------------------------------- */}
       <View style={styles.mainContent}>
       <MapComponent />
+        <Text style={{ textAlign: "center", color: "#000" }}>
+          Contenido de la pantalla aquí
+        </Text>
       </View>
 
       {/* -------------------------------------------------------------

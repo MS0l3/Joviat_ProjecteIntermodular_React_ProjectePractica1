@@ -3,10 +3,11 @@ import { StyleSheet } from "react-native";
 export default StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F8FAFC", // color base de fons suau
+    backgroundColor: "#FEF7FF", // Fondo general
+    alignItems: "center",
   },
 
-  /* ─── HEADER SUPERIOR ─────────────────────────── */
+  // 🟥 CABECERA
   headerContainer: {
     flexDirection: "row",
     alignItems: "center",
@@ -161,11 +162,27 @@ export default StyleSheet.create({
 
   tabButton: {
     alignItems: "center",
+    justifyContent: "center",
+    flex: 1,
+    paddingVertical: 6,
+    borderRadius: 20,
+  },
+
+  tabButtonActivo: {
+    backgroundColor: "#FFF8F7",
+    borderWidth: 1,
+    padding: 2,
+    borderColor: "#B3261E",
+    marginHorizontal: 10,
   },
 
   tabText: {
-    fontSize: 12,
     color: "#000",
-    marginTop: 2,
+    fontSize: 13,
+  },
+
+  tabTextActivo: {
+    color: "#B3261E",
+    fontWeight: "bold",
   },
 });

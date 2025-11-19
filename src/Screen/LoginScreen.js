@@ -12,7 +12,8 @@ import {
   ActivityIndicator
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import styles from './LoginScreen.styles';
+import { Ionicons } from "@expo/vector-icons";
+import styles from '../Styles/LoginScreen.styles';
 
 const LoginScreen = () => {
   const navigation = useNavigation();
@@ -83,12 +84,14 @@ const LoginScreen = () => {
       // Desactivar loading sin importar el resultado
       setIsLoading(false);
     }
+
+    navigation.navigate('Pantalla_TapTopBar');
   };
 
   // Navegar a la pantalla de recuperación de contraseña
   const handleForgotPassword = () => {
     if (!isLoading) {
-      navigation.navigate('ForgotPassword');
+      navigation.navigate('ForgotPasswordScreen');
     }
   };
 
@@ -109,6 +112,19 @@ const LoginScreen = () => {
       style={styles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
+      {/* 🔙 Botón para volver */}
+            <TouchableOpacity
+              style={styles.backButton}
+              onPress={() => {
+                if (navigation.canGoBack()) {
+                  navigation.goBack();
+                } else {
+                  navigation.navigate("Pantalla_Seleccion");
+                }
+              }}
+            >
+              <Ionicons name="arrow-back" size={24} color="white" />
+            </TouchableOpacity>
       <ScrollView 
         contentContainerStyle={styles.scrollContainer}
         showsVerticalScrollIndicator={false}

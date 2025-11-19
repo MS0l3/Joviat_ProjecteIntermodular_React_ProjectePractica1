@@ -1,8 +1,19 @@
 import React from 'react';
 import { Text, View, Image, TouchableOpacity } from 'react-native';
-import styles from '../Styles/Style_identificacio'; // ✅ importació de l’estil
+import { useNavigation } from '@react-navigation/native';
+import styles from '../Styles/Style_identificacio'; // ✅ importació de l'estil
 
-export default function Identificacio({ navigation }) {
+export default function Identificacio() {
+  const navigation = useNavigation();
+
+  const handleIniciarSessio = () => {
+    navigation.navigate('LoginScreen');
+  };
+
+  const handleRegistrar = () => {
+    navigation.navigate('Pantalla_Formulario_Registro');
+  };
+
   return (
     <View style={styles.container}>
       <Image
@@ -11,11 +22,17 @@ export default function Identificacio({ navigation }) {
         resizeMode="contain"
       />
 
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity 
+        style={styles.button}
+        onPress={handleIniciarSessio}
+      >
         <Text style={styles.buttonText}>Iniciar Sessió</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity 
+        style={styles.button}
+        onPress={handleRegistrar}
+      >
         <Text style={styles.buttonText}>Registrar-se</Text>
       </TouchableOpacity>
     </View>

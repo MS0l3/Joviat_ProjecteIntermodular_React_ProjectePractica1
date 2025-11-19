@@ -332,7 +332,7 @@ export default function MapComponent() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: '100%',
+    width: '95%',
     borderRadius: 15,
     // SOLO CAMBIO: Eliminar overflow hidden
     // overflow: 'hidden', // ← ESTO ES LO ÚNICO QUE QUITAMOS

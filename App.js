@@ -1,7 +1,11 @@
-import 'react-native-gesture-handler';
-import * as React from 'react';
+import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createStackNavigator } from '@react-navigation/stack';
+import { SafeAreaView, StatusBar } from 'react-native';
+import LoginScreen from './src/Screen/LoginScreen';
+import ForgotPasswordScreen from './src/Screen/ForgotPasswordScreen';
+import 'react-native-gesture-handler';
+
 
 import Configuracio from './src/Screen/configuracio';
 import Identificacio from './src/Screen/identificacio';
@@ -31,12 +35,17 @@ import Pantalla_Preferits from "./src/Screen/Pantalla_Preferits";
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Identificacio" screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Identificacio" component={Identificacio} />
-        <Stack.Screen name="Configuracio" component={Configuracio} />
-        <Stack.Screen name="Pantalla_TapTopBar" component={Pantalla_TapTopBar} />
-        <Stack.Screen name="Pantalla_Preferits" component={Pantalla_Preferits} />
-      </Stack.Navigator>
+      <SafeAreaView style={{ flex: 1 }}>
+        <StatusBar barStyle="dark-content" />
+        <Stack.Navigator initialRouteName="Identificacio" screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="Identificacio" component={Identificacio} />
+          <Stack.Screen name="Configuracio" component={Configuracio} />
+          <Stack.Screen name="Pantalla_TapTopBar" component={Pantalla_TapTopBar} />
+          <Stack.Screen name="Pantalla_Preferits" component={Pantalla_Preferits} />
+          <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
+        </Stack.Navigator>
+      </SafeAreaView>
     </NavigationContainer>
   );
 }

@@ -12,25 +12,34 @@ export default StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    backgroundColor: "#CBD5E1", // mateix color que caixa central
+    backgroundColor: "#CBD5E1",
     width: "95%",
     paddingHorizontal: 20,
     paddingVertical: 8,
-    borderRadius: 12,
-    alignSelf: "center",
-    marginTop: 20,
+    borderBottomLeftRadius: 15,
+    borderBottomRightRadius: 15,
+    marginTop: 25,
+    borderTopLeftRadius: 15,
+    borderTopRightRadius: 15,
+    marginTop: 45,
+
   },
 
+   // 🔴 ESTILO POR DEFECTO: BOTÓN ROJO DE RETROCESO
   redButton: {
-    backgroundColor: "#B3261E",
-    borderRadius: 8,
-    paddingHorizontal: 8,
-    paddingVertical: 6,
+    backgroundColor: "#B3261E", // rojo
+    borderRadius: 10,
+    padding: 10,
+    color: "#ffffffff"
+  },
+
+  // ⚙️ ESTILO ADICIONAL PARA EL MODO AJUSTES
+  settingsButton: {
+    backgroundColor: "#CBD5E1", // gris claro
   },
 
   botonMarca: {
-    backgroundColor: "transparent",
-    justifyContent: "center",
+    flex: 1,
     alignItems: "center",
   },
 
@@ -147,17 +156,67 @@ export default StyleSheet.create({
   },
 
   /* ─── BARRA INFERIOR (TABTOPBAR) ──────────────── */
+  tabTopBarTitle: {
+    color: "#B3261E",
+    fontSize: 20,
+    fontWeight: "bold",
+  },
+
+  botonUsuario: {
+    backgroundColor: "transparent",
+    padding: 8,
+  },
+
+  // ⚙️ SWITCH MAPA / LLISTA
+  switchContainer: {
+    flexDirection: "row",
+    backgroundColor: "#CBD5E1",
+    borderRadius: 20,
+    marginVertical: 20,
+    overflow: "hidden",
+    marginHorizontal: 10,
+  },
+
+  switchButton: {
+    flex: 1,
+    alignItems: "center",
+    paddingVertical: 8,
+  },
+
+  switchButtonActivo: {
+    backgroundColor: "#B3261E",
+    borderRadius: 20,
+  
+  },
+
+  switchText: {
+    color: "#000",
+    fontWeight: "600",
+  },
+
+  switchTextActivo: {
+    color: "#FFF",
+  },
+
+  // 📍 CONTENIDO
+  mainContent: {
+    flex: 1,
+    width: "100%",
+    justifyContent: "center",
+    alignItems: "top",
+  },
+
+  // 🔻 TABBAR
   tabBar: {
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
-    height: 70,
-    backgroundColor: "#fff",
-    position: "absolute",
-    bottom: 0,
-    width: "100%",
-    borderTopWidth: 1,
-    borderTopColor: "#ccc",
+    backgroundColor: "#CBD5E1",
+    width: "90%",
+    alignSelf: "center",
+    marginBottom: 50,
+    paddingVertical: 10,
+    borderRadius: 25,
   },
 
   tabButton: {

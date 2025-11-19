@@ -14,7 +14,9 @@ export default function Pantalla_TapTopBar() {
 
    // 💡 CONSTANTE RETROCESO
   // Cambia esto a "true" cuando quieras mostrar el modo AJUSTES
-  const isSettingsMode = false; // ← Cambia a true para activar el engranaje
+  const isSettingsMode = true; // ← Cambia a true para activar el engranaje
+  console.log("🧭 isSettingsMode és:", isSettingsMode);
+
 
   // 🔄 FUNCIONALIDAD DINÁMICA DEL BOTÓN
   const handleButtonPress = () => {

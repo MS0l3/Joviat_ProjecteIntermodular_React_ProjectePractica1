@@ -26,6 +26,7 @@ import Pantalla_Formulario_Registro from "./src/Screen/Pantalla_Formulario_Regis
 import Pantalla_TapTopBar from "./src/Screen/Pantalla_TapTopBar";
 import Pantalla_Preferits from "./src/Screen/Pantalla_Preferits";
 import Usuari from './src/Screen/usuari';
+import elsMeusPosts from "./src/Screen/elsMeusPosts";
 
 
 // 🧭 COMPONENTE PRINCIPAL DE NAVEGACIÓN
@@ -38,6 +39,7 @@ export default function App() {
           <Stack.Screen name="Identificacio" component={Identificacio} />
           <Stack.Screen name="Configuracio" component={Configuracio} />
           <Stack.Screen name="Pantalla_TapTopBar" component={Pantalla_TapTopBar} />
+          <Stack.Screen name="elsMeusPosts" component={elsMeusPosts} />
           <Stack.Screen name="Pantalla_Preferits" component={Pantalla_Preferits} />
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />

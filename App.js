@@ -1,35 +1,31 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { SafeAreaView, StatusBar } from 'react-native';
 import LoginScreen from './src/Screen/LoginScreen';
 import ForgotPasswordScreen from './src/Screen/ForgotPasswordScreen';
 import 'react-native-gesture-handler';
-
-
-import Configuracio from './src/Screen/configuracio';
-import Identificacio from './src/Screen/identificacio';
-import Pantalla_Formulario_Registro from "./src/Screen/Pantalla_Formulario_Registro";
+import { LogBox } from 'react-native';
 
 
 const Stack = createNativeStackNavigator(); // 👈 això crea la constant Stack
 // App.js
-import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { LogBox } from 'react-native';
 
 // Ignorar warnings específicos (opcional, para debugging)
 LogBox.ignoreLogs([
   'Non-serializable values were found in the navigation state',
 ]);
 
-import Pantalla_TapTopBar from "./src/Screen/Pantalla_TapTopBar";
-
 
 // 📦 IMPORTA AQUÍ TODAS TUS PANTALLAS
 import Pantalla_TapTopBar from "./src/Screen/Pantalla_TapTopBar";
+import Configuracio from './src/Screen/configuracio';
+import Identificacio from './src/Screen/identificacio';
+import Pantalla_Formulario_Registro from "./src/Screen/Pantalla_Formulario_Registro";
+import Pantalla_TapTopBar from "./src/Screen/Pantalla_TapTopBar";
 import Pantalla_Preferits from "./src/Screen/Pantalla_Preferits";
+import Usuari from './src/Screen/usuari';
 
 
 // 🧭 COMPONENTE PRINCIPAL DE NAVEGACIÓN
@@ -46,6 +42,7 @@ export default function App() {
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
           <Stack.Screen name="Pantalla_Formulario_Registro" component={Pantalla_Formulario_Registro} />
+          <Stack.Screen name="Usuari" component={Usuari} />
         </Stack.Navigator>
       </SafeAreaView>
     </NavigationContainer>

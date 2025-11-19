@@ -5,7 +5,8 @@ import React, { useState } from "react";
 import { View, Text, TouchableOpacity, SafeAreaView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons"; // Para los iconos (ojo, engranaje, usuario, etc.)
-import styles from "../Styles/Style_TapTopBar.js"; // Estilos separados en su archivo propio
+import styles from "../Styles/Style_TapTopBar.js";
+import MapComponent from "./MapComponent"; // Estilos separados en su archivo propio
 // -------------------------------------------------------------
 
 export default function Pantalla_TapTopBar() {
@@ -13,13 +14,13 @@ export default function Pantalla_TapTopBar() {
 
    // 💡 CONSTANTE RETROCESO
   // Cambia esto a "true" cuando quieras mostrar el modo AJUSTES
-  const isSettingsMode = true; // ← Cambia a true para activar el engranaje o a "false" para activar el modo go.back
+  const isSettingsMode = false; // ← Cambia a true para activar el engranaje
 
   // 🔄 FUNCIONALIDAD DINÁMICA DEL BOTÓN
   const handleButtonPress = () => {
     if (isSettingsMode) {
       // Si está en modo ajustes, te lleva a la pantalla de ajustes
-      navigation.navigate("configuracio"); // 👈 cambia aquí el nombre
+      navigation.navigate("Pantalla_Ajustes"); // 👈 cambia aquí el nombre
     } else {
       // Si está en modo retroceso, simplemente vuelve atrás
       navigation.goBack();
@@ -125,9 +126,7 @@ export default function Pantalla_TapTopBar() {
          Este espacio cambia entre pantallas.
       ------------------------------------------------------------- */}
       <View style={styles.mainContent}>
-        <Text style={{ textAlign: "center", color: "#000" }}>
-          Contenido de la pantalla aquí
-        </Text>
+      <MapComponent />
       </View>
 
       {/* -------------------------------------------------------------

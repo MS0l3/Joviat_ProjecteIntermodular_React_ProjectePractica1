@@ -8,7 +8,7 @@
 // ============================================================================
 
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, TextInput } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
@@ -71,15 +71,25 @@ export default function Pantalla_TapTopBar() {
           />
         </TouchableOpacity>
 
-        {/* Buscador Ciudades */}
+        {/* 🔍 Buscador de ciudades */}
         <View style={styles.searchContainer}>
+          <Ionicons name="search" size={18} color="#555" style={{ marginRight: 6 }} />
+
           <TextInput
             style={styles.searchInput}
-            placeholder="Buscar Ciudad..."
-            placeholderTextColor="#555"
+            placeholder="Buscar ciudad..."
+            placeholderTextColor="#777"
             value={searchText}
-            onChangeText={(text) => setSearchText(text)}
+            onChangeText={setSearchText}
+            autoCorrect={false}
+            autoCapitalize="none"
           />
+
+          {searchText.length > 0 && (
+            <TouchableOpacity onPress={() => setSearchText("")}>
+              <Ionicons name="close-circle" size={18} color="#777" />
+            </TouchableOpacity>
+          )}
         </View>
 
         {/* Botón Usuario */}

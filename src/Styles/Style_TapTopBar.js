@@ -63,10 +63,25 @@ export default StyleSheet.create({
   },
 
   // 🔸 Barra de busqueda por cuidades (centro)
+  // 🔍 Buscador en la cabecera
   searchContainer: {
-  flex: 1,
-  marginHorizontal: 10,
-},
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#FFF",
+    borderRadius: 10,
+    paddingHorizontal: 10,
+    marginHorizontal: 10,
+    height: 45,
+    borderWidth: 1,
+    borderColor: "#DDD",
+  },
+
+  searchInput: {
+    flex: 1,
+    fontSize: 16,
+    color: "#000",
+  },
 
   textoMarca: {
     color: "#B3261E",
@@ -214,9 +229,20 @@ searchInput: {
     backgroundColor: "#FFF",
     elevation: 3, // sombra ligera en Android
   },
-
-
+  textoPeligro:{
+    marginLeft: 10,
+    fontSize: 10,
+    marginBottom: 2,
+  },
   
+  textoNombre:{
+    marginLeft: 10,
+    fontSize: 14,
+  },
+  Marker:{
+    width: 15,
+    height: 15
+  },
   // ==========================================================================
   // 🔻 TABBAR INFERIOR (3 botones)
   // ==========================================================================

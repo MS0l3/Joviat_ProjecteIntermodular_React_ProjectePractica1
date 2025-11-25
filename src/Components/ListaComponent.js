@@ -1,19 +1,14 @@
 // ============================================================================
-// ✅ ListaComponent.js
-// Componente reutilizable que muestra una cuadrícula de ubicaciones
-// con sus celdas de mapa, nombres y niveles de peligrosidad.
-// ----------------------------------------------------------------------------
-// Este componente puede importarse en cualquier pantalla, incluyendo TapTopBar.
+// ✅ ListaComponent.js — Arreglado y funcional
 // ============================================================================
 
 import React from "react";
 import { View, ScrollView, TouchableOpacity } from "react-native";
-import styles from "../Styles/Style_TapTopBar"; // Estilos globales
-import CeldaMapa from "./CeldaMapa"; // Componente de cada celda individual
-import DetalleScreen from "../Screen/DetalleScreen" // Detalle peligros
+import styles from "../Styles/Style_TapTopBar";
+import CeldaMapa from "./CeldaMapa";
 
 // ============================================================================
-// 📍 DATOS TEMPORALES DE EJEMPLO (puedes sustituir por tus datos reales)
+// 📍 Datos temporales
 // ============================================================================
 const ubicacionesDemo = [
   { id: 1, tipoCrimen: 1, peligrosidad: 2, ubicacion: "Barcelona", coordenadas: { latitude: 41.3851, longitude: 2.1734 } },
@@ -24,30 +19,29 @@ const ubicacionesDemo = [
   { id: 6, tipoCrimen: 2, peligrosidad: 3, ubicacion: "Zaragoza", coordenadas: { latitude: 41.6488, longitude: -0.8891 } },
   { id: 7, tipoCrimen: 1, peligrosidad: 2, ubicacion: "Granada", coordenadas: { latitude: 37.1773, longitude: -3.5986 } },
   { id: 8, tipoCrimen: 3, peligrosidad: 4, ubicacion: "Málaga", coordenadas: { latitude: 36.7213, longitude: -4.4214 } },
-  { id: 9, tipoCrimen: 2, peligrosidad: 1, ubicacion: "Málaga", coordenadas: { latitude: 40.8456, longitude: -5.2523 } },
+  { id: 9, tipoCrimen: 2, peligrosidad: 1, ubicacion: "Salamanca", coordenadas: { latitude: 40.8456, longitude: -5.2523 } },
   { id: 10, tipoCrimen: 2, peligrosidad: 3, ubicacion: "Zaragoza", coordenadas: { latitude: 41.6488, longitude: -0.8891 } },
   { id: 11, tipoCrimen: 1, peligrosidad: 2, ubicacion: "Granada", coordenadas: { latitude: 37.1773, longitude: -3.5986 } },
   { id: 12, tipoCrimen: 3, peligrosidad: 4, ubicacion: "Málaga", coordenadas: { latitude: 36.7213, longitude: -4.4214 } },
-  { id: 13, tipoCrimen: 2, peligrosidad: 1, ubicacion: "Málaga", coordenadas: { latitude: 40.8456, longitude: -5.2523 } },
-  
+  { id: 13, tipoCrimen: 2, peligrosidad: 1, ubicacion: "Ávila", coordenadas: { latitude: 40.6565, longitude: -4.6818 } },
 ];
 
 // ============================================================================
-// 🔎 COMPONENTE FILTRADO POR UBICACIÓN - Fltrado de ciudades
+// 🧠 Componente principal — AHORA CON FILTRO FUNCIONAL
 // ============================================================================
+export default function ListaComponent({ 
+  data = ubicacionesDemo, 
+  filtro = "", 
+  onItemPress 
+}) {
 
-const datosFiltrados = datos.filter((item) =>
-  item.ubicacion.toLowerCase().includes(filtro.toLowerCase())
-);
+  // 🔎 Filtro aplicado correctamente
+  const dataFiltrada = data.filter((item) =>
+    item.ubicacion.toLowerCase().includes(filtro.toLowerCase())
+  );
 
-
-// ============================================================================
-// 🧠 COMPONENTE PRINCIPAL — Lista de ubicaciones
-// ============================================================================
-export default function ListaComponent({ data = ubicacionesDemo, onItemPress }) {
   return (
     <View style={styles.listaContainer}>
-      {/* Scroll vertical para todas las celdas */}
       <ScrollView contentContainerStyle={styles.gridContainer}>
         {dataFiltrada.map((item) => (
           <TouchableOpacity
@@ -63,7 +57,6 @@ export default function ListaComponent({ data = ubicacionesDemo, onItemPress }) 
             }
             activeOpacity={0.85}
           >
-            {/* Cada celda es su propio mapa + info */}
             <CeldaMapa
               tipoCrimen={item.tipoCrimen}
               peligrosidad={item.peligrosidad}

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -11,16 +11,20 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
-import styles from "../Styles/Style_TapTopBar"; // reutilitzem els estils base
-
+import * as NavigationBar from "expo-navigation-bar";
+import { StatusBar } from "expo-status-bar";
+import styles from "../Styles/Style_TapTopBar"; // NO TOCAR
 
 export default function AfegirPerills() {
   const navigation = useNavigation();
+
+  // Formulari
   const [selectedTags, setSelectedTags] = useState([]);
   const [description, setDescription] = useState("");
   const [images, setImages] = useState([]);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
-  // etiquetes amb nivell
+  // Etiquetes amb perillositat
   const tags = [
     { key: "assetjament", label: "Assetjament", level: 2 },
     { key: "baralles", label: "Baralles", level: 3 },
@@ -29,41 +33,59 @@ export default function AfegirPerills() {
     { key: "desordre", label: "Desordre públic", level: 1 },
   ];
 
+  // Oculta navbar Android
+  useEffect(() => {
+    NavigationBar.setVisibilityAsync("hidden").catch(() => {});
+    NavigationBar.setBehaviorAsync("overlay-swipe").catch(() => {});
+  }, []);
+
   const toggleTag = (key) => {
     setSelectedTags((s) =>
       s.includes(key) ? s.filter((t) => t !== key) : [...s, key]
     );
   };
 
+  // Nivell màxim seleccionat
   const highestLevel = selectedTags.length
     ? Math.max(
-        ...selectedTags.map(
-          (k) => tags.find((t) => t.key === k)?.level ?? 0
-        )
+        ...selectedTags.map((k) => tags.find((t) => t.key === k)?.level ?? 0)
       )
     : 0;
 
+  // Selecció d’imatges
   const pickImages = async () => {
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      quality: 0.8,
-      allowsMultipleSelection: true,
-    });
-    if (!result.canceled) {
-      const newUris = result.assets ? result.assets.map((a) => a.uri) : [result.uri];
-      setImages((prev) => [...prev, ...newUris]);
+    try {
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsMultipleSelection: true,
+        quality: 0.8,
+      });
+
+      if (!result.canceled) {
+        const newUris = result.assets
+          ? result.assets.map((a) => a.uri)
+          : [result.uri];
+
+        setImages((prev) => [...prev, ...newUris]);
+      }
+    } catch (e) {
+      console.log("Image pick error:", e);
     }
   };
 
-  const removeImage = (idx) => {
+  const removeImage = (idx) =>
     setImages((prev) => prev.filter((_, i) => i !== idx));
-  };
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* TOP BAR (reutilitza l'estil) */}
+      <StatusBar hidden />
+
+      {/* 🔺 TOP BAR ORIGINAL */}
       <View style={styles.headerContainer}>
-        <TouchableOpacity style={styles.redButton} onPress={() => navigation.goBack()}>
+        <TouchableOpacity
+          style={styles.redButton}
+          onPress={() => navigation.goBack()}
+        >
           <Ionicons name="arrow-back-outline" size={22} color="#fff" />
         </TouchableOpacity>
 
@@ -71,111 +93,212 @@ export default function AfegirPerills() {
           <Text style={styles.textoMarca}>DangerZone</Text>
         </View>
 
-        <TouchableOpacity style={styles.botonUsuario} onPress={() => navigation.navigate("Pantalla_Usuario")}>
-          <Ionicons name="person-circle-outline" size={26} color="#000" />
+        <TouchableOpacity
+          style={styles.botonUsuario}
+          onPress={() => navigation.navigate("Pantalla_Usuario")}
+        >
+          <Ionicons name="person-circle-outline" size={28} color="#000" />
         </TouchableOpacity>
       </View>
 
-      {/* títol petit */}
-      <Text style={{ textAlign: "center", color: "#000", fontSize: 20, fontWeight: "700", marginVertical: 8 }}>
+      {/* TÍTOL */}
+      <Text
+        style={{
+          textAlign: "center",
+          color: "#000",
+          fontSize: 20,
+          fontWeight: "700",
+          marginVertical: 8,
+        }}
+      >
         Afegir perill
       </Text>
 
-      {/* CONTINGUT: caixa central amb fons igual al header */}
+      {/* 🔳 CAIXA CENTRAL */}
       <View style={styles.mainContent}>
         <ScrollView
           contentContainerStyle={{
             width: "92%",
             borderRadius: 12,
             padding: 12,
-            backgroundColor: "#CBD5E1", // mateix color que headerContainer (Style_TapTopBar)
+            backgroundColor: "#CBD5E1", // igual al TapTopBar
+            alignSelf: "center",
           }}
           showsVerticalScrollIndicator={false}
         >
-          {/* fila superior: botó afegir imatges (esquerra) + carrusel (dreta) */}
-          <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 10 }}>
+          {/* TITOL + BOTÓ FOTO A LA DRETA */}
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginBottom: 10,
+            }}
+          >
+            <Text style={{ fontWeight: "700", color: "#000" }}>
+              Tipus de perill
+            </Text>
+
             <TouchableOpacity
               style={{
                 backgroundColor: "#B3261E",
                 paddingHorizontal: 12,
                 paddingVertical: 8,
                 borderRadius: 20,
-                marginRight: 10,
               }}
               onPress={pickImages}
             >
-              <Ionicons name="camera" size={18} color="#fff" />
+              <Ionicons name="camera" size={20} color="#fff" />
             </TouchableOpacity>
+          </View>
 
-            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ flex: 1 }}>
-              {images.length === 0 ? (
-                <View style={{ paddingVertical: 6 }}>
-                  <Text style={{ color: "#333" }}>No hi ha imatges</Text>
-                </View>
-              ) : (
-                images.map((uri, i) => (
-                  <View key={i} style={{ marginRight: 8 }}>
-                    <Image source={{ uri }} style={{ width: 72, height: 72, borderRadius: 8 }} />
-                    <TouchableOpacity
-                      onPress={() => removeImage(i)}
+          {/* DESPLEGABLE TIPUS PERILL */}
+          <TouchableOpacity
+            onPress={() => setDropdownOpen(!dropdownOpen)}
+            activeOpacity={0.9}
+            style={{
+              backgroundColor: "#fff",
+              borderRadius: 8,
+              borderWidth: 1,
+              borderColor: "#ccc",
+              padding: 10,
+              flexDirection: "row",
+              flexWrap: "wrap",
+              minHeight: 50,
+            }}
+          >
+            {selectedTags.length === 0 ? (
+              <Text style={{ color: "#666" }}>
+                Selecciona tipus de perill...
+              </Text>
+            ) : (
+              selectedTags.map((k) => {
+                const tag = tags.find((t) => t.key === k);
+                return (
+                  <View
+                    key={k}
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      backgroundColor: "#FEE2E2",
+                      borderColor: "#B3261E",
+                      borderWidth: 1,
+                      borderRadius: 20,
+                      paddingHorizontal: 10,
+                      paddingVertical: 4,
+                      marginRight: 6,
+                      marginBottom: 6,
+                    }}
+                  >
+                    <Text
                       style={{
-                        position: "absolute",
-                        top: -6,
-                        right: -6,
-                        backgroundColor: "#000000AA",
-                        borderRadius: 10,
-                        padding: 2,
+                        color: "#B3261E",
+                        fontWeight: "600",
+                        marginRight: 8,
                       }}
                     >
-                      <Text style={{ color: "#fff", fontSize: 12 }}>x</Text>
+                      {tag?.label}
+                    </Text>
+
+                    <TouchableOpacity
+                      onPress={() => toggleTag(k)}
+                      style={{
+                        width: 22,
+                        height: 22,
+                        borderRadius: 50,
+                        backgroundColor: "#B3261E",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Ionicons name="checkmark" size={14} color="#fff" />
                     </TouchableOpacity>
                   </View>
-                ))
-              )}
-            </ScrollView>
-          </View>
+                );
+              })
+            )}
 
-          {/* SELECTOR MULTI: etiquetes com pills */}
-          <Text style={{ fontWeight: "700", color: "#000", marginBottom: 8 }}>Tipus de perill</Text>
-          <View style={{ flexDirection: "row", flexWrap: "wrap", marginBottom: 10 }}>
-            {tags.map((t) => {
-              const active = selectedTags.includes(t.key);
-              return (
-                <TouchableOpacity
-                  key={t.key}
-                  onPress={() => toggleTag(t.key)}
-                  style={{
-                    backgroundColor: active ? "#B3261E" : "#fff",
-                    borderColor: active ? "#7a0f0f" : "#ddd",
-                    borderWidth: 1,
-                    paddingHorizontal: 12,
-                    paddingVertical: 8,
-                    borderRadius: 20,
-                    marginRight: 8,
-                    marginBottom: 8,
-                  }}
-                >
-                  <Text style={{ color: active ? "#fff" : "#000", fontWeight: "600" }}>{t.label}</Text>
-                </TouchableOpacity>
-              );
-            })}
-          </View>
+            <Ionicons
+              name={dropdownOpen ? "chevron-up" : "chevron-down"}
+              size={18}
+              color="#000"
+              style={{ marginLeft: "auto" }}
+            />
+          </TouchableOpacity>
 
-          {/* TRIANGLES segons nivell maxim */}
-          <View style={{ alignItems: "center", marginVertical: 6 }}>
+          {/* LLISTA DESPLEGABLE */}
+          {dropdownOpen && (
+            <View
+              style={{
+                backgroundColor: "#fff",
+                borderRadius: 8,
+                borderWidth: 1,
+                borderColor: "#ccc",
+                marginTop: 6,
+                paddingVertical: 6,
+              }}
+            >
+              {tags.map((t) => {
+                const active = selectedTags.includes(t.key);
+                return (
+                  <TouchableOpacity
+                    key={t.key}
+                    onPress={() => toggleTag(t.key)}
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      paddingVertical: 8,
+                      paddingHorizontal: 10,
+                      backgroundColor: active ? "#FEE2E2" : "#fff",
+                    }}
+                  >
+                    <View
+                      style={{
+                        width: 22,
+                        height: 22,
+                        borderRadius: 50,
+                        borderWidth: 2,
+                        borderColor: active ? "#B3261E" : "#999",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        marginRight: 10,
+                        backgroundColor: active ? "#B3261E" : "transparent",
+                      }}
+                    >
+                      {active && (
+                        <Ionicons name="checkmark" size={14} color="#fff" />
+                      )}
+                    </View>
+
+                    <Text style={{ color: "#000" }}>{t.label}</Text>
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
+          )}
+
+          {/* TRIANGLES */}
+          <View style={{ alignItems: "center", marginVertical: 12 }}>
             {highestLevel === 0 ? (
               <Text style={{ color: "#333" }}>Cap perill seleccionat</Text>
             ) : (
               <View style={{ flexDirection: "row" }}>
                 {Array.from({ length: highestLevel }).map((_, i) => (
-                  <Text key={i} style={{ color: "#B3261E", fontSize: 20, marginHorizontal: 3 }}>▲</Text>
+                  <Text
+                    key={i}
+                    style={{ color: "#B3261E", fontSize: 22, marginHorizontal: 3 }}
+                  >
+                    ▲
+                  </Text>
                 ))}
               </View>
             )}
           </View>
 
           {/* DESCRIPCIÓ */}
-          <Text style={{ fontWeight: "700", color: "#000", marginTop: 8 }}>Descripció</Text>
+          <Text style={{ fontWeight: "700", color: "#000", marginTop: 8 }}>
+            Descripció
+          </Text>
           <TextInput
             value={description}
             onChangeText={setDescription}
@@ -192,8 +315,63 @@ export default function AfegirPerills() {
             }}
           />
 
+          {/* IMATGES SOTA DESCRIPCIÓ */}
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            style={{ marginTop: 12, marginBottom: 10 }}
+          >
+            {images.length === 0 ? (
+              <View
+                style={{
+                  width: "100%",
+                  height: 120,
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Text style={{ color: "#333" }}>No hi ha imatge</Text>
+              </View>
+            ) : (
+              images.map((uri, i) => (
+                <View key={i} style={{ marginRight: 12 }}>
+                  <Image
+                    source={{ uri }}
+                    style={{
+                      width: 120,
+                      height: 120,
+                      borderRadius: 12,
+                    }}
+                  />
+                  <TouchableOpacity
+                    onPress={() => removeImage(i)}
+                    style={{
+                      position: "absolute",
+                      top: -6,
+                      right: -6,
+                      backgroundColor: "#0009",
+                      borderRadius: 12,
+                      padding: 3,
+                    }}
+                  >
+                    <Text style={{ color: "#fff", fontSize: 12 }}>x</Text>
+                  </TouchableOpacity>
+                </View>
+              ))
+            )}
+          </ScrollView>
+
           {/* MAPA (placeholder) */}
-          <View style={{ height: 140, backgroundColor: "#EFEFEF", borderRadius: 10, justifyContent: "center", alignItems: "center", marginVertical: 12 }}>
+          <View
+            style={{
+              height: 150,
+              backgroundColor: "#EFEFEF",
+              borderRadius: 10,
+              justifyContent: "center",
+              alignItems: "center",
+              marginVertical: 12,
+            }}
+          >
             <Text style={{ color: "#666" }}>Mapa de la ubicació (placeholder)</Text>
           </View>
 
@@ -204,32 +382,39 @@ export default function AfegirPerills() {
               paddingVertical: 12,
               borderRadius: 10,
               alignItems: "center",
+              marginBottom: 10,
             }}
             onPress={() => {
-              // placeholder: aquí guardaràs el post
-              console.log("Afegir: ", { selectedTags, description, images });
-              // feedback senzill
+              console.log("Afegit:", { selectedTags, description, images });
               alert("Perill afegit (simulat)");
             }}
           >
-            <Text style={{ color: "#fff", fontWeight: "700", fontSize: 16 }}>Afegir perill</Text>
+            <Text style={{ color: "#fff", fontWeight: "700", fontSize: 16 }}>
+              Afegir perill
+            </Text>
           </TouchableOpacity>
         </ScrollView>
       </View>
 
-      {/* TABBAR (reutilitza estils) */}
+      {/* MENÚ INFERIOR */}
       <View style={styles.tabBar}>
-        <TouchableOpacity style={styles.tabButton} onPress={() => { navigation.navigate("Pantalla_Explorar"); }}>
+        <TouchableOpacity
+          style={styles.tabButton}
+          onPress={() => navigation.navigate("Pantalla_Explorar")}
+        >
           <Ionicons name="location-outline" size={20} color="#000" />
           <Text style={styles.tabText}>Explorar</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.tabButton} onPress={() => { navigation.navigate("Pantalla_Preferits"); }}>
+        <TouchableOpacity
+          style={styles.tabButton}
+          onPress={() => navigation.navigate("Pantalla_Preferits")}
+        >
           <Ionicons name="bookmark-outline" size={20} color="#000" />
           <Text style={styles.tabText}>Preferits</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.tabButton} onPress={() => { /* ja estem a Afegir */ }}>
+        <TouchableOpacity style={styles.tabButton}>
           <Ionicons name="add-circle-outline" size={26} color="#B3261E" />
           <Text style={styles.tabText}>Afegir Alertes</Text>
         </TouchableOpacity>

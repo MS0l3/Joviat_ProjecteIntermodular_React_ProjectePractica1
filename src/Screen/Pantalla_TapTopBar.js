@@ -2,7 +2,7 @@
 // -------------------------------------------------------------
 // Estos imports son necesarios para el funcionamiento general de la pantalla
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, SafeAreaView } from "react-native";
+import { View, Text, TouchableOpacity, TextInput} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons"; // Para los iconos (ojo, engranaje, usuario, etc.)
 import styles from "../Styles/Style_TapTopBar.js";
@@ -17,17 +17,11 @@ import MapComponent from "./MapComponent"; // Estilos separados en su archivo pr
 // 4️⃣ TabBar inferior
 // ============================================================================
 
-import React, { useState } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Ionicons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
 
 // 📦 Importa la pantalla que irá dentro
-import ListaScreen from "../Components/ListaComponent.js"; // 👈 Ajusta si la ruta difiere
+//import ListaScreen from "../Components/ListaComponent.js"; // 👈 Ajusta si la ruta difiere
 
-// 🎨 Estilos
-import styles from "../Styles/Style_TapTopBar.js";
 
 // ============================================================================
 // 🧭 COMPONENTE PRINCIPAL
@@ -63,21 +57,12 @@ export default function Pantalla_TapTopBar() {
   // 🔄 Estado del switch superior (Mapa o Llista)
   const [switchSeleccion, setSwitchSeleccion] = useState("Llista");
 
-  // 💡 Estado para el botón rojo (modo ajustes o volver)
-  const isSettingsMode = true;
 
 // ========================================================================
 // 🎛️ FUNCIONES DE NAVEGACIÓN
 // ========================================================================
-  const handleButtonPress = () => {
-    if (isSettingsMode) navigation.navigate("Pantalla_Ajustes");
-    else navigation.goBack();
-  };
 
   const [searchText, setSearchText] = useState("");
-
-  const pantallaMarca = "Pantalla_Principal";
-  const pantallaUsuario = "Pantalla_Usuario";
 
   // ========================================================================
   // 🧱 INTERFAZ
@@ -166,17 +151,17 @@ export default function Pantalla_TapTopBar() {
         📍 CONTENIDO PRINCIPAL (Lista o Mapa)
       ====================================================== */}
       <View style={styles.mainContent}>
-      <MapComponent />
-        <Text style={{ textAlign: "center", color: "#000" }}>
-          Contenido de la pantalla aquí
-        </Text>
-        {switchSeleccion === "Mapa" ? (
-          <Text style={{ color: "#000", marginTop: 20 }}>
-            Aquí iría el mapa 🗺️
+        <MapComponent />
+          <Text style={{ textAlign: "center", color: "#000" }}>
+            Contenido de la pantalla aquí
           </Text>
-        ) : (
-          <ListaScreen filtro={searchText} /> // ✅ Aquí se renderiza tu lista completa
-        )}
+          {switchSeleccion === "Mapa" ? (
+            <Text style={{ color: "#000", marginTop: 20 }}>
+              Aquí iría el mapa 🗺️
+            </Text>
+          ) : (
+            <ListaScreen filtro={searchText} /> // ✅ Aquí se renderiza tu lista completa
+          )}
       </View>
       {/* ======================================================
         🔻 TABBAR INFERIOR (Explorar | Preferits | Afegir)

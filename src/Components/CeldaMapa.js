@@ -9,6 +9,7 @@ import MapView, { Marker } from "react-native-maps";
 import { useNavigation } from "@react-navigation/native";
 import styles from "../Styles/Style_TapTopBar";
 import Style_TapTopBar from "../Styles/Style_TapTopBar";
+import { Ionicons } from '@expo/vector-icons';
 
 export default function CeldaMapa({
   ubicacion = "Ubicación desconocida",
@@ -42,7 +43,21 @@ export default function CeldaMapa({
   // --------------------------------------------------------------------------
   // 🔹 Función auxiliar para renderizar peligrosidad
   // --------------------------------------------------------------------------
-  const renderPeligrosidad = (nivel) => "⚠️️️️️️️️".repeat(Math.min(nivel, 5));
+  const renderPeligrosidad = (nivel) => {
+    const triangulos = [];
+    for (let i = 0; i < 5; i++) {
+      triangulos.push(
+        <Ionicons
+          key={i}
+          name="warning"
+          size={16}
+          color={i < nivel ? "#B3261E" : "#CBD5E1"}
+          style={styles.triangulo}
+        />
+      );
+    }
+    return triangulos;
+  };
 
   // --------------------------------------------------------------------------
   // 🔹 Al pulsar una celda → ir a DetalleScreen con todos los datos

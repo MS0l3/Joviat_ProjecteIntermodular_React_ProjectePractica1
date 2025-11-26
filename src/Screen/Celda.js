@@ -23,7 +23,19 @@ const Celda = ({
   const [modalVisible, setModalVisible] = useState(false);
 
   const renderPeligrosidad = (nivel) => {
-    return '⚠️️️️️️️️'.repeat(nivel);
+    const triangulos = [];
+        for (let i = 0; i < 5; i++) {
+          triangulos.push(
+            <Ionicons
+              key={i}
+              name="warning"
+              size={16}
+              color={i < nivel ? "#B3261E" : "#CBD5E1"}
+              style={styles.triangulo}
+            />
+          );
+        }
+        return triangulos;
   };
 
   const handleImageLoadStart = () => {

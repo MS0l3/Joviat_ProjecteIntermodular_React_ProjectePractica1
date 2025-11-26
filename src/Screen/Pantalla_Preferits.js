@@ -16,17 +16,17 @@ export default function Pantalla_Preferits() {
   // 🔄 FUNCIONALIDAD DINÁMICA DEL BOTÓN
   const handleButtonPress = () => {
     if (isSettingsMode) {
-      navigation.navigate("Pantalla_Ajustes");
+      navigation.navigate("Configuracio");
     } else {
       navigation.goBack();
     }
   };
 
   // 🔹 NOMBRE DE LA PANTALLA A LA QUE LLEVA EL BOTÓN DE LA MARCA:
-  const pantallaMarca = "Pantalla_Principal";
+  const pantallaMarca = "Pantalla_TapTopBar";
 
   // 🔹 NOMBRE DE LA PANTALLA DEL USUARIO:
-  const pantallaUsuario = "Pantalla_Usuario";
+  const pantallaUsuario = "Usuari";
 
   // 🔹 ESTADO DE LA TABBAR: selecciona cuál está activo
   const [selectedTab, setSelectedTab] = useState("Preferits");
@@ -182,7 +182,7 @@ export default function Pantalla_Preferits() {
           ]}
           onPress={() => {
             setSelectedTab("Explorar");
-            navigation.navigate("Pantalla_Explorar");
+            navigation.navigate("Pantalla_TapTopBar");
           }}
         >
           <Ionicons
@@ -229,7 +229,7 @@ export default function Pantalla_Preferits() {
           ]}
           onPress={() => {
             setSelectedTab("AfegirAlertes");
-            navigation.navigate("Pantalla_AfegirAlertes");
+            navigation.navigate("AfegirPerills");
           }}
         >
           <Ionicons

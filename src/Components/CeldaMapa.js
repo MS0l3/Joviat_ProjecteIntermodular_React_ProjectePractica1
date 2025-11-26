@@ -8,6 +8,7 @@ import { View, Text, TouchableOpacity } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import { useNavigation } from "@react-navigation/native";
 import styles from "../Styles/Style_TapTopBar";
+import Style_TapTopBar from "../Styles/Style_TapTopBar";
 
 export default function CeldaMapa({
   ubicacion = "Ubicación desconocida",
@@ -41,7 +42,7 @@ export default function CeldaMapa({
   // --------------------------------------------------------------------------
   // 🔹 Función auxiliar para renderizar peligrosidad
   // --------------------------------------------------------------------------
-  const renderPeligrosidad = (nivel) => "▲".repeat(Math.min(nivel, 5));
+  const renderPeligrosidad = (nivel) => "⚠️️️️️️️️".repeat(Math.min(nivel, 5));
 
   // --------------------------------------------------------------------------
   // 🔹 Al pulsar una celda → ir a DetalleScreen con todos los datos
@@ -67,7 +68,7 @@ export default function CeldaMapa({
         zoomEnabled={interactivo}
         pitchEnabled={false}
         rotateEnabled={false}
-        pointerEvents={interactivo ? "auto" : "none"} // evita interacción si no toca
+        pointerEvents={false} // evita interacción si no toca
         initialRegion={{
           latitude: safeCoords.latitude,
           longitude: safeCoords.longitude,
@@ -75,7 +76,7 @@ export default function CeldaMapa({
           longitudeDelta: 0.02,
         }}
       >
-        <Marker coordinate={safeCoords} title={crimenes[tipoCrimen]} />
+        <Marker style={Style_TapTopBar.Marker}coordinate={safeCoords} title={crimenes[tipoCrimen]} />
       </MapView>
 
       {/* 📋 Nombre del crimen */}

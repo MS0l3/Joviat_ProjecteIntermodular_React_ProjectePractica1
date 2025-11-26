@@ -44,121 +44,93 @@ export default StyleSheet.create({
 
   },
 
-  // 🔴 Botón rojo por defecto (retroceso)
+   // 🔴 ESTILO POR DEFECTO: BOTÓN ROJO DE RETROCESO
   redButton: {
-    backgroundColor: "#B3261E",
+    backgroundColor: "#B3261E", // rojo
     borderRadius: 10,
     padding: 10,
     color: "#ffffffff"
   },
 
-  // ⚙️ Modo ajustes (botón gris)
+  // ⚙️ ESTILO ADICIONAL PARA EL MODO AJUSTES
   settingsButton: {
-    backgroundColor: "#CBD5E1",
+    backgroundColor: "#CBD5E1", // gris claro
+  },
+
+  botonMarca: {
+    flex: 1,
+    alignItems: "center",
   },
 
   // 🔸 Barra de busqueda por cuidades (centro)
+  // 🔍 Buscador en la cabecera
   searchContainer: {
-  flex: 1,
-  marginHorizontal: 10,
-},
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#FFF",
+    borderRadius: 10,
+    paddingHorizontal: 10,
+    marginHorizontal: 10,
+    height: 45,
+    borderWidth: 1,
+    borderColor: "#DDD",
+  },
+
+  searchInput: {
+    flex: 1,
+    fontSize: 16,
+    color: "#000",
+  },
 
   textoMarca: {
-    fontSize: 22,
+    color: "#B3261E",
+    fontSize: 20,
     fontWeight: "bold",
-    color: "#000",
   },
 
   botonUsuario: {
-    padding: 4,
-    justifyContent: "center",
-    alignItems: "center",
+    backgroundColor: "transparent",
+    padding: 8,
   },
 
-  /* ─── CONTINGUT CENTRAL ───────────────────────── */
+  // ⚙️ SWITCH MAPA / LLISTA
+  switchContainer: {
+    flexDirection: "row",
+    backgroundColor: "#CBD5E1",
+    borderRadius: 20,
+    marginVertical: 20,
+    overflow: "hidden",
+    marginHorizontal: 10,
+  },
+
+  switchButton: {
+    flex: 1,
+    alignItems: "center",
+    paddingVertical: 8,
+  },
+
+  switchButtonActivo: {
+    backgroundColor: "#B3261E",
+    borderRadius: 20,
+  
+  },
+
+  switchText: {
+    color: "#000",
+    fontWeight: "600",
+  },
+
+  switchTextActivo: {
+    color: "#FFF",
+  },
+
+  // 📍 CONTENIDO
   mainContent: {
     flex: 1,
-    justifyContent: "flex-start",
-    alignItems: "center",
-    marginTop: 10,
-    marginBottom: 80, // deixa espai per la tabBar
-  },
-
-  /* ─── CAIXA CENTRAL (per AfegirPerills) ───────── */
-  dangerBox: {
-    width: "92%",
-    backgroundColor: "#CBD5E1",
-    borderRadius: 12,
-    padding: 12,
-  },
-
-  addImageButton: {
-    backgroundColor: "#B3261E",
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    borderRadius: 20,
-    marginRight: 10,
-  },
-
-  imageThumbnail: {
-    width: 72,
-    height: 72,
-    borderRadius: 8,
-    marginRight: 8,
-  },
-
-  removeImageButton: {
-    position: "absolute",
-    top: -6,
-    right: -6,
-    backgroundColor: "#000000AA",
-    borderRadius: 10,
-    padding: 2,
-  },
-
-  /* ─── MULTISELECT PILLS ───────────────────────── */
-  tagPill: {
-    borderWidth: 1,
-    borderColor: "#ddd",
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    borderRadius: 20,
-    marginRight: 8,
-    marginBottom: 8,
-  },
-
-  tagPillActive: {
-    backgroundColor: "#B3261E",
-    borderColor: "#7a0f0f",
-  },
-
-  tagText: {
-    fontWeight: "600",
-    color: "#000",
-  },
-
-  tagTextActive: {
-    color: "#fff",
-  },
-
-  /* ─── DESCRIPCIÓ ──────────────────────────────── */
-  descriptionBox: {
-    backgroundColor: "#fff",
-    borderRadius: 10,
-    padding: 10,
-    marginTop: 8,
-    minHeight: 80,
-    textAlignVertical: "top",
-  },
-
-  /* ─── MAP PLACEHOLDER ─────────────────────────── */
-  mapBox: {
-    height: 140,
-    backgroundColor: "#EFEFEF",
-    borderRadius: 10,
+    width: "100%",
     justifyContent: "center",
-    alignItems: "center",
-    marginVertical: 12,
+    alignItems: "top",
   },
 
   /* ─── BOTÓ AFEGIR ─────────────────────────────── */
@@ -188,7 +160,7 @@ searchInput: {
   paddingHorizontal: 12,
   fontSize: 16,
   borderColor: "#B3261E",
-  borderWidth: 1,
+  borderWidth: 0,
 },
 
   // 👤 Botón usuario (derecha)
@@ -257,9 +229,20 @@ searchInput: {
     backgroundColor: "#FFF",
     elevation: 3, // sombra ligera en Android
   },
-
-
+  textoPeligro:{
+    marginLeft: 10,
+    fontSize: 10,
+    marginBottom: 2,
+  },
   
+  textoNombre:{
+    marginLeft: 10,
+    fontSize: 14,
+  },
+  Marker:{
+    width: 15,
+    height: 15
+  },
   // ==========================================================================
   // 🔻 TABBAR INFERIOR (3 botones)
   // ==========================================================================
@@ -279,9 +262,10 @@ searchInput: {
     backgroundColor: "#CBD5E1",
     width: "90%",
     alignSelf: "center",
-    marginBottom: 50,
+    marginBottom: 10,
     paddingVertical: 10,
     borderRadius: 25,
+    marginTop: 5,
   },
 
   tabButton: {
@@ -293,16 +277,24 @@ searchInput: {
   },
 
   tabButtonActivo: {
+    alignItems: "center",
+    justifyContent: "center",
     backgroundColor: "#FFF8F7", // fondo claro
     borderWidth: 1,
     borderColor: "#B3261E",
     padding: 2,
     marginHorizontal: 10,
+    borderRadius: 10,
   },
 
   tabText: {
     color: "#000",
     fontSize: 13,
+  },
+
+  tabTextActivo: {
+    color: "#B3261E",
+    fontWeight: "bold",
   },
 
   tabTextActivo: {

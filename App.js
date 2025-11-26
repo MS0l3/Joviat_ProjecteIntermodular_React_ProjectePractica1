@@ -27,6 +27,8 @@ import Pantalla_Preferits from "./src/Screen/Pantalla_Preferits";
 import Usuari from './src/Screen/usuari';
 import elsMeusPosts from "./src/Screen/elsMeusPosts";
 import Comentaris from "./src/Screen/Comentaris";
+import AfegirPerills from "./src/Screen/AfegirPerills";
+
 
 // 🧭 COMPONENTE PRINCIPAL DE NAVEGACIÓN
 export default function App() {
@@ -45,6 +47,7 @@ export default function App() {
           <Stack.Screen name="Pantalla_Formulario_Registro" component={Pantalla_Formulario_Registro} />
           <Stack.Screen name="Usuari" component={Usuari} />
           <Stack.Screen name="Comentaris" component={Comentaris} />
+          <Stack.Screen name="AfegirPerills" component={AfegirPerills} />
         </Stack.Navigator>
       </SafeAreaView>
     </NavigationContainer>

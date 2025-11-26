@@ -11,7 +11,7 @@ import CeldaMapa from "./CeldaMapa";
 // 📍 Datos temporales
 // ============================================================================
 const ubicacionesDemo = [
-  { id: 1, tipoCrimen: 1, peligrosidad: 2, ubicacion: "Barcelona", coordenadas: { latitude: 41.3851, longitude: 2.1734 } },
+  { id: 1, tipoCrimen: 2, peligrosidad: 2, ubicacion: "Barcelona", coordenadas: { latitude: 41.3851, longitude: 2.1734 } },
   { id: 2, tipoCrimen: 2, peligrosidad: 4, ubicacion: "Madrid", coordenadas: { latitude: 40.4168, longitude: -3.7038 } },
   { id: 3, tipoCrimen: 3, peligrosidad: 3, ubicacion: "València", coordenadas: { latitude: 39.4699, longitude: -0.3763 } },
   { id: 4, tipoCrimen: 5, peligrosidad: 5, ubicacion: "Sevilla", coordenadas: { latitude: 37.3891, longitude: -5.9845 } },

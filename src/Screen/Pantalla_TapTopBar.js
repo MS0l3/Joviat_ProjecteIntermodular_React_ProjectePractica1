@@ -6,7 +6,7 @@ import { View, Text, TouchableOpacity, TextInput} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons"; // Para los iconos (ojo, engranaje, usuario, etc.)
 import styles from "../Styles/Style_TapTopBar.js";
-import MapComponent from "./MapComponent"; // Estilos separados en su archivo propio
+import MapComponent from "../Components/MapComponent.js"; // Estilos separados en su archivo propio
 // -------------------------------------------------------------
 // ============================================================================
 // ✅ Pantalla_TapTopBar.js

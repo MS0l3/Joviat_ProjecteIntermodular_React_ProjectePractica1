@@ -76,17 +76,30 @@ export default function AfegirPerills() {
   const removeImage = (idx) =>
     setImages((prev) => prev.filter((_, i) => i !== idx));
 
+    // 💡CONSTANTE RETROCESO - En Preferits usamos modo ajustes (engranaje)
+    const isSettingsMode = true;
+
+    // 🔄FUNCIONALIDAD DINÁMICA DEL BOTÓN
+    const handleButtonPress = () => {
+      if (isSettingsMode) {
+        navigation.navigate("Configuracio");
+      } else {
+        navigation.goBack();
+      }
+    };
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar hidden />
 
       {/* 🔺 TOP BAR ORIGINAL */}
       <View style={styles.headerContainer}>
+        {/* ⚙️BOTÓN AJUSTES */}
         <TouchableOpacity
-          style={styles.redButton}
-          onPress={() => navigation.goBack()}
+          style={[styles.redButton, styles.settingsButton]}
+          onPress={handleButtonPress}
         >
-          <Ionicons name="arrow-back-outline" size={22} color="#fff" />
+          <Ionicons name="settings-outline" size={24} color="black" />
         </TouchableOpacity>
 
         <View style={styles.botonMarca}>
@@ -414,7 +427,7 @@ export default function AfegirPerills() {
           <Text style={styles.tabText}>Preferits</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.tabButton}>
+        <TouchableOpacity style={styles.tabButtonActivo}>
           <Ionicons name="add-circle-outline" size={26} color="#B3261E" />
           <Text style={styles.tabText}>Afegir Alertes</Text>
         </TouchableOpacity>

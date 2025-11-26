@@ -277,11 +277,14 @@ searchInput: {
   },
 
   tabButtonActivo: {
+    alignItems: "center",
+    justifyContent: "center",
     backgroundColor: "#FFF8F7", // fondo claro
     borderWidth: 1,
     borderColor: "#B3261E",
     padding: 2,
     marginHorizontal: 10,
+    borderRadius: 10,
   },
 
   tabText: {

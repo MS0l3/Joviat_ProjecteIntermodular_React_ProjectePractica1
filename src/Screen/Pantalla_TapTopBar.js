@@ -18,6 +18,7 @@ import MapComponent from "./MapComponent"; // Estilos separados en su archivo pr
 // ============================================================================
 
 import { SafeAreaView } from "react-native-safe-area-context";
+import ListaComponent from "../Components/ListaComponent.js";
 
 // 📦 Importa la pantalla que irá dentro
 //import ListaScreen from "../Components/ListaComponent.js"; // 👈 Ajusta si la ruta difiere
@@ -39,17 +40,17 @@ export default function Pantalla_TapTopBar() {
   const handleButtonPress = () => {
     if (isSettingsMode) {
       // Si está en modo ajustes, te lleva a la pantalla de ajustes
-      navigation.navigate("Pantalla_Ajustes"); // 👈 cambia aquí el nombre
+      navigation.navigate("Configuracio"); // 👈 cambia aquí el nombre
     } else {
       // Si está en modo retroceso, simplemente vuelve atrás
       navigation.goBack();
     }
   };
   // 🔹 NOMBRE DE LA PANTALLA A LA QUE LLEVA EL BOTÓN DE LA MARCA:
-  const pantallaMarca = "Pantalla_Principal"; // 👉 cambia este nombre según tu pantalla principal
+  const pantallaMarca = "Pantalla_TapTopBar"; // 👉 cambia este nombre según tu pantalla principal
 
   // 🔹 NOMBRE DE LA PANTALLA DEL USUARIO:
-  const pantallaUsuario = "Pantalla_Usuario"; // 👉 cambia este nombre según corresponda
+  const pantallaUsuario = "Usuari"; // 👉 cambia este nombre según corresponda
 
   // 🔹 ESTADO DE LA TABBAR: selecciona cuál está activo
   const [selectedTab, setSelectedTab] = useState("Explorar");
@@ -161,16 +162,10 @@ export default function Pantalla_TapTopBar() {
         📍 CONTENIDO PRINCIPAL (Lista o Mapa)
       ====================================================== */}
       <View style={styles.mainContent}>
-        <MapComponent />
-          <Text style={{ textAlign: "center", color: "#000" }}>
-            Contenido de la pantalla aquí
-          </Text>
           {switchSeleccion === "Mapa" ? (
-            <Text style={{ color: "#000", marginTop: 20 }}>
-              Aquí iría el mapa 🗺️
-            </Text>
+            <MapComponent />
           ) : (
-            <ListaScreen filtro={searchText} /> // ✅ Aquí se renderiza tu lista completa
+            <ListaComponent filtro={searchText} /> // ✅ Aquí se renderiza tu lista completa
           )}
       </View>
       {/* ======================================================
@@ -184,7 +179,7 @@ export default function Pantalla_TapTopBar() {
           ]}
           onPress={() => {
             setSelectedTab("Explorar");
-            navigation.navigate("Pantalla_Explorar");
+            navigation.navigate("Pantalla_TapTopBar");
           }}
         >
           <Ionicons

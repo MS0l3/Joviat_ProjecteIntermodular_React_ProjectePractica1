@@ -18,15 +18,15 @@ export default function elsMeusPosts() {
   // 🔄 FUNCIONALIDAD DEL BOTÓN SUPERIOR IZQUIERDO
   const handleButtonPress = () => {
     if (isSettingsMode) {
-      navigation.navigate("Pantalla_Ajustes");
+      navigation.navigate("Configuracio");
     } else {
       navigation.goBack();
     }
   };
 
   // 🔹 NOMBRE DE LAS PANTALLAS
-  const pantallaMarca = "Pantalla_Principal";
-  const pantallaUsuario = "Pantalla_Usuario";
+  const pantallaMarca = "Pantalla_TapTopBar";
+  const pantallaUsuario = "Usuari";
 
   // 🔹 ESTADO DE LA TABBAR
   const [selectedTab, setSelectedTab] = useState("");
@@ -123,7 +123,7 @@ export default function elsMeusPosts() {
           style={[styles.tabButton, selectedTab === "Explorar" && styles.tabButtonActivo]}
           onPress={() => {
             setSelectedTab("Explorar");
-            navigation.navigate("Pantalla_Explorar");
+            navigation.navigate("Pantalla_TapTopBar");
           }}
         >
           <Ionicons

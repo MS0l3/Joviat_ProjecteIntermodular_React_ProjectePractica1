@@ -26,6 +26,7 @@ import Pantalla_Formulario_Registro from "./src/Screen/Pantalla_Formulario_Regis
 import Pantalla_Preferits from "./src/Screen/Pantalla_Preferits";
 import Usuari from './src/Screen/usuari';
 import elsMeusPosts from "./src/Screen/elsMeusPosts";
+import AfegirPerills from "./src/Screen/AfegirPerills";
 
 
 // 🧭 COMPONENTE PRINCIPAL DE NAVEGACIÓN
@@ -44,6 +45,7 @@ export default function App() {
           <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
           <Stack.Screen name="Pantalla_Formulario_Registro" component={Pantalla_Formulario_Registro} />
           <Stack.Screen name="Usuari" component={Usuari} />
+          <Stack.Screen name="AfegirPerills" component={AfegirPerills} />
         </Stack.Navigator>
       </SafeAreaView>
     </NavigationContainer>

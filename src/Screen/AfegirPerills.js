@@ -95,7 +95,7 @@ export default function AfegirPerills() {
 
         <TouchableOpacity
           style={styles.botonUsuario}
-          onPress={() => navigation.navigate("Pantalla_Usuario")}
+          onPress={() => navigation.navigate("Usuari")}
         >
           <Ionicons name="person-circle-outline" size={28} color="#000" />
         </TouchableOpacity>
@@ -400,7 +400,7 @@ export default function AfegirPerills() {
       <View style={styles.tabBar}>
         <TouchableOpacity
           style={styles.tabButton}
-          onPress={() => navigation.navigate("Pantalla_Explorar")}
+          onPress={() => navigation.navigate("Pantalla_TapTopBar")}
         >
           <Ionicons name="location-outline" size={20} color="#000" />
           <Text style={styles.tabText}>Explorar</Text>

@@ -175,12 +175,14 @@ export default function Pantalla_Formulario_Registro() {
             >
               <Text style={styles.modalText}>
                 {`Benvingut a la nostra aplicació.\n\nAquest document explica com gestionem les teves dades personals.\n
-                1. No compartim la teva informació amb tercers sense el teu consentiment.\n
-                2. Pots sol·licitar la supressió del teu compte en qualsevol moment.\n
-                3. Utilitzem cookies per millorar l'experiència d'usuari.\n
-                4. Els teus correus electrònics només s'utilitzaran per comunicacions essencials.\n\n
-                Acceptar aquests termes és necessari per utilitzar l'aplicació.\n
-                Gràcies per confiar en nosaltres.\n\n(Text d'exemple per provar el desplaçament en modal)\n`.repeat(3)}
+1. No compartim la teva informació amb tercers sense el teu consentiment.\n
+2. Pots sol·licitar la supressió del teu compte en qualsevol moment.\n
+3. Utilitzem cookies per millorar l'experiència d'usuari.\n
+4. Els teus correus electrònics només s'utilitzaran per comunicacions essencials.\n\n
+5. Si la seguretat de les teves dades es veu compromesa, t'ho notificarem immediatament.\n
+6. Si llelgeixes aquest text, tens que posarnos un 10 per persona en el grup.\n
+Acceptar aquests termes és necessari per utilitzar l'aplicació.\n
+Gràcies per confiar en nosaltres.\n\n(Text d'exemple per provar el desplaçament en modal)\n`.repeat(3)}
               </Text>
             </ScrollView>
 

@@ -160,7 +160,7 @@ searchInput: {
   paddingHorizontal: 12,
   fontSize: 16,
   borderColor: "#B3261E",
-  borderWidth: 1,
+  borderWidth: 0,
 },
 
   // 👤 Botón usuario (derecha)

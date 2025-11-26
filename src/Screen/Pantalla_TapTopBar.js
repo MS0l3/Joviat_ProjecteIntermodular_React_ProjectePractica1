@@ -229,7 +229,7 @@ export default function Pantalla_TapTopBar() {
           ]}
           onPress={() => {
             setSelectedTab("AfegirAlertes");
-            navigation.navigate("Pantalla_AfegirAlertes");
+            navigation.navigate("AfegirPerills");
           }}
         >
           <Ionicons

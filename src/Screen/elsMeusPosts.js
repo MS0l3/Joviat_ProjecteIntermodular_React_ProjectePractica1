@@ -158,7 +158,7 @@ export default function elsMeusPosts() {
           style={[styles.tabButton, selectedTab === "AfegirAlertes" && styles.tabButtonActivo]}
           onPress={() => {
             setSelectedTab("AfegirAlertes");
-            navigation.navigate("Pantalla_AfegirAlertes");
+            navigation.navigate("AfegirPerills");
           }}
         >
           <Ionicons

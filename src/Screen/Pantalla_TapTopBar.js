@@ -2,11 +2,11 @@
 // -------------------------------------------------------------
 // Estos imports son necesarios para el funcionamiento general de la pantalla
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, SafeAreaView } from "react-native";
+import { View, Text, TouchableOpacity, TextInput} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons"; // Para los iconos (ojo, engranaje, usuario, etc.)
 import styles from "../Styles/Style_TapTopBar.js";
-import MapComponent from "./MapComponent"; // Estilos separados en su archivo propio
+import MapComponent from "./MapComponent.js"; // Estilos separados en su archivo propio
 // -------------------------------------------------------------
 // ============================================================================
 // ✅ Pantalla_TapTopBar.js
@@ -17,17 +17,12 @@ import MapComponent from "./MapComponent"; // Estilos separados en su archivo pr
 // 4️⃣ TabBar inferior
 // ============================================================================
 
-import React, { useState } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Ionicons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import ListaComponent from "../Components/ListaComponent.js";
 
 // 📦 Importa la pantalla que irá dentro
-import ListaScreen from "../Components/ListaComponent.js"; // 👈 Ajusta si la ruta difiere
+//import ListaScreen from "../Components/ListaComponent.js"; // 👈 Ajusta si la ruta difiere
 
-// 🎨 Estilos
-import styles from "../Styles/Style_TapTopBar.js";
 
 // ============================================================================
 // 🧭 COMPONENTE PRINCIPAL
@@ -45,17 +40,17 @@ export default function Pantalla_TapTopBar() {
   const handleButtonPress = () => {
     if (isSettingsMode) {
       // Si está en modo ajustes, te lleva a la pantalla de ajustes
-      navigation.navigate("Pantalla_Ajustes"); // 👈 cambia aquí el nombre
+      navigation.navigate("Configuracio"); // 👈 cambia aquí el nombre
     } else {
       // Si está en modo retroceso, simplemente vuelve atrás
       navigation.goBack();
     }
   };
   // 🔹 NOMBRE DE LA PANTALLA A LA QUE LLEVA EL BOTÓN DE LA MARCA:
-  const pantallaMarca = "Pantalla_Principal"; // 👉 cambia este nombre según tu pantalla principal
+  const pantallaMarca = "Pantalla_TapTopBar"; // 👉 cambia este nombre según tu pantalla principal
 
   // 🔹 NOMBRE DE LA PANTALLA DEL USUARIO:
-  const pantallaUsuario = "Pantalla_Usuario"; // 👉 cambia este nombre según corresponda
+  const pantallaUsuario = "Usuari"; // 👉 cambia este nombre según corresponda
 
   // 🔹 ESTADO DE LA TABBAR: selecciona cuál está activo
   const [selectedTab, setSelectedTab] = useState("Explorar");
@@ -63,21 +58,12 @@ export default function Pantalla_TapTopBar() {
   // 🔄 Estado del switch superior (Mapa o Llista)
   const [switchSeleccion, setSwitchSeleccion] = useState("Llista");
 
-  // 💡 Estado para el botón rojo (modo ajustes o volver)
-  const isSettingsMode = true;
 
 // ========================================================================
 // 🎛️ FUNCIONES DE NAVEGACIÓN
 // ========================================================================
-  const handleButtonPress = () => {
-    if (isSettingsMode) navigation.navigate("Pantalla_Ajustes");
-    else navigation.goBack();
-  };
 
   const [searchText, setSearchText] = useState("");
-
-  const pantallaMarca = "Pantalla_Principal";
-  const pantallaUsuario = "Pantalla_Usuario";
 
   // ========================================================================
   // 🧱 INTERFAZ
@@ -103,15 +89,25 @@ export default function Pantalla_TapTopBar() {
           />
         </TouchableOpacity>
 
-        {/* Buscador Ciudades */}
+        {/* 🔍 Buscador de ciudades */}
         <View style={styles.searchContainer}>
+          <Ionicons name="search" size={18} color="#555" style={{ marginRight: 6 }} />
+
           <TextInput
             style={styles.searchInput}
-            placeholder="Buscar Ciudad..."
-            placeholderTextColor="#555"
+            placeholder="Buscar ciudad..."
+            placeholderTextColor="#777"
             value={searchText}
-            onChangeText={(text) => setSearchText(text)}
+            onChangeText={setSearchText}
+            autoCorrect={false}
+            autoCapitalize="none"
           />
+
+          {searchText.length > 0 && (
+            <TouchableOpacity onPress={() => setSearchText("")}>
+              <Ionicons name="close-circle" size={18} color="#777" />
+            </TouchableOpacity>
+          )}
         </View>
 
         {/* Botón Usuario */}
@@ -166,17 +162,11 @@ export default function Pantalla_TapTopBar() {
         📍 CONTENIDO PRINCIPAL (Lista o Mapa)
       ====================================================== */}
       <View style={styles.mainContent}>
-      <MapComponent />
-        <Text style={{ textAlign: "center", color: "#000" }}>
-          Contenido de la pantalla aquí
-        </Text>
-        {switchSeleccion === "Mapa" ? (
-          <Text style={{ color: "#000", marginTop: 20 }}>
-            Aquí iría el mapa 🗺️
-          </Text>
-        ) : (
-          <ListaScreen filtro={searchText} /> // ✅ Aquí se renderiza tu lista completa
-        )}
+          {switchSeleccion === "Mapa" ? (
+            <MapComponent />
+          ) : (
+            <ListaComponent filtro={searchText} /> // ✅ Aquí se renderiza tu lista completa
+          )}
       </View>
       {/* ======================================================
         🔻 TABBAR INFERIOR (Explorar | Preferits | Afegir)
@@ -189,7 +179,7 @@ export default function Pantalla_TapTopBar() {
           ]}
           onPress={() => {
             setSelectedTab("Explorar");
-            navigation.navigate("Pantalla_Explorar");
+            navigation.navigate("Pantalla_TapTopBar");
           }}
         >
           <Ionicons
@@ -239,7 +229,7 @@ export default function Pantalla_TapTopBar() {
           ]}
           onPress={() => {
             setSelectedTab("AfegirAlertes");
-            navigation.navigate("Pantalla_AfegirAlertes");
+            navigation.navigate("AfegirPerills");
           }}
         >
           <Ionicons

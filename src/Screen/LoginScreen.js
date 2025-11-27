@@ -194,7 +194,8 @@ const LoginScreen = () => {
               <Text style={[
                 styles.forgotPasswordText,
                 isLoading ? styles.disabledText : {}
-              ]}>
+              ]}
+              onPress={() => navigation.navigate('ForgotPassword')}>
                 T'has oblidat de la contrasenya?
               </Text>
             </TouchableOpacity>

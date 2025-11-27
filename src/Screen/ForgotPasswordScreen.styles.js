@@ -78,14 +78,15 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#6B7280',
     borderRadius: 8,
-    paddingVertical: 14,
+    paddingVertical: 20,
     alignItems: 'center',
-    marginRight: 8,
+    marginRight: 6,
   },
   cancelButtonText: {
     color: '#fff',
     fontSize: 16,
     fontWeight: '600',
+    textAlign: 'center',
   },
   sendButton: {
     flex: 2,
@@ -93,12 +94,13 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingVertical: 14,
     alignItems: 'center',
-    marginLeft: 8,
+    marginLeft: 6,
   },
   sendButtonText: {
     color: '#fff',
     fontSize: 16,
     fontWeight: '600',
+    textAlign: 'center',
   },
   bottomSpace: {
     height: 30,

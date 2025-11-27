@@ -11,7 +11,7 @@ import {
   Modal
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import styles from './ForgotPasswordScreen.styles';
+import styles from '../Styles/ForgotPasswordScreen.styles';
 
 const ForgotPasswordScreen = () => {
   const navigation = useNavigation();

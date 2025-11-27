@@ -56,7 +56,7 @@ export default function Pantalla_TapTopBar() {
   const [selectedTab, setSelectedTab] = useState("Explorar");
 
   // 🔄 Estado del switch superior (Mapa o Llista)
-  const [switchSeleccion, setSwitchSeleccion] = useState("Llista");
+  const [switchSeleccion, setSwitchSeleccion] = useState("Mapa");
 
 
 // ========================================================================

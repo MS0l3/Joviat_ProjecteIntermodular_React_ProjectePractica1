@@ -6,7 +6,8 @@ import { View, Text, TouchableOpacity, TextInput} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons"; // Para los iconos (ojo, engranaje, usuario, etc.)
 import styles from "../Styles/Style_TapTopBar.js";
-import MapComponent from "../Components/MapComponent.js"; // Estilos separados en su archivo propio
+import MapComponent from "../Components/MapComponent.js";
+import BackHandlerExit from "../Components/BackHandlerExit.js"; // Block para manejar el botón atrás en Android
 // -------------------------------------------------------------
 // ============================================================================
 // ✅ Pantalla_TapTopBar.js
@@ -24,13 +25,16 @@ import ListaComponent from "../Components/ListaComponent.js";
 //import ListaScreen from "../Components/ListaComponent.js"; // 👈 Ajusta si la ruta difiere
 
 
+
 // ============================================================================
 // 🧭 COMPONENTE PRINCIPAL
 // ============================================================================
 export default function Pantalla_TapTopBar() {
   const navigation = useNavigation();
 
-   // 💡 CONSTANTE RETROCESO
+  BackHandlerExit(); /* Maneja el botón atrás en Android */
+
+  // 💡 CONSTANTE RETROCESO
   // Cambia esto a "true" cuando quieras mostrar el modo AJUSTES
   const isSettingsMode = true; // ← Cambia a true para activar el engranaje
   console.log("🧭 isSettingsMode és:", isSettingsMode);

@@ -219,7 +219,7 @@ export default function DetalleScreen() {
               borderRadius: 10,
               alignItems: "center",
             }}
-            onPress={() => navigation.navigate("Pantalla_Comentarios")} // 👈 Aquí pones tu pantalla
+            onPress={() => navigation.navigate("Comentaris")} // 👈 Aquí pones tu pantalla
           >
             <Text style={{ color: "#FFF", fontSize: 16 }}>
               Ver Comentarios 💬

@@ -36,7 +36,7 @@ export default function App() {
     <NavigationContainer>
       <SafeAreaView style={{ flex: 1 }}>
         <StatusBar barStyle="dark-content" />
-        <Stack.Navigator initialRouteName="Identificacio" screenOptions={{ headerShown: false }}>
+        <Stack.Navigator initialRouteName="Comentaris" screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Identificacio" component={Identificacio} />
           <Stack.Screen name="Configuracio" component={Configuracio} />
           <Stack.Screen name="Pantalla_TapTopBar" component={Pantalla_TapTopBar} />
@@ -46,8 +46,8 @@ export default function App() {
           <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
           <Stack.Screen name="Pantalla_Formulario_Registro" component={Pantalla_Formulario_Registro} />
           <Stack.Screen name="Usuari" component={Usuari} />
-          <Stack.Screen name="Comentaris" component={Comentaris} />
           <Stack.Screen name="AfegirPerills" component={AfegirPerills} />
+          <Stack.Screen name="Comentaris" component={Comentaris} />
         </Stack.Navigator>
       </SafeAreaView>
     </NavigationContainer>

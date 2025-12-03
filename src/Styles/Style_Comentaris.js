@@ -8,24 +8,25 @@ export default StyleSheet.create({
         justifyContent: "flex-start",   // ⬅️ Això força que tot comenci ben amunt
         paddingTop: 0,                 // ⬅️ Aixequem tot encara més
         paddingHorizontal: 5,          // ⬅️ Marges laterals VISIBLES
-        maxHeight: 625,
+        maxHeight: 700,
     },
 
     commentsContainer: {
-        width: "95%",
-        maxWidth: 480,
-        backgroundColor: "#FFFFFF",
-        borderRadius: 15,
-        paddingVertical: 18,
-        paddingHorizontal: 14,
-        shadowColor: "#000",
-        shadowOpacity: 0.15,
-        shadowRadius: 8,
-        elevation: 4,
+    width: "95%",
+    maxWidth: 480,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 15,
+    paddingVertical: 18,
+    paddingHorizontal: 14,
+    shadowColor: "#000",
+    shadowOpacity: 0.15,
+    shadowRadius: 8,
+    elevation: 4,
+    marginTop: 20,
+    marginBottom: 10,
+    flex: 1, // 🔹 Això permet que la caixa creixi
+},
 
-        marginTop: 20,      // ⬅️ FA QUE LA CAIXA PUGI VISUALMENT
-        marginBottom: 10,
-    },
 
     titol: {
   fontSize: 26,
@@ -52,4 +53,36 @@ export default StyleSheet.create({
     listaContent: {
         paddingBottom: 30,
     },
+    inputContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: "95%",
+    maxWidth: 480,
+    backgroundColor: "#fff",
+    borderRadius: 25,
+    paddingHorizontal: 15,
+    paddingVertical: 8,
+    marginBottom: -100, // espai des del final de la pantalla
+    alignSelf: "center",
+    shadowColor: "#000",
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
+},
+
+
+input: {
+    flex: 1,
+    fontSize: 16,
+    paddingVertical: 4,
+}, 
+
+sendButton: {
+    backgroundColor: "#B3261E",
+    borderRadius: 20,
+    padding: 8,
+    marginLeft: 10,
+},
+
 });

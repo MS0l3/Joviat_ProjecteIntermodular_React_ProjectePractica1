@@ -56,7 +56,7 @@ export default function Pantalla_Formulario_Registro() {
           if (navigation.canGoBack()) {
             navigation.goBack();
           } else {
-            navigation.navigate("Pantalla_Seleccion");
+            navigation.navigate("Identificacio");
           }
         }}
       >
@@ -191,7 +191,7 @@ Gràcies per confiar en nosaltres.\n\n(Text d'exemple per provar el desplaçamen
                 style={styles.modalButton}
                 onPress={() => {
                   setShowModal(false);
-                  navigation.navigate("Pantalla_Seleccion");
+                  navigation.navigate("Identificacio");
                 }}
               >
                 <Text style={styles.modalButtonText}>Denegar</Text>

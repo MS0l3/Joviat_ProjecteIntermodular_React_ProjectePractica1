@@ -219,6 +219,19 @@ modalButtonPrimaryText: {
   color: '#fff',
   fontWeight: '600',
 },
+
+peligrosidadContainer: {
+  flexDirection: 'row',
+  marginLeft: 8,
+},
+
+triangulo: {
+  marginHorizontal: 1,
+},
+
+modalPeligrosidadIcons: {
+  flexDirection: 'row',
+},
 });
 
 export default styles;

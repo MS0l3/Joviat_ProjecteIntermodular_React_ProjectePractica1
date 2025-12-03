@@ -5,7 +5,7 @@ import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import styles from "../Styles/Style_TapTopBar.js";
 import preferitsStyles from "../Styles/Style_Preferits.js"; // 👈 Nuevos estilos
-import Celda from "./Celda.js";
+import Celda from "../Components/Celda.js";
 
 export default function Pantalla_Preferits() {
   const navigation = useNavigation();

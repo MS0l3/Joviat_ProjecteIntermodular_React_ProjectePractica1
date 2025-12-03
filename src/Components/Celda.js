@@ -5,37 +5,40 @@ import {
   TouchableOpacity,
   Image,
   ActivityIndicator,
-  Modal,
-  Alert
+  Modal
 } from 'react-native';
 import { Ionicons } from "@expo/vector-icons";
+import { useNavigation } from '@react-navigation/native'; // ✅ Importado
 import styles from '../Styles/Style_Celda.js';
 
 const Celda = ({ 
-  tipoCrimen, 
-  peligrosidad, 
-  ubicacion, 
+  ubicacion,
+  peligrosidad,
+  tipoCrimen,
+  coordenadas: safeCoords,
   imagenUrl, 
   onPress 
 }) => {
+  const navigation = useNavigation(); // ✅ Añade esta línea
+  
   const [imageLoading, setImageLoading] = useState(false);
   const [imageError, setImageError] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
 
   const renderPeligrosidad = (nivel) => {
     const triangulos = [];
-        for (let i = 0; i < 5; i++) {
-          triangulos.push(
-            <Ionicons
-              key={i}
-              name="warning"
-              size={16}
-              color={i < nivel ? "#B3261E" : "#CBD5E1"}
-              style={styles.triangulo}
-            />
-          );
-        }
-        return triangulos;
+    for (let i = 0; i < 5; i++) {
+      triangulos.push(
+        <Ionicons
+          key={i}
+          name="warning"
+          size={16}
+          color={i < nivel ? "#B3261E" : "#CBD5E1"}
+          style={styles.triangulo}
+        />
+      );
+    }
+    return triangulos;
   };
 
   const handleImageLoadStart = () => {
@@ -53,10 +56,8 @@ const Celda = ({
   };
 
   const handlePress = () => {
-    // Mostrar el popup/modal
     setModalVisible(true);
     
-    // También ejecutar la función onPress si existe (para compatibilidad)
     if (onPress) {
       onPress({
         tipoCrimen,
@@ -73,11 +74,22 @@ const Celda = ({
 
   const handleViewDetails = () => {
     setModalVisible(false);
-    Alert.alert(
-      "Navegación",
-      `Aquí navegaríamos a la pantalla de detalles de: ${tipoCrimen}`,
-      [{ text: "OK" }]
-    );
+    
+    // Verificar que navigation existe antes de usarlo
+    if (navigation) {
+      // Si la pantalla DetalleScreen no existe, muestra un alert temporal
+      navigation.navigate("DetalleScreen", {
+        ubicacion,
+        peligrosidad,
+        tipoCrimen,
+        coordenadas: safeCoords,
+        imagenUrl
+      });
+    } else {
+      console.log("Navigation no disponible");
+      // Opcional: Mostrar un alert
+      // Alert.alert("Info", "Navegación no disponible en este momento");
+    }
   };
 
   return (
@@ -114,9 +126,9 @@ const Celda = ({
           <View style={styles.infoContainer}>
             <View style={styles.crimenContainer}>
               <Text style={styles.tipoCrimen}>{tipoCrimen}</Text>
-              <Text style={styles.peligrosidad}>
+              <View style={styles.peligrosidadContainer}>
                 {renderPeligrosidad(peligrosidad)}
-              </Text>
+              </View>
             </View>
             <Text style={styles.ubicacion}>{ubicacion}</Text>
           </View>
@@ -162,9 +174,9 @@ const Celda = ({
                 <View style={styles.modalInfo}>
                   <View style={styles.modalPeligrosidad}>
                     <Text style={styles.modalPeligrosidadLabel}>Nivell de perill:</Text>
-                    <Text style={styles.modalPeligrosidadValue}>
+                    <View style={styles.modalPeligrosidadIcons}>
                       {renderPeligrosidad(peligrosidad)}
-                    </Text>
+                    </View>
                   </View>
                   
                   <View style={styles.modalUbicacion}>

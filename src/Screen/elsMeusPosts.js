@@ -5,7 +5,7 @@ import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import styles from "../Styles/Style_TapTopBar.js";
 import preferitsStyles from "../Styles/Style_elsMeusPosts.js";
-import Celda from "./Celda.js";
+import Celda from "../Components/Celda.js";
 
 export default function elsMeusPosts() {
   console.log("🔄 Render de elsMeusPosts. isSettingsMode = ", isSettingsMode);

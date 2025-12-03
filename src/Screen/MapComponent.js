@@ -3,7 +3,7 @@ import React, { useState, useRef } from 'react';
 import { View, StyleSheet, Dimensions, TouchableOpacity, Text, Animated } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import { Ionicons } from '@expo/vector-icons';
-import { PeligrosidadTriangulos } from './PeligrosidadTriangulos';
+import { PeligrosidadTriangulos } from '../Components/PeligrosidadTriangulos';
 
 const { width, height } = Dimensions.get('window');
 

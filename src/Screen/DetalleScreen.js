@@ -64,9 +64,13 @@ export default function DetalleScreen() {
           <Ionicons name="arrow-back" size={28} color="#000" />
         </TouchableOpacity>
 
-        <View style={styles.botonMarca}>
+      {/* 🔸 BOTÓN INVISIBLE DE LA MARCA */}
+        <TouchableOpacity
+          style={styles.botonMarca}
+          onPress={() => navigation.navigate("Pantalla_TapTopBar")}
+        >
           <Text style={styles.textoMarca}>DangerZone</Text>
-        </View>
+        </TouchableOpacity>
 
         {/* ⭐ FAVORITOS — ESTRELLA */}
         <TouchableOpacity onPress={() => setFav(!fav)} style={{ padding: 8 }}>
@@ -157,7 +161,7 @@ export default function DetalleScreen() {
             }}
           />
         </View>
-      </View>,
+      </View>
 
         {/* 🔎 MODAL -> IMAGEN GRANDE */}
         <Modal visible={!!imagenSeleccionada} transparent animationType="fade">

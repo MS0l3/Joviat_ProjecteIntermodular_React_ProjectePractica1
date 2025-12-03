@@ -13,7 +13,7 @@ import { Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import * as NavigationBar from "expo-navigation-bar";
 import { StatusBar } from "expo-status-bar";
-import styles from "../Styles/Style_TapTopBar"; // NO TOCAR
+import styles from "../Styles/Style_TapTopBar";
 
 export default function AfegirPerills() {
   const navigation = useNavigation();
@@ -52,7 +52,20 @@ export default function AfegirPerills() {
       )
     : 0;
 
-  // Selecció d’imatges
+  // Función para renderizar triángulos - VERSIÓN CORRECTA
+  const renderPeligrosidad = (nivel) => {
+    return Array.from({ length: 5 }).map((_, i) => (
+      <Ionicons
+        key={i}
+        name="warning"
+        size={16}
+        color={i < nivel ? "#B3261E" : "#CBD5E1"}
+        style={{ marginHorizontal: 2 }}
+      />
+    ));
+  };
+
+  // Selecció d'imatges
   const pickImages = async () => {
     try {
       const result = await ImagePicker.launchImageLibraryAsync({
@@ -76,17 +89,15 @@ export default function AfegirPerills() {
   const removeImage = (idx) =>
     setImages((prev) => prev.filter((_, i) => i !== idx));
 
-    // 💡CONSTANTE RETROCESO - En Preferits usamos modo ajustes (engranaje)
-    const isSettingsMode = true;
+  const isSettingsMode = true;
 
-    // 🔄FUNCIONALIDAD DINÁMICA DEL BOTÓN
-    const handleButtonPress = () => {
-      if (isSettingsMode) {
-        navigation.navigate("Configuracio");
-      } else {
-        navigation.goBack();
-      }
-    };
+  const handleButtonPress = () => {
+    if (isSettingsMode) {
+      navigation.navigate("Configuracio");
+    } else {
+      navigation.goBack();
+    }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -94,7 +105,6 @@ export default function AfegirPerills() {
 
       {/* 🔺 TOP BAR ORIGINAL */}
       <View style={styles.headerContainer}>
-        {/* ⚙️BOTÓN AJUSTES */}
         <TouchableOpacity
           style={[styles.redButton, styles.settingsButton]}
           onPress={handleButtonPress}
@@ -134,7 +144,7 @@ export default function AfegirPerills() {
             width: "92%",
             borderRadius: 12,
             padding: 12,
-            backgroundColor: "#CBD5E1", // igual al TapTopBar
+            backgroundColor: "#CBD5E1",
             alignSelf: "center",
           }}
           showsVerticalScrollIndicator={false}
@@ -290,20 +300,16 @@ export default function AfegirPerills() {
             </View>
           )}
 
-          {/* TRIANGLES */}
+          {/* TRIANGLES - CORREGIDO */}
           <View style={{ alignItems: "center", marginVertical: 12 }}>
             {highestLevel === 0 ? (
               <Text style={{ color: "#333" }}>Cap perill seleccionat</Text>
             ) : (
-              <View style={{ flexDirection: "row" }}>
-                {Array.from({ length: highestLevel }).map((_, i) => (
-                  <Text
-                    key={i}
-                    style={{ color: "#B3261E", fontSize: 22, marginHorizontal: 3 }}
-                  >
-                    ▲
-                  </Text>
-                ))}
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Text style={{ marginRight: 8, color: "#000", fontWeight: "600" }}>
+                  Nivell de perill:
+                </Text>
+                {renderPeligrosidad(highestLevel)}
               </View>
             )}
           </View>

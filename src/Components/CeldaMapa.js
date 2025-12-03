@@ -33,11 +33,11 @@ export default function CeldaMapa({
   // 🔹 Diccionario de tipos de crimen
   // --------------------------------------------------------------------------
   const crimenes = {
-    1: "Robo",
-    2: "Asalto",
-    3: "Vandalismo",
-    4: "Fraude",
-    5: "Incendio",
+    1: "Robatori",
+    2: "Asalt",
+    3: "Vandalisme",
+    4: "Frau",
+    5: "Incendi",
   };
 
   // --------------------------------------------------------------------------

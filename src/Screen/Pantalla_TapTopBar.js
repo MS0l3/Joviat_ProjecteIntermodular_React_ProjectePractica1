@@ -8,6 +8,7 @@ import { Ionicons } from "@expo/vector-icons"; // Para los iconos (ojo, engranaj
 import styles from "../Styles/Style_TapTopBar.js";
 import MapComponent from "../Components/MapComponent.js";
 import BackHandlerExit from "../Components/BackHandlerExit.js"; // Block para manejar el botón atrás en Android
+import FiltroCrimenes from "../Components/FiltroCrimenes.js";
 // -------------------------------------------------------------
 // ============================================================================
 // ✅ Pantalla_TapTopBar.js
@@ -33,6 +34,8 @@ export default function Pantalla_TapTopBar() {
   const navigation = useNavigation();
 
   BackHandlerExit(); /* Maneja el botón atrás en Android */
+  const [crimenesSeleccionados, setCrimenesSeleccionados] = useState([]);
+  // ========================================================================
 
   // 💡 CONSTANTE RETROCESO
   // Cambia esto a "true" cuando quieras mostrar el modo AJUSTES
@@ -122,11 +125,15 @@ export default function Pantalla_TapTopBar() {
           <Ionicons name="person-circle-outline" size={26} color="#000" />
         </TouchableOpacity>
       </View>
-
+  
       {/* ======================================================
         ⚙️ SWITCH MAPA / LLISTA
       ====================================================== */}
       <View style={styles.switchContainer}>
+         <FiltroCrimenes
+            crimenesSeleccionados={crimenesSeleccionados}
+            setCrimenesSeleccionados={setCrimenesSeleccionados}
+          />
         <TouchableOpacity
           style={[
             styles.switchButton,
@@ -169,7 +176,7 @@ export default function Pantalla_TapTopBar() {
           {switchSeleccion === "Mapa" ? (
             <MapComponent />
           ) : (
-            <ListaComponent filtro={searchText} /> // ✅ Aquí se renderiza tu lista completa
+            <ListaComponent filtro={searchText} crimenesSeleccionados={crimenesSeleccionados} /> // ✅ Aquí se renderiza tu lista completa
           )}
       </View>
       {/* ======================================================

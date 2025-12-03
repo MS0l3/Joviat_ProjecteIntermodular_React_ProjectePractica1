@@ -94,36 +94,6 @@ export default StyleSheet.create({
     padding: 8,
   },
 
-  // ⚙️ SWITCH MAPA / LLISTA
-  switchContainer: {
-    flexDirection: "row",
-    backgroundColor: "#CBD5E1",
-    borderRadius: 20,
-    marginVertical: 20,
-    overflow: "hidden",
-    marginHorizontal: 10,
-  },
-
-  switchButton: {
-    flex: 1,
-    alignItems: "center",
-    paddingVertical: 8,
-  },
-
-  switchButtonActivo: {
-    backgroundColor: "#B3261E",
-    borderRadius: 20,
-  
-  },
-
-  switchText: {
-    color: "#000",
-    fontWeight: "600",
-  },
-
-  switchTextActivo: {
-    color: "#FFF",
-  },
 
   // 📍 CONTENIDO
   mainContent: {
@@ -153,15 +123,15 @@ export default StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
   },
-searchInput: {
-  backgroundColor: "#FFF",
-  height: 40,
-  borderRadius: 10,
-  paddingHorizontal: 12,
-  fontSize: 16,
-  borderColor: "#B3261E",
-  borderWidth: 0,
-},
+  searchInput: {
+    backgroundColor: "#FFF",
+    height: 40,
+    borderRadius: 10,
+    paddingHorizontal: 12,
+    fontSize: 16,
+    borderColor: "#B3261E",
+    borderWidth: 0,
+  },
 
   // 👤 Botón usuario (derecha)
   botonUsuario: {
@@ -170,15 +140,31 @@ searchInput: {
   },
 
   // ==========================================================================
-  // ⚙️ SWITCH MAPA / LLISTA
+  // ⚙️ SWITCH MAPA / LLISTA / FILTRO DE CRÍMENES
   // ==========================================================================
+  
+  checkbox: {
+    width: 18,
+    height: 18,
+    borderWidth: 2,
+    borderColor: "#555",
+    borderRadius: 4,
+  },
+
+  checkboxChecked: {
+    backgroundColor: "#B3261E",
+    borderColor: "#B3261E",
+  },
+  
   switchContainer: {
     flexDirection: "row",
     backgroundColor: "#CBD5E1",
     borderRadius: 20,
     marginVertical: 20,
-    overflow: "hidden",
     marginHorizontal: 10,
+    alignItems: "center",
+    position: "relative",   // <- SUPER IMPORTANTE
+    zIndex: 10,   // <- PERMITE QUE EL MENÚ FLOTE POR ENCIMA
   },
 
   switchButton: {

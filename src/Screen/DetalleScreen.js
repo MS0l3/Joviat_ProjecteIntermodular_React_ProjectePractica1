@@ -43,7 +43,22 @@ export default function DetalleScreen() {
   // 🔎 Modal de imagen ampliada
   const [imagenSeleccionada, setImagenSeleccionada] = useState(null);
 
-  const renderPeligrosidad = (n) => "▲".repeat(n);
+  const renderPeligrosidad = (nivel) => {
+    const triangulos = [];
+    for (let i = 0; i < 5; i++) {
+      triangulos.push(
+        <Ionicons
+          key={i}
+          name="warning"
+          size={16}
+          color={i < nivel ? "#B3261E" : "#CBD5E1"}
+          style={styles.triangulo}
+        />
+      );
+    }
+    return triangulos;
+  };
+
 
   const crimenes = {
     1: "Robo",
@@ -207,7 +222,7 @@ export default function DetalleScreen() {
           <Text style={{ fontSize: 18, marginTop: 8 }}>📍 {ubicacion}</Text>
 
           <Text style={{ fontSize: 18, marginTop: 8 }}>
-            🔥 Peligrosidad: {renderPeligrosidad(peligrosidad)}
+          Peligrosidad: {renderPeligrosidad(peligrosidad)}
           </Text>
 
           {/* 🔘 BOTÓN COMENTARIOS */}

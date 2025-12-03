@@ -26,6 +26,7 @@ import Pantalla_Formulario_Registro from "./src/Screen/Pantalla_Formulario_Regis
 import Pantalla_Preferits from "./src/Screen/Pantalla_Preferits";
 import Usuari from './src/Screen/usuari';
 import elsMeusPosts from "./src/Screen/elsMeusPosts";
+import Comentaris from "./src/Screen/Comentaris";
 import AfegirPerills from "./src/Screen/AfegirPerills";
 import DetalleScreen from './src/Screen/DetalleScreen';
 
@@ -36,7 +37,7 @@ export default function App() {
     <NavigationContainer>
       <SafeAreaView style={{ flex: 1 }}>
         <StatusBar barStyle="dark-content" />
-        <Stack.Navigator initialRouteName="Identificacio" screenOptions={{ headerShown: false }}>
+        <Stack.Navigator initialRouteName="Comentaris" screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Identificacio" component={Identificacio} />
           <Stack.Screen name="Configuracio" component={Configuracio} />
           <Stack.Screen name="Pantalla_TapTopBar" component={Pantalla_TapTopBar} />
@@ -48,6 +49,7 @@ export default function App() {
           <Stack.Screen name="Usuari" component={Usuari} />
           <Stack.Screen name="AfegirPerills" component={AfegirPerills} />
           <Stack.Screen name="DetalleScreen" component={DetalleScreen} />
+          <Stack.Screen name="Comentaris" component={Comentaris} />
         </Stack.Navigator>
       </SafeAreaView>
     </NavigationContainer>

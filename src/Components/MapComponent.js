@@ -171,7 +171,9 @@ const Bombolla = ({ post, onClose, onObrir }) => {
       </Text>
 
       {/* Botón Obrir (ORIGINAL) */}
-      <TouchableOpacity style={styles.botonObrir} onPress={onObrir}>
+      <TouchableOpacity style={styles.botonObrir} onPress={() => {
+            navigation.navigate("DetalleScreen", { postId: post.id });
+          }}>
         <Text style={styles.botonObrirText}>Obrir</Text>
         <Ionicons name="arrow-forward" size={16} color="#FFF" />
       </TouchableOpacity>

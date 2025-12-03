@@ -40,7 +40,7 @@ export default StyleSheet.create({
     marginTop: 25,
     borderTopLeftRadius: 15,
     borderTopRightRadius: 15,
-    marginTop: 45,
+    marginTop: 10,
 
   },
 

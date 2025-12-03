@@ -7,6 +7,7 @@ import {
   TextInput,
   ScrollView,
   Image,
+  Modal,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
@@ -23,6 +24,9 @@ export default function AfegirPerills() {
   const [description, setDescription] = useState("");
   const [images, setImages] = useState([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [modalVisible, setModalVisible] = useState(false);
 
   // Etiquetes amb perillositat
   const tags = [
@@ -45,7 +49,6 @@ export default function AfegirPerills() {
     );
   };
 
-  // Nivell màxim seleccionat
   const highestLevel = selectedTags.length
     ? Math.max(
         ...selectedTags.map((k) => tags.find((t) => t.key === k)?.level ?? 0)
@@ -78,12 +81,21 @@ export default function AfegirPerills() {
         const newUris = result.assets
           ? result.assets.map((a) => a.uri)
           : [result.uri];
-
         setImages((prev) => [...prev, ...newUris]);
       }
     } catch (e) {
       console.log("Image pick error:", e);
     }
+  };
+
+  const openImagePreview = (uri) => {
+    setSelectedImage(uri);
+    setModalVisible(true);
+  };
+
+  const closeImagePreview = () => {
+    setModalVisible(false);
+    setSelectedImage(null);
   };
 
   const removeImage = (idx) =>
@@ -103,7 +115,7 @@ export default function AfegirPerills() {
     <SafeAreaView style={styles.container}>
       <StatusBar hidden />
 
-      {/* 🔺 TOP BAR ORIGINAL */}
+      {/* 🔺 TOP BAR */}
       <View style={styles.headerContainer}>
         <TouchableOpacity
           style={[styles.redButton, styles.settingsButton]}
@@ -149,7 +161,7 @@ export default function AfegirPerills() {
           }}
           showsVerticalScrollIndicator={false}
         >
-          {/* TITOL + BOTÓ FOTO A LA DRETA */}
+          {/* TITOL + BOTÓ FOTO */}
           <View
             style={{
               flexDirection: "row",
@@ -175,7 +187,7 @@ export default function AfegirPerills() {
             </TouchableOpacity>
           </View>
 
-          {/* DESPLEGABLE TIPUS PERILL */}
+          {/* DESPLEGABLE */}
           <TouchableOpacity
             onPress={() => setDropdownOpen(!dropdownOpen)}
             activeOpacity={0.9}
@@ -191,9 +203,7 @@ export default function AfegirPerills() {
             }}
           >
             {selectedTags.length === 0 ? (
-              <Text style={{ color: "#666" }}>
-                Selecciona tipus de perill...
-              </Text>
+              <Text style={{ color: "#666" }}>Selecciona tipus de perill...</Text>
             ) : (
               selectedTags.map((k) => {
                 const tag = tags.find((t) => t.key === k);
@@ -213,16 +223,9 @@ export default function AfegirPerills() {
                       marginBottom: 6,
                     }}
                   >
-                    <Text
-                      style={{
-                        color: "#B3261E",
-                        fontWeight: "600",
-                        marginRight: 8,
-                      }}
-                    >
+                    <Text style={{ color: "#B3261E", fontWeight: "600", marginRight: 8 }}>
                       {tag?.label}
                     </Text>
-
                     <TouchableOpacity
                       onPress={() => toggleTag(k)}
                       style={{
@@ -240,7 +243,6 @@ export default function AfegirPerills() {
                 );
               })
             )}
-
             <Ionicons
               name={dropdownOpen ? "chevron-up" : "chevron-down"}
               size={18}
@@ -249,7 +251,6 @@ export default function AfegirPerills() {
             />
           </TouchableOpacity>
 
-          {/* LLISTA DESPLEGABLE */}
           {dropdownOpen && (
             <View
               style={{
@@ -288,11 +289,8 @@ export default function AfegirPerills() {
                         backgroundColor: active ? "#B3261E" : "transparent",
                       }}
                     >
-                      {active && (
-                        <Ionicons name="checkmark" size={14} color="#fff" />
-                      )}
+                      {active && <Ionicons name="checkmark" size={14} color="#fff" />}
                     </View>
-
                     <Text style={{ color: "#000" }}>{t.label}</Text>
                   </TouchableOpacity>
                 );
@@ -334,40 +332,42 @@ export default function AfegirPerills() {
             }}
           />
 
-          {/* IMATGES SOTA DESCRIPCIÓ */}
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            style={{ marginTop: 12, marginBottom: 10 }}
-          >
+          {/* IMATGES */}
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginTop: 12, marginBottom: 10 }}>
             {images.length === 0 ? (
               <View
                 style={{
-                  width: "100%",
-                  height: 120,
+                  width: 140,
+                  height: 140,
                   justifyContent: "center",
                   alignItems: "center",
+                  borderRadius: 12,
+                  overflow: "hidden",
+                  backgroundColor: "#e5e5e5",
                 }}
               >
-                <Text style={{ color: "#333" }}>No hi ha imatge</Text>
+                <Image
+                  source={require("../../assets/placeholder.png")}
+                  style={{ width: "100%", height: "100%" }}
+                  resizeMode="cover"
+                />
               </View>
             ) : (
               images.map((uri, i) => (
                 <View key={i} style={{ marginRight: 12 }}>
-                  <Image
-                    source={{ uri }}
-                    style={{
-                      width: 120,
-                      height: 120,
-                      borderRadius: 12,
-                    }}
-                  />
+                  <TouchableOpacity onPress={() => openImagePreview(uri)}>
+                    <Image
+                      source={{ uri }}
+                      style={{ width: 120, height: 120, borderRadius: 12 }}
+                    />
+                  </TouchableOpacity>
                   <TouchableOpacity
                     onPress={() => removeImage(i)}
                     style={{
                       position: "absolute",
                       top: -6,
                       right: -6,
+                      width: 15,
                       backgroundColor: "#0009",
                       borderRadius: 12,
                       padding: 3,
@@ -438,6 +438,41 @@ export default function AfegirPerills() {
           <Text style={styles.tabText}>Afegir Alertes</Text>
         </TouchableOpacity>
       </View>
+
+      {/* MODAL DE PREVISIÓ DE FOTO */}
+      {selectedImage && (
+        <Modal visible={modalVisible} transparent={true}>
+          <View
+            style={{
+              flex: 1,
+              backgroundColor: "rgba(0,0,0,0.9)",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <TouchableOpacity
+              style={{
+                position: "absolute",
+                top: 40,
+                right: 20,
+                backgroundColor: "#0007",
+                padding: 10,
+                borderRadius: 30,
+                zIndex: 10,
+              }}
+              onPress={closeImagePreview}
+            >
+              <Ionicons name="close" size={32} color="#fff" />
+            </TouchableOpacity>
+
+            <Image
+              source={{ uri: selectedImage }}
+              style={{ width: "90%", height: "70%", borderRadius: 12 }}
+              resizeMode="contain"
+            />
+          </View>
+        </Modal>
+      )}
     </SafeAreaView>
   );
 }

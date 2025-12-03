@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -12,6 +12,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import MapView, { Marker } from "react-native-maps";
 import { Ionicons } from "@expo/vector-icons";
 import styles from "../Styles/Style_TapTopBar";
+import * as Location from "expo-location";
 
 const { width } = Dimensions.get("window");
 
@@ -59,6 +60,24 @@ export default function DetalleScreen() {
     return triangulos;
   };
 
+
+  const [direccion, setDireccion] = useState("");
+    useEffect(() => {
+      (async () => {
+        try {
+          const [loc] = await Location.reverseGeocodeAsync({
+            latitude: coordenadas.latitude,
+            longitude: coordenadas.longitude,
+          });
+          if (loc) {
+            setDireccion(`${loc.street || ""}, ${loc.city || ""}`);
+          }
+        } catch (e) {
+          console.log("Error geocoding:", e);
+          setDireccion("Ubicación desconocida");
+        }
+      })();
+    }, [coordenadas]);
 
   const crimenes = {
     1: "Robo",
@@ -215,11 +234,13 @@ export default function DetalleScreen() {
         {/* 🧾 INFO PRINCIPAL */}
         <View style={{ padding: 15 }}>
           {/* TÍTULO */}
-          <Text style={{ fontSize: 28, fontWeight: "bold", color: "#B3261E", marginTop: -20 }}>
+          <Text style={{ fontSize: 28, fontWeight: "bold", color: "#B3261E", marginTop: -5 }}>
             {crimenes[tipoCrimen]}
           </Text>
 
-          <Text style={{ fontSize: 18, marginTop: 8 }}>📍 {ubicacion}</Text>
+          <Text style={{ fontSize: 18, marginTop: 8 }}>
+            📍 {direccion || `Lat: ${coordenadas.latitude.toFixed(5)}, Lon: ${coordenadas.longitude.toFixed(5)}`}
+          </Text>
 
           <Text style={{ fontSize: 18, marginTop: 8 }}>
           Peligrosidad: {renderPeligrosidad(peligrosidad)}

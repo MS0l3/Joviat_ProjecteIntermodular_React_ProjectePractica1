@@ -15,6 +15,7 @@ import * as ImagePicker from "expo-image-picker";
 import * as NavigationBar from "expo-navigation-bar";
 import { StatusBar } from "expo-status-bar";
 import styles from "../Styles/Style_TapTopBar"; // NO TOCAR
+import MapView, { Marker } from "react-native-maps";
 
 export default function AfegirPerills() {
   const navigation = useNavigation();
@@ -24,7 +25,13 @@ export default function AfegirPerills() {
   const [description, setDescription] = useState("");
   const [images, setImages] = useState([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-
+const [markerPosition, setMarkerPosition] = useState(null);
+const defaultRegion = {
+  latitude: 41.3851,
+  longitude: 2.1734,
+  latitudeDelta: 0.01,
+  longitudeDelta: 0.01,
+};
   const [selectedImage, setSelectedImage] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -360,19 +367,31 @@ export default function AfegirPerills() {
             )}
           </ScrollView>
 
-          {/* MAPA (placeholder) */}
-          <View
-            style={{
-              height: 150,
-              backgroundColor: "#EFEFEF",
-              borderRadius: 10,
-              justifyContent: "center",
-              alignItems: "center",
-              marginVertical: 12,
-            }}
-          >
-            <Text style={{ color: "#666" }}>Mapa de la ubicació (placeholder)</Text>
-          </View>
+          <MapView
+  style={{
+    height: 250,
+    width: "100%",
+    borderRadius: 10,
+    marginVertical: 12,
+  }}
+  initialRegion={defaultRegion}
+  onPress={(e) => {
+    const { latitude, longitude } = e.nativeEvent.coordinate;
+    setMarkerPosition({ latitude, longitude });
+  }}
+>
+  {markerPosition && (
+    <Marker
+      coordinate={markerPosition}
+      draggable
+      onDragEnd={(e) => {
+        const { latitude, longitude } = e.nativeEvent.coordinate;
+        setMarkerPosition({ latitude, longitude });
+      }}
+    />
+  )}
+</MapView>
+
 
           {/* BOTÓ AFEGIR */}
           <TouchableOpacity

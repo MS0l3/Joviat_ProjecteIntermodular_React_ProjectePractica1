@@ -33,13 +33,13 @@ export default function Comentaris() {
   const pantallaUsuario = "Usuari";
 
   const [comentaris, setComentaris] = useState([
-    { id: "1", autor: "Marc", comentari: "Això és molt perillós!", hora: "Fa 2h" },
-    { id: "2", autor: "Laia", comentari: "Jo també ho he vist.", hora: "Fa 5h" },
-    { id: "3", autor: "Pol", comentari: "Compte si passeu per aquí.", hora: "Ahir" },
-    { id: "4", autor: "Marc", comentari: "Això és molt perillós!", hora: "Fa 2h" },
-    { id: "5", autor: "Laia", comentari: "Jo també ho he vist.", hora: "Fa 5h" },
-    { id: "6", autor: "Marc", comentari: "Això és molt perillós!", hora: "Fa 2h" },
-    { id: "7", autor: "Laia", comentari: "Jo també ho he vist.", hora: "Fa 5h" },
+    { c_id: "1", autor: "Marc", comentari: "Això és molt perillós!", date: "20-01-1251" },
+    { c_id: "2", autor: "Laia", comentari: "Jo també ho he vist.", date: "30-2-6325" },
+    { c_id: "3", autor: "Pol", comentari: "Compte si passeu per aquí.", date: "6-11-2564" },
+    { c_id: "4", autor: "Marc", comentari: "Això és molt perillós!", date: "16-05-2021" },
+    { c_id: "5", autor: "Laia", comentari: "Jo també ho he vist.", date: "25-07-3012" },
+    { c_id: "6", autor: "Marc", comentari: "Això és molt perillós!", date: "11-09-2343" },
+    { c_id: "7", autor: "Laia", comentari: "Jo també ho he vist.", date: "01-01-0001" },
   ]);
 
   const [nouComentari, setNouComentari] = useState("");
@@ -51,10 +51,10 @@ export default function Comentaris() {
   const afegirComentari = () => {
     if (nouComentari.trim() === "") return;
 
-    const idNou = (comentaris.length + 1).toString();
+    const c_id = (comentaris.length + 1).toString();
     setComentaris([
       ...comentaris,
-      { id: idNou, autor: "Jo", comentari: nouComentari, hora: "Ara" }
+      { c_id: c_id, autor: "Jo", comentari: nouComentari, date: "10-02-2414" }
     ]);
     setNouComentari("");
   };
@@ -106,12 +106,12 @@ export default function Comentaris() {
             {comentaris.length > 0 ? (
               <FlatList
                 data={comentaris}
-                keyExtractor={(item) => item.id}
+                keyExtractor={(item) => item.c_id}
                 renderItem={({ item }) => (
                   <CeldaComentari
                     autor={item.autor}
                     comentari={item.comentari}
-                    hora={item.hora}
+                    date={item.date}
                     onPress={() => handlePressCelda(item)}
                   />
                 )}

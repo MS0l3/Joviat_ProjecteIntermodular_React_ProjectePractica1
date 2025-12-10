@@ -1,15 +1,15 @@
 import React from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, SafeAreaView } from "react-native";
 import styles from "../Styles/Style_CeldaComentari";
 
-export default function CeldaComentari({ autor, comentari, hora, onPress }) {
+export default function CeldaComentari({ autor, comentari, hora }) {
   return (
-    <TouchableOpacity style={styles.celda} onPress={onPress}>
+    <SafeAreaView style={styles.celda}>
       <View style={styles.filaSuperior}>
         <Text style={styles.autor}>{autor}</Text>
         <Text style={styles.hora}>{hora}</Text>
       </View>
       <Text style={styles.comentari}>{comentari}</Text>
-    </TouchableOpacity>
+    </SafeAreaView>
   );
 }

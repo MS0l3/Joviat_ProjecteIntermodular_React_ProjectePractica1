@@ -4,6 +4,8 @@ import { View, StyleSheet, Dimensions, TouchableOpacity, Text, Animated } from '
 import MapView, { Marker } from 'react-native-maps';
 import { Ionicons } from '@expo/vector-icons';
 import { PeligrosidadTriangulos } from './PeligrosidadTriangulos';
+import { useNavigation } from "@react-navigation/native";
+
 
 const { width, height } = Dimensions.get('window');
 
@@ -171,9 +173,7 @@ const Bombolla = ({ post, onClose, onObrir }) => {
       </Text>
 
       {/* Botón Obrir (ORIGINAL) */}
-      <TouchableOpacity style={styles.botonObrir} onPress={() => {
-            navigation.navigate("DetalleScreen", { postId: post.id });
-          }}>
+      <TouchableOpacity style={styles.botonObrir} onPress={onObrir}>
         <Text style={styles.botonObrirText}>Obrir</Text>
         <Ionicons name="arrow-forward" size={16} color="#FFF" />
       </TouchableOpacity>
@@ -187,6 +187,7 @@ const Bombolla = ({ post, onClose, onObrir }) => {
 };
 
 export default function MapComponent() {
+  const navigation = useNavigation();
   const mapRef = useRef(null);
   const [selectedPost, setSelectedPost] = useState(null);
 
@@ -262,7 +263,6 @@ export default function MapComponent() {
   };
 
   const handleMarkerPress = (post) => {
-    console.log('Marker pressed:', post.tipoCrimen);
     setSelectedPost(post);
   };
 
@@ -275,7 +275,7 @@ export default function MapComponent() {
   };
 
   const handleObrirPress = () => {
-    console.log('Abrir post:', selectedPost.id);
+    navigation.navigate("DetalleScreen", { postId: selectedPost.id });
     handleCloseBombolla();
   };
 

@@ -45,7 +45,6 @@ export default function Comentaris() {
   const [nouComentari, setNouComentari] = useState("");
 
   const handlePressCelda = (item) => {
-    console.log("Comentari seleccionat:", item);
   };
 
   const afegirComentari = () => {

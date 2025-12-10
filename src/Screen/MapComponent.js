@@ -260,7 +260,6 @@ export default function MapComponent() {
   };
 
   const handleMarkerPress = (post) => {
-    console.log('Marker pressed:', post.tipoCrimen);
     setSelectedPost(post);
   };
 
@@ -273,7 +272,6 @@ export default function MapComponent() {
   };
 
   const handleObrirPress = () => {
-    console.log('Abrir post:', selectedPost.id);
     handleCloseBombolla();
   };
 

@@ -104,7 +104,6 @@ export default function Pantalla_Preferits() {
 
   // 🔹 FUNCIÓN PARA MANEJAR EL CLICK EN UNA CELDA
   const handlePressCelda = (item) => {
-    console.log('Celda presionada:', item);
     // navigation.navigate("Pantalla_PostDetalle", { postId: item.id });
   };
 

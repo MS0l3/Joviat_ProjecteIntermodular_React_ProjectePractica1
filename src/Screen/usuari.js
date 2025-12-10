@@ -79,7 +79,7 @@ export default function Usuari({ navigation }) {
             {/* Botons */}
             <TouchableOpacity
               style={styles.button}
-              onPress={() => navigation.navigate('elsMeusPosts')}
+              onPress={() => navigation.navigate('ElsMeusPosts')}
             >
               <Text style={styles.buttonText}>Els meus posts</Text>
             </TouchableOpacity>

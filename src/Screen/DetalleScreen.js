@@ -234,10 +234,15 @@ export default function DetalleScreen() {
         {/* 🧾 INFO PRINCIPAL */}
         <View style={{ padding: 15 }}>
           {/* TÍTULO */}
-          <Text style={{ fontSize: 28, fontWeight: "bold", color: "#B3261E", marginTop: -50 }}>
-            {crimenes[tipoCrimen]}
-          </Text>
-
+          {crimenes[tipoCrimen] == null ? (
+            <Text style={{ fontSize: 28, fontWeight: "bold", color: "#B3261E", marginTop: -5 }}>
+              Crimen Desconocido
+            </Text>
+          ) : (
+            <Text style={{ fontSize: 28, fontWeight: "bold", color: "#B3261E", marginTop: -5 }}>
+              {crimenes[tipoCrimen]}
+            </Text>
+          )}
           <Text style={{ fontSize: 18, marginTop: 8 }}>
             📍 {direccion || `Lat: ${coordenadas.latitude.toFixed(5)}, Lon: ${coordenadas.longitude.toFixed(5)}`}
           </Text>

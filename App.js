@@ -37,7 +37,7 @@ export default function App() {
     <NavigationContainer>
       <SafeAreaView style={{ flex: 1 }}>
         <StatusBar barStyle="dark-content" />
-        <Stack.Navigator initialRouteName="Identificacio" screenOptions={{ headerShown: false }}>
+        <Stack.Navigator initialRouteName="Pantalla_TapTopBar" screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Identificacio" component={Identificacio} />
           <Stack.Screen name="Configuracio" component={Configuracio} />
           <Stack.Screen name="Pantalla_TapTopBar" component={Pantalla_TapTopBar} />

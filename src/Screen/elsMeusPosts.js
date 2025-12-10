@@ -138,7 +138,9 @@ export default function ElsMeusPosts() {
 
         <TouchableOpacity
           style={[styles.tabButton, selectedTab === "Preferits" && styles.tabButtonActivo]}
-          onPress={() => setSelectedTab("Preferits")}
+          onPress={() => {setSelectedTab("Preferits");
+            navigation.navigate("Pantalla_Preferits");
+          }}
         >
           <Ionicons
             name="bookmark-outline"

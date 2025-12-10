@@ -234,7 +234,7 @@ export default function DetalleScreen() {
         {/* 🧾 INFO PRINCIPAL */}
         <View style={{ padding: 15 }}>
           {/* TÍTULO */}
-          <Text style={{ fontSize: 28, fontWeight: "bold", color: "#B3261E", marginTop: -5 }}>
+          <Text style={{ fontSize: 28, fontWeight: "bold", color: "#B3261E", marginTop: -50 }}>
             {crimenes[tipoCrimen]}
           </Text>
 

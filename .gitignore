@@ -158,3 +158,4 @@ android/.idea/modules.xml
 # Comment next line if keeping position of elements in Navigation Editor is relevant for you
 android/.idea/navEditor.xml
 Firebase.js
+src/Firebase/FirebaseConfig.js

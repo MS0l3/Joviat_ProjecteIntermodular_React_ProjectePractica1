@@ -62,6 +62,20 @@ const defaultRegion = {
       )
     : 0;
 
+  // Función para renderizar triángulos - VERSIÓN CORRECTA
+  const renderPeligrosidad = (nivel) => {
+    return Array.from({ length: 5 }).map((_, i) => (
+      <Ionicons
+        key={i}
+        name="warning"
+        size={16}
+        color={i < nivel ? "#B3261E" : "#CBD5E1"}
+        style={{ marginHorizontal: 2 }}
+      />
+    ));
+  };
+
+  // Selecció d'imatges
   const pickImages = async () => {
     try {
       const result = await ImagePicker.launchImageLibraryAsync({
@@ -94,6 +108,16 @@ const defaultRegion = {
   const removeImage = (idx) =>
     setImages((prev) => prev.filter((_, i) => i !== idx));
 
+  const isSettingsMode = true;
+
+  const handleButtonPress = () => {
+    if (isSettingsMode) {
+      navigation.navigate("Configuracio");
+    } else {
+      navigation.goBack();
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar hidden />
@@ -101,10 +125,10 @@ const defaultRegion = {
       {/* 🔺 TOP BAR */}
       <View style={styles.headerContainer}>
         <TouchableOpacity
-          style={styles.redButton}
-          onPress={() => navigation.goBack()}
+          style={[styles.redButton, styles.settingsButton]}
+          onPress={handleButtonPress}
         >
-          <Ionicons name="arrow-back-outline" size={22} color="#fff" />
+          <Ionicons name="settings-outline" size={24} color="black" />
         </TouchableOpacity>
 
         <View style={styles.botonMarca}>
@@ -113,7 +137,7 @@ const defaultRegion = {
 
         <TouchableOpacity
           style={styles.botonUsuario}
-          onPress={() => navigation.navigate("Pantalla_Usuario")}
+          onPress={() => navigation.navigate("Usuari")}
         >
           <Ionicons name="person-circle-outline" size={28} color="#000" />
         </TouchableOpacity>
@@ -281,20 +305,16 @@ const defaultRegion = {
             </View>
           )}
 
-          {/* TRIANGLES */}
+          {/* TRIANGLES - CORREGIDO */}
           <View style={{ alignItems: "center", marginVertical: 12 }}>
             {highestLevel === 0 ? (
               <Text style={{ color: "#333" }}>Cap perill seleccionat</Text>
             ) : (
-              <View style={{ flexDirection: "row" }}>
-                {Array.from({ length: highestLevel }).map((_, i) => (
-                  <Text
-                    key={i}
-                    style={{ color: "#B3261E", fontSize: 22, marginHorizontal: 3 }}
-                  >
-                    ▲
-                  </Text>
-                ))}
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Text style={{ marginRight: 8, color: "#000", fontWeight: "600" }}>
+                  Nivell de perill:
+                </Text>
+                {renderPeligrosidad(highestLevel)}
               </View>
             )}
           </View>
@@ -418,7 +438,7 @@ const defaultRegion = {
       <View style={styles.tabBar}>
         <TouchableOpacity
           style={styles.tabButton}
-          onPress={() => navigation.navigate("Pantalla_Explorar")}
+          onPress={() => navigation.navigate("Pantalla_TapTopBar")}
         >
           <Ionicons name="location-outline" size={20} color="#000" />
           <Text style={styles.tabText}>Explorar</Text>
@@ -432,7 +452,7 @@ const defaultRegion = {
           <Text style={styles.tabText}>Preferits</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.tabButton}>
+        <TouchableOpacity style={styles.tabButtonActivo}>
           <Ionicons name="add-circle-outline" size={26} color="#B3261E" />
           <Text style={styles.tabText}>Afegir Alertes</Text>
         </TouchableOpacity>

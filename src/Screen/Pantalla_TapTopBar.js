@@ -2,88 +2,137 @@
 // -------------------------------------------------------------
 // Estos imports son necesarios para el funcionamiento general de la pantalla
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, SafeAreaView } from "react-native";
+import { View, Text, TouchableOpacity, TextInput} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons"; // Para los iconos (ojo, engranaje, usuario, etc.)
-import styles from "../Styles/Style_TapTopBar.js"; // Estilos separados en su archivo propio
+import styles from "../Styles/Style_TapTopBar.js";
+import MapComponent from "../Components/MapComponent.js";
+import BackHandlerExit from "../Components/BackHandlerExit.js"; // Block para manejar el botón atrás en Android
+import FiltroCrimenes from "../Components/FiltroCrimenes.js";
 // -------------------------------------------------------------
+// ============================================================================
+// ✅ Pantalla_TapTopBar.js
+// Pantalla base que contiene:
+// 1️⃣ Cabecera superior (TopBar)
+// 2️⃣ Switch entre "Mapa" y "Llista"
+// 3️⃣ Contenido principal (ListaScreen)
+// 4️⃣ TabBar inferior
+// ============================================================================
 
+import { SafeAreaView } from "react-native-safe-area-context";
+import ListaComponent from "../Components/ListaComponent.js";
+
+// 📦 Importa la pantalla que irá dentro
+//import ListaScreen from "../Components/ListaComponent.js"; // 👈 Ajusta si la ruta difiere
+
+
+
+// ============================================================================
+// 🧭 COMPONENTE PRINCIPAL
+// ============================================================================
 export default function Pantalla_TapTopBar() {
   const navigation = useNavigation();
 
-   // 💡 CONSTANTE RETROCESO
+  BackHandlerExit(); /* Maneja el botón atrás en Android */
+  const [crimenesSeleccionados, setCrimenesSeleccionados] = useState([]);
+  // ========================================================================
+
+  // 💡 CONSTANTE RETROCESO
   // Cambia esto a "true" cuando quieras mostrar el modo AJUSTES
-  const isSettingsMode = true; // ← Cambia a true para activar el engranaje o a "false" para activar el modo go.back
+  const isSettingsMode = true; // ← Cambia a true para activar el engranaje
+
 
   // 🔄 FUNCIONALIDAD DINÁMICA DEL BOTÓN
   const handleButtonPress = () => {
     if (isSettingsMode) {
       // Si está en modo ajustes, te lleva a la pantalla de ajustes
-      navigation.navigate("configuracio"); // 👈 cambia aquí el nombre
+      navigation.navigate("Configuracio"); // 👈 cambia aquí el nombre
     } else {
       // Si está en modo retroceso, simplemente vuelve atrás
       navigation.goBack();
     }
   };
   // 🔹 NOMBRE DE LA PANTALLA A LA QUE LLEVA EL BOTÓN DE LA MARCA:
-  const pantallaMarca = "Pantalla_Principal"; // 👉 cambia este nombre según tu pantalla principal
+  const pantallaMarca = "Pantalla_TapTopBar"; // 👉 cambia este nombre según tu pantalla principal
 
   // 🔹 NOMBRE DE LA PANTALLA DEL USUARIO:
-  const pantallaUsuario = "Pantalla_Usuario"; // 👉 cambia este nombre según corresponda
+  const pantallaUsuario = "Usuari"; // 👉 cambia este nombre según corresponda
 
   // 🔹 ESTADO DE LA TABBAR: selecciona cuál está activo
   const [selectedTab, setSelectedTab] = useState("Explorar");
-  // opciones posibles: "Explorar", "Preferits", "AfegirAlertes"
 
-  // 🔹 SWITCH MAPA/LISTA:
+  // 🔄 Estado del switch superior (Mapa o Llista)
   const [switchSeleccion, setSwitchSeleccion] = useState("Mapa");
-  // -------------------------------------------------------------
 
+
+// ========================================================================
+// 🎛️ FUNCIONES DE NAVEGACIÓN
+// ========================================================================
+
+  const [searchText, setSearchText] = useState("");
+
+  // ========================================================================
+  // 🧱 INTERFAZ
+  // ========================================================================
   return (
-    <SafeAreaView style={styles.container}>
-      {/* -------------------------------------------------------------
-         🟥 CABECERA SUPERIOR (Botón Rojo + Marca + Usuario)
-         Contiene: Botón retroceso/ajustes, logo con texto y botón usuario
-      ------------------------------------------------------------- */}
+    <SafeAreaView style={[styles.container, { justifyContent: "space-between" }]}>
+      {/* ======================================================
+        🟥 CABECERA SUPERIOR (Botón, Marca, Usuario)
+      ====================================================== */}
       <View style={styles.headerContainer}>
-        {/* 🔴 BOTÓN ROJO DINÁMICO (Retroceso / Ajustes) */}
-      <TouchableOpacity
-        style={[
-          styles.redButton,
-          isSettingsMode && styles.settingsButton, // cambia el estilo si es modo ajustes
-        ]}
-        onPress={handleButtonPress}
-      >
-        <Ionicons
-          name={isSettingsMode ? "settings-outline" : "arrow-back"}
-          size={24}
-          color={isSettingsMode ? "black" : "white"}
-        />
-      </TouchableOpacity>
-
-        {/* 🔸 BOTÓN INVISIBLE DE LA MARCA */}
+        {/* Botón rojo o de ajustes */}
         <TouchableOpacity
-          style={styles.botonMarca}
-          onPress={() => navigation.navigate(pantallaMarca)} // 👉 aquí puedes cambiar el destino
+          style={[
+            styles.redButton,
+            isSettingsMode && styles.settingsButton,
+          ]}
+          onPress={handleButtonPress}
         >
-          <Text style={styles.textoMarca}>DangerZone</Text>
+          <Ionicons
+            name={isSettingsMode ? "settings-outline" : "arrow-back"}
+            size={24}
+            color={isSettingsMode ? "#000" : "#FFF"}
+          />
         </TouchableOpacity>
 
-        {/* 👤 BOTÓN USUARIO */}
+        {/* 🔍 Buscador de ciudades */}
+        <View style={styles.searchContainer}>
+          <Ionicons name="search" size={18} color="#555" style={{ marginRight: 6 }} />
+
+          <TextInput
+            style={styles.searchInput}
+            placeholder="Buscar ciudad..."
+            placeholderTextColor="#777"
+            value={searchText}
+            onChangeText={setSearchText}
+            autoCorrect={false}
+            autoCapitalize="none"
+          />
+
+          {searchText.length > 0 && (
+            <TouchableOpacity onPress={() => setSearchText("")}>
+              <Ionicons name="close-circle" size={18} color="#777" />
+            </TouchableOpacity>
+          )}
+        </View>
+
+        {/* Botón Usuario */}
         <TouchableOpacity
           style={styles.botonUsuario}
-          onPress={() => navigation.navigate(pantallaUsuario)} // 👉 cambia el destino aquí
+          onPress={() => navigation.navigate(pantallaUsuario)}
         >
           <Ionicons name="person-circle-outline" size={26} color="#000" />
         </TouchableOpacity>
       </View>
-
-      {/* -------------------------------------------------------------
-         ⚙️ SWITCH MAPA / LLISTA
-         Permite cambiar entre dos vistas o pantallas.
-         Cuando uno está seleccionado, tiene borde blanco y fondo gris.
-      ------------------------------------------------------------- */}
+  
+      {/* ======================================================
+        ⚙️ SWITCH MAPA / LLISTA
+      ====================================================== */}
       <View style={styles.switchContainer}>
+         <FiltroCrimenes
+            crimenesSeleccionados={crimenesSeleccionados}
+            setCrimenesSeleccionados={setCrimenesSeleccionados}
+          />
         <TouchableOpacity
           style={[
             styles.switchButton,
@@ -119,23 +168,19 @@ export default function Pantalla_TapTopBar() {
         </TouchableOpacity>
       </View>
 
-      {/* -------------------------------------------------------------
-         📍 CONTENIDO PRINCIPAL
-         Aquí puedes añadir lo que quieras según la pantalla.
-         Este espacio cambia entre pantallas.
-      ------------------------------------------------------------- */}
+      {/* ======================================================
+        📍 CONTENIDO PRINCIPAL (Lista o Mapa)
+      ====================================================== */}
       <View style={styles.mainContent}>
-        <Text style={{ textAlign: "center", color: "#000" }}>
-          Contenido de la pantalla aquí
-        </Text>
+          {switchSeleccion === "Mapa" ? (
+            <MapComponent />
+          ) : (
+            <ListaComponent filtro={searchText} crimenesSeleccionados={crimenesSeleccionados} /> // ✅ Aquí se renderiza tu lista completa
+          )}
       </View>
-
-      {/* -------------------------------------------------------------
-         🔻 MENÚ INFERIOR (TABBAR)
-         3 botones: Explorar | Preferits | Afegir Alertes
-         Cada uno navega a una pantalla distinta.
-         Usa la variable "selectedTab" para saber cuál está activo.
-      ------------------------------------------------------------- */}
+      {/* ======================================================
+        🔻 TABBAR INFERIOR (Explorar | Preferits | Afegir)
+      ====================================================== */}
       <View style={styles.tabBar}>
         <TouchableOpacity
           style={[
@@ -144,7 +189,7 @@ export default function Pantalla_TapTopBar() {
           ]}
           onPress={() => {
             setSelectedTab("Explorar");
-            navigation.navigate("Pantalla_Explorar"); // 👉 cambia el nombre si es otra pantalla
+            navigation.navigate("Pantalla_TapTopBar");
           }}
         >
           <Ionicons
@@ -165,11 +210,11 @@ export default function Pantalla_TapTopBar() {
         <TouchableOpacity
           style={[
             styles.tabButton,
-            selectedTab === "Preferits" && styles.tabButtonActivo
+            selectedTab === "Preferits" && styles.tabButtonActivo,
           ]}
           onPress={() => {
             setSelectedTab("Preferits");
-            navigation.navigate("Pantalla_Preferits"); // 👉 cambia el destino aquí
+            navigation.navigate("Pantalla_Preferits");
           }}
         >
           <Ionicons
@@ -180,7 +225,7 @@ export default function Pantalla_TapTopBar() {
           <Text
             style={[
               styles.tabText,
-              selectedTab === "Preferits" && styles.tabTextActivo
+              selectedTab === "Preferits" && styles.tabTextActivo,
             ]}
           >
             Preferits
@@ -190,11 +235,11 @@ export default function Pantalla_TapTopBar() {
         <TouchableOpacity
           style={[
             styles.tabButton,
-            selectedTab === "AfegirAlertes" && styles.tabButtonActivo
+            selectedTab === "AfegirAlertes" && styles.tabButtonActivo,
           ]}
           onPress={() => {
             setSelectedTab("AfegirAlertes");
-            navigation.navigate("Pantalla_AfegirAlertes"); // 👉 cambia el destino aquí
+            navigation.navigate("AfegirPerills");
           }}
         >
           <Ionicons
@@ -205,7 +250,7 @@ export default function Pantalla_TapTopBar() {
           <Text
             style={[
               styles.tabText,
-              selectedTab === "AfegirAlertes" && styles.tabTextActivo
+              selectedTab === "AfegirAlertes" && styles.tabTextActivo,
             ]}
           >
             Afegir Alertes

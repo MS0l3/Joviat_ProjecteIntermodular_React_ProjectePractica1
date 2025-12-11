@@ -97,7 +97,7 @@ export default function Pantalla_Preferits() {
       id: '9',
       tipoCrimen: 'Desordre public',
       peligrosidad: 3,
-      ubicacion: 'C/ Carretera San Martí',
+      ubicacion: 'C/ Carretera San Merino',
       imagenUrl: 'https://picsum.photos/200/200?random=4'
     }
   ]);

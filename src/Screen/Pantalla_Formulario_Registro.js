@@ -45,6 +45,7 @@ export default function Pantalla_Formulario_Registro() {
       return;
     }
     Alert.alert("Registrat!", "Compte creat correctament.");
+    navigation.navigate("LoginScreen");
   };
 
   return (

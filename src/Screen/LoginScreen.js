@@ -14,6 +14,8 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from "@expo/vector-icons";
 import styles from '../Styles/LoginScreen.styles';
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../Firebase";
 
 const LoginScreen = () => {
   const navigation = useNavigation();
@@ -30,6 +32,12 @@ const LoginScreen = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
+
+  //Variable de modo debug admin para mostrar boton error de Firebase
+  const ADMIN_DEBUG_MODE = true; // 👈 True = Ver boton / False = No ver boton
+
+  // Estado para el código de error de Firebase (solo en modo debug)
+  const [firebaseErrorCode, setFirebaseErrorCode] = useState(null);
 
   // Manejar cambio en el campo de correo
   const handleEmailChange = (text) => {
@@ -51,42 +59,54 @@ const LoginScreen = () => {
 
   // Manejar el proceso de inicio de sesión
   const handleLogin = async () => {
-    // Validaciones básicas
     if (!email) {
-      setEmailError('Introdueix el teu correu electrònic');
+      setEmailError("Introdueix el teu correu electrònic");
       return;
     }
-    
+
     if (!validateEmail(email)) {
-      setEmailError('Format de correu electrònic incorrecte');
+      setEmailError("Format de correu electrònic incorrecte");
       return;
     }
-    
+
     if (!password) {
-      setPasswordError('Introdueix la teva contrasenya');
+      setPasswordError("Introdueix la teva contrasenya");
       return;
     }
 
-    // Activar loading y deshabilitar interacción
     setIsLoading(true);
-    setLoginError('');
+    setLoginError("");
+    setFirebaseErrorCode(null);
 
-    // Simular proceso de login (2 segundos de delay)
     try {
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      // Simular error de credenciales (esto se quitará cuando conectes Firebase)
-      setLoginError('El correu o la contrasenya són incorrectes');
+      await signInWithEmailAndPassword(auth, email, password);
+
+      // ✅ Login correcto
+      navigation.navigate("Pantalla_TapTopBar");
+
     } catch (error) {
-      // En caso de error de conexión real
-      setFirebaseErrorModal(true);
+      console.log("Firebase error:", error.code);
+
+      // ❌ Errores cotidianos (NO técnicos)
+      if (
+        error.code === "auth/user-not-found" ||
+        error.code === "auth/wrong-password" ||
+        error.code === "auth/invalid-credential"
+      ) {
+        setLoginError("El correu o la contrasenya són incorrectes");
+      } 
+      // 🚨 Errores NO cotidianos → técnicos
+      else {
+        setFirebaseErrorCode(error.code);
+        setFirebaseErrorModal(true);
+      }
+
     } finally {
-      // Desactivar loading sin importar el resultado
       setIsLoading(false);
     }
-
-    navigation.navigate('Pantalla_TapTopBar');
   };
+
+
 
   // Navegar a la pantalla de recuperación de contraseña
   const handleForgotPassword = () => {
@@ -220,23 +240,18 @@ const LoginScreen = () => {
         </View>
 
         {/* Botón de prueba para error Firebase */}
-        <TouchableOpacity 
-          style={[
-            styles.testButton,
-            isLoading ? styles.disabledTestButton : {}
-          ]} 
-          onPress={handleTestFirebaseError}
-          activeOpacity={0.8}
-          disabled={isLoading}
-        >
-          <Text style={[
-            styles.testButtonText,
-            isLoading ? styles.disabledText : {}
-          ]}>
-            Prova Error Firebase
-          </Text>
-        </TouchableOpacity>
-
+        {ADMIN_DEBUG_MODE && (
+          <TouchableOpacity 
+            style={styles.testButton}
+            onPress={handleTestFirebaseError}
+            activeOpacity={0.8}
+            disabled={isLoading}
+          >
+            <Text style={styles.testButtonText}>
+              Prova Error Firebase (ADMIN)
+            </Text>
+          </TouchableOpacity>
+        )}
         {/* Espacio adicional para el teclado */}
         <View style={styles.bottomSpace} />
       </ScrollView>
@@ -253,7 +268,13 @@ const LoginScreen = () => {
             <View style={styles.modalContent}>
               <Text style={styles.modalTitle}>Error de connexió</Text>
               <Text style={styles.modalText}>
-                Error firebase etc
+                S'ha produït un error inesperat amb Firebase.
+                {ADMIN_DEBUG_MODE && firebaseErrorCode && (
+                  <>
+                    {"\n\n"}Codi d'error:
+                    {"\n"}{firebaseErrorCode}
+                  </>
+                )}
               </Text>
               <TouchableOpacity 
                 style={styles.modalButton} 

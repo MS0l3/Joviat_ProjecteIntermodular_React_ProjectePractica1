@@ -15,6 +15,10 @@ import { useNavigation } from "@react-navigation/native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import styles from "../Styles/Style_Formulario_Registro";
 import logo from "../../assets/Logo_DangerZone.png";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
+import { auth, db } from "../../Firebase";
+import { serverTimestamp } from "firebase/firestore";
 
 export default function Pantalla_Formulario_Registro() {
   const navigation = useNavigation();
@@ -31,22 +35,60 @@ export default function Pantalla_Formulario_Registro() {
   const isEmailValid = emailRegex.test(email) || email === "";
   const doPasswordsMatch = password === confirmPassword || confirmPassword === "";
 
-  const handleRegister = () => {
+const handleRegister = async () => {
+  try {
     if (!emailRegex.test(email)) {
       Alert.alert("Error", "Format de correu incorrecte");
       return;
     }
+
     if (password !== confirmPassword) {
       Alert.alert("Error", "Les contrasenyes no coincideixen");
       return;
     }
+
     if (!accepted) {
       Alert.alert("Error", "Has d'acceptar els termes i condicions");
       return;
     }
+
+    // 1️⃣ Crear usuario en Firebase Auth
+    const userCredential = await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+
+    const uid = userCredential.user.uid;
+
+    // 2️⃣ Generar username único
+    const username = `Usuari${uid.slice(0, 6)}`;
+
+    // 3️⃣ Crear documento en Firestore
+    await setDoc(doc(db, "users", uid), {
+      uid: uid,
+      username: username,
+      email: email,
+      phone: null,
+      photoURL: "https://example.com/default_user.png",
+      postsPublicados: [],
+      favoritos: [],
+      createdAt: serverTimestamp(),
+    });
+
     Alert.alert("Registrat!", "Compte creat correctament.");
+<<<<<<< Updated upstream
     navigation.navigate("LoginScreen");
   };
+=======
+    navigation.navigate("Identificacio");
+
+  } catch (error) {
+    console.error(error);
+    Alert.alert("Error", "No s'ha pogut crear el compte.");
+  }
+};
+>>>>>>> Stashed changes
 
   return (
     <View style={styles.container}>

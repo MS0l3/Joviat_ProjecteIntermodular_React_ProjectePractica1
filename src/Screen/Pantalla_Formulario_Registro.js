@@ -77,10 +77,6 @@ const handleRegister = async () => {
     });
 
     Alert.alert("Registrat!", "Compte creat correctament.");
-<<<<<<< Updated upstream
-    navigation.navigate("LoginScreen");
-  };
-=======
     navigation.navigate("Identificacio");
 
   } catch (error) {
@@ -88,7 +84,6 @@ const handleRegister = async () => {
     Alert.alert("Error", "No s'ha pogut crear el compte.");
   }
 };
->>>>>>> Stashed changes
 
   return (
     <View style={styles.container}>

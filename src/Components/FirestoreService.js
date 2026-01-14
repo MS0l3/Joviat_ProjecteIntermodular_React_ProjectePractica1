@@ -1,5 +1,5 @@
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
-import { db } from "../Firebase";
+import { db } from "../../Firebase";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { arrayUnion } from "firebase/firestore";
 
@@ -46,7 +46,6 @@ import { crearPost } from "../services/firestoreService";
 const handleCrearPost = async () => {
   await crearPost({
     tipoCrimen: 1,
-    peligrosidad: 3,
     ubicacion: "C/Tumadre 24",
     coordenadas: {
       latitude: 41.3851,
@@ -132,3 +131,22 @@ const toggleFavorito = async () => {
 
 */
 
+const calcularPeligrosidad = (tipoCrimen) => {
+  return tipoCrimen; // simple y claro
+};
+
+//
+/*import { useEffect, useState } from "react";
+import { getPosts } from "../services/postsService";
+
+const [ubicaciones, setUbicaciones] = useState([]);
+
+useEffect(() => {
+  const cargarPosts = async () => {
+    const data = await getPosts();
+    setUbicaciones(data);
+  };
+
+  cargarPosts();
+}, []);
+*/

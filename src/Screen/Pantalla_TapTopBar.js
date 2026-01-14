@@ -20,8 +20,6 @@ import FiltroCrimenes from "../Components/FiltroCrimenes.js";
 // ============================================================================
 
 import { SafeAreaView } from "react-native-safe-area-context";
-import ListaComponent from "../Components/ListaComponent.js";
-
 import ListaScreen from "../Components/ListaComponent";
 import { getPosts } from "../Components/PostService";
 

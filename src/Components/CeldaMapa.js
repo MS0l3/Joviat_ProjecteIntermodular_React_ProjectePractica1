@@ -12,12 +12,16 @@ import Style_TapTopBar from "../Styles/Style_TapTopBar";
 import { Ionicons } from '@expo/vector-icons';
 
 export default function CeldaMapa({
+  postId,
   ubicacion = "Ubicación desconocida",
   peligrosidad = 3,
   tipoCrimen = 1,
-  coordenadas = { latitude: 41.3851, longitude: 2.1734 }, // Barcelona por defecto
+  coordenadas = { latitude: 41.3851, longitude: 2.1734 },
+  imagenes = [],
+  descripcion = "",
   interactivo = false,
 }) {
+
   const navigation = useNavigation();
 
   // --------------------------------------------------------------------------
@@ -63,13 +67,17 @@ export default function CeldaMapa({
   // 🔹 Al pulsar una celda → ir a DetalleScreen con todos los datos
   // --------------------------------------------------------------------------
   const handlePress = () => {
-    navigation.navigate("DetalleScreen", {
-      ubicacion,
-      peligrosidad,
-      tipoCrimen,
-      coordenadas: safeCoords,
-    });
-  };
+  navigation.navigate("DetalleScreen", {
+    postId,          // ✅ viene por props
+    ubicacion,
+    peligrosidad,
+    tipoCrimen,
+    coordenadas: safeCoords,
+    imagenes,
+    descripcion,
+  });
+};
+
 
   // --------------------------------------------------------------------------
   // 🔹 Render principal

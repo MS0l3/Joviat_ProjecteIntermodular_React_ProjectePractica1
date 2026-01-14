@@ -184,73 +184,10 @@ const Bombolla = ({ post, onClose, onObrir }) => {
   );
 };
 
-export default function MapComponent() {
+export default function MapComponent({ posts = [], onMarkerPress }) {
+
   const mapRef = useRef(null);
   const [selectedPost, setSelectedPost] = useState(null);
-
-  // Datos de ejemplo (ORIGINAL)
-  const locations = [
-    {
-      id: '1',
-      tipoCrimen: 'Assassinat',
-      peligrosidad: 5,
-      ubicacion: 'C/ Carrer Casavendrals 45',
-      descripcion: 'Incident greu reportat recentment a la zona, s\'ha obert una investigació.',
-      imagenUrl: 'https://picsum.photos/200/200?random=1',
-      latitude: 41.3851,
-      longitude: 2.1734,
-    },
-    {
-      id: '2',
-      tipoCrimen: 'Assetjament',
-      peligrosidad: 5,
-      ubicacion: 'C/ Carrer Legalitos 152',
-      descripcion: 'Cas d\'assetjament reportat per veïns de la zona, es recomana extremar la precaució.',
-      imagenUrl: 'https://picsum.photos/200/200?random=2',
-      latitude: 41.3874,
-      longitude: 2.1686,
-    },
-    {
-      id: '3',
-      tipoCrimen: 'Robatori',
-      peligrosidad: 4,
-      ubicacion: 'C/ Carrer de las puntañas, 15',
-      descripcion: 'Robatori amb força a establiment comercial, es busca a sospitós.',
-      imagenUrl: 'https://picsum.photos/200/200?random=3',
-      latitude: 41.3865,
-      longitude: 2.1665,
-    },
-    {
-      id: '4',
-      tipoCrimen: 'Baralles',
-      peligrosidad: 3,
-      ubicacion: 'C/ Cami del mirasol',
-      descripcion: 'Altercado públic entre diversos individus, ja intervingut per les autoritats.',
-      imagenUrl: null,
-      latitude: 41.3848,
-      longitude: 2.1702,
-    },
-    {
-      id: '5',
-      tipoCrimen: 'Desordre public',
-      peligrosidad: 3,
-      ubicacion: 'C/ Carretera San Martí',
-      descripcion: 'Disturbis i desordre públic a la via, es recomana evitar la zona.',
-      imagenUrl: 'https://picsum.photos/200/200?random=4',
-      latitude: 41.3839,
-      longitude: 2.1721,
-    },
-    {
-      id: '6',
-      tipoCrimen: 'Vandalisme',
-      peligrosidad: 2,
-      ubicacion: 'C/ Avinguda Diagonal 600',
-      descripcion: 'Actes vandàlics a propietat pública, es busquen testimonis.',
-      imagenUrl: 'https://picsum.photos/200/200?random=5',
-      latitude: 41.3882,
-      longitude: 2.1715,
-    }
-  ];
 
   const initialRegion = {
     latitude: 41.3851,
@@ -272,6 +209,9 @@ export default function MapComponent() {
   };
 
   const handleObrirPress = () => {
+    if (onMarkerPress && selectedPost) {
+      onMarkerPress(selectedPost);
+    }
     handleCloseBombolla();
   };
 
@@ -297,14 +237,22 @@ export default function MapComponent() {
         showsMyLocationButton={false}
         loadingEnabled={true}
       >
-        {locations.map((location) => (
-          <MarkerAnimado
-            key={location.id}
-            post={location}
-            isSelected={selectedPost?.id === location.id}
-            onPress={() => handleMarkerPress(location)}
-          />
-        ))}
+        {posts.map((post) => {
+          if (!post.coordenadas?.latitude) return null;
+
+          return (
+            <MarkerAnimado
+              key={post.id}
+              post={{
+                ...post,
+                latitude: post.coordenadas.latitude,
+                longitude: post.coordenadas.longitude,
+              }}
+              isSelected={selectedPost?.id === post.id}
+              onPress={() => handleMarkerPress(post)}
+            />
+          );
+        })}
       </MapView>
 
       {/* Botón para centrar en ubicación del usuario (ORIGINAL) */}

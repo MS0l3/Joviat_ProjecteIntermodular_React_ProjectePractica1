@@ -16,6 +16,8 @@ import { useNavigation } from "@react-navigation/native";
 import ListaScreen from "../Components/ListaComponent";
 import styles from "../Styles/Style_TapTopBar";
 import { getPosts } from "../Components/PostService";
+import MapComponent from "../Components/MapComponent";
+
 
 export default function Pantalla_TapTopBar() {
   const navigation = useNavigation();
@@ -123,7 +125,12 @@ export default function Pantalla_TapTopBar() {
       {/* ================= CONTENIDO ================= */}
       <View style={styles.mainContent}>
         {switchSeleccion === "Mapa" ? (
-          <Text style={{ marginTop: 20 }}>Aquí irá el mapa</Text>
+          <MapComponent
+            posts={posts}
+            onMarkerPress={(post) =>
+              navigation.navigate("DetalleScreen", post)
+            }
+          />
         ) : (
           <ListaScreen
             data={posts}

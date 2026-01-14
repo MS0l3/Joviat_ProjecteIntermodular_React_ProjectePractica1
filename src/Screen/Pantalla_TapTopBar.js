@@ -1,37 +1,39 @@
-// ✅ IMPORTS PRINCIPALES PARA ESTA PANTALLA BASE
-// -------------------------------------------------------------
-// Estos imports son necesarios para el funcionamiento general de la pantalla
-import React, { useEffect, useState } from "react";
-import { View, Text, TouchableOpacity, TextInput} from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { Ionicons } from "@expo/vector-icons"; // Para los iconos (ojo, engranaje, usuario, etc.)
-import styles from "../Styles/Style_TapTopBar.js";
-import MapComponent from "../Components/MapComponent.js";
-import BackHandlerExit from "../Components/BackHandlerExit.js"; // Block para manejar el botón atrás en Android
-import FiltroCrimenes from "../Components/FiltroCrimenes.js";
-// -------------------------------------------------------------
 // ============================================================================
-// ✅ Pantalla_TapTopBar.js
-// Pantalla base que contiene:
-// 1️⃣ Cabecera superior (TopBar)
-// 2️⃣ Switch entre "Mapa" y "Llista"
-// 3️⃣ Contenido principal (ListaScreen)
-// 4️⃣ TabBar inferior
+// ✅ Pantalla_TapTopBar.js — VERSION ESTABLE (layout original)
 // ============================================================================
 
-import { SafeAreaView } from "react-native-safe-area-context";
-import ListaComponent from "../Components/ListaComponent.js";
+import React, { useEffect, useState } from "react";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  TextInput,
+  SafeAreaView,
+} from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 
 import ListaScreen from "../Components/ListaComponent";
+import styles from "../Styles/Style_TapTopBar";
 import { getPosts } from "../Components/PostService";
 
 export default function Pantalla_TapTopBar() {
   const navigation = useNavigation();
 
+  // 🔹 TAB INFERIOR
   const [selectedTab, setSelectedTab] = useState("Explorar");
+
+  // 🔹 SWITCH MAPA / LISTA
   const [switchSeleccion, setSwitchSeleccion] = useState("Llista");
+
+  // 🔹 BUSCADOR
   const [searchText, setSearchText] = useState("");
+
+  // 🔹 POSTS
   const [posts, setPosts] = useState([]);
+
+  // ⚙️ MODO AJUSTES (rueda)
+  const isSettingsMode = true;
 
   useEffect(() => {
     const cargarPosts = async () => {
@@ -41,50 +43,88 @@ export default function Pantalla_TapTopBar() {
     cargarPosts();
   }, []);
 
+  const handleButtonPress = () => {
+    navigation.navigate("Pantalla_Ajustes");
+  };
+
   return (
     <SafeAreaView style={styles.container}>
-      {/* HEADER */}
+
+      {/* ================= HEADER ================= */}
       <View style={styles.headerContainer}>
-        <TouchableOpacity style={styles.settingsButton}>
+        <TouchableOpacity
+          style={[styles.redButton, styles.settingsButton]}
+          onPress={handleButtonPress}
+        >
           <Ionicons name="settings-outline" size={24} color="#000" />
         </TouchableOpacity>
 
         <View style={styles.searchContainer}>
-          <Ionicons name="search" size={18} />
+          <Ionicons name="search" size={18} color="#555" />
           <TextInput
             style={styles.searchInput}
             placeholder="Buscar ciudad..."
             value={searchText}
             onChangeText={setSearchText}
+            placeholderTextColor="#777"
           />
+          {searchText.length > 0 && (
+            <TouchableOpacity onPress={() => setSearchText("")}>
+              <Ionicons name="close-circle" size={18} color="#777" />
+            </TouchableOpacity>
+          )}
         </View>
 
         <TouchableOpacity
-          onPress={() => navigation.navigate("Pantalla_Usuario")}
+          style={styles.botonUsuario}
+          onPress={() => navigation.navigate("Usuari")}
         >
-          <Ionicons name="person-circle-outline" size={26} />
+          <Ionicons name="person-circle-outline" size={26} color="#000" />
         </TouchableOpacity>
       </View>
 
-      {/* SWITCH */}
+      {/* ================= SWITCH ================= */}
       <View style={styles.switchContainer}>
-        {["Mapa", "Llista"].map((v) => (
-          <TouchableOpacity
-            key={v}
+        <TouchableOpacity
+          style={[
+            styles.switchButton,
+            switchSeleccion === "Mapa" && styles.switchButtonActivo,
+          ]}
+          onPress={() => setSwitchSeleccion("Mapa")}
+        >
+          <Text
             style={[
-              styles.switchButton,
-              switchSeleccion === v && styles.switchButtonActivo,
+              styles.switchText,
+              switchSeleccion === "Mapa" && styles.switchTextActivo,
             ]}
-            onPress={() => setSwitchSeleccion(v)}
           >
-            <Text>{v}</Text>
-          </TouchableOpacity>
-        ))}
+            Mapa
+          </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={[
+            styles.switchButton,
+            switchSeleccion === "Llista" && styles.switchButtonActivo,
+          ]}
+          onPress={() => setSwitchSeleccion("Llista")}
+        >
+          <Text
+            style={[
+              styles.switchText,
+              switchSeleccion === "Llista" && styles.switchTextActivo,
+            ]}
+          >
+            Llista
+          </Text>
+        </TouchableOpacity>
       </View>
 
-      {/* CONTENIDO */}
+      {/* ================= CONTENIDO ================= */}
       <View style={styles.mainContent}>
-        {switchSeleccion === "Llista" && (
+        {switchSeleccion === "Mapa" ? (
+          <Text style={{ marginTop: 20 }}>Aquí irá el mapa</Text>
+        ) : (
           <ListaScreen
             data={posts}
             filtro={searchText}
@@ -95,25 +135,81 @@ export default function Pantalla_TapTopBar() {
         )}
       </View>
 
-      {/* TABBAR */}
+      {/* ================= TAB BAR ================= */}
       <View style={styles.tabBar}>
-        <TouchableOpacity onPress={() => setSelectedTab("Explorar")}>
-          <Ionicons name="location-outline" size={20} />
-          <Text>Explorar</Text>
+        <TouchableOpacity
+          style={[
+            styles.tabButton,
+            selectedTab === "Explorar" && styles.tabButtonActivo,
+          ]}
+          onPress={() => {
+            setSelectedTab("Explorar");
+            navigation.navigate("Pantalla_TapTopBar");
+          }}
+        >
+          <Ionicons
+            name="location-outline"
+            size={20}
+            color={selectedTab === "Explorar" ? "#B3261E" : "#000"}
+          />
+          <Text
+            style={[
+              styles.tabText,
+              selectedTab === "Explorar" && styles.tabTextActivo,
+            ]}
+          >
+            Explorar
+          </Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => navigation.navigate("Pantalla_Preferits")}
+          style={[
+            styles.tabButton,
+            selectedTab === "Preferits" && styles.tabButtonActivo,
+          ]}
+          onPress={() => {
+            setSelectedTab("Preferits");
+            navigation.navigate("Pantalla_Preferits");
+          }}
         >
-          <Ionicons name="bookmark-outline" size={20} />
-          <Text>Preferits</Text>
+          <Ionicons
+            name="bookmark-outline"
+            size={20}
+            color={selectedTab === "Preferits" ? "#B3261E" : "#000"}
+          />
+          <Text
+            style={[
+              styles.tabText,
+              selectedTab === "Preferits" && styles.tabTextActivo,
+            ]}
+          >
+            Preferits
+          </Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => navigation.navigate("Pantalla_AfegirAlertes")}
+          style={[
+            styles.tabButton,
+            selectedTab === "AfegirAlertes" && styles.tabButtonActivo,
+          ]}
+          onPress={() => {
+            setSelectedTab("AfegirAlertes");
+            navigation.navigate("AfegirPerills");
+          }}
         >
-          <Ionicons name="add-circle-outline" size={22} />
-          <Text>Afegir</Text>
+          <Ionicons
+            name="add-circle-outline"
+            size={22}
+            color={selectedTab === "AfegirAlertes" ? "#B3261E" : "#000"}
+          />
+          <Text
+            style={[
+              styles.tabText,
+              selectedTab === "AfegirAlertes" && styles.tabTextActivo,
+            ]}
+          >
+            Afegir Alertes
+          </Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>

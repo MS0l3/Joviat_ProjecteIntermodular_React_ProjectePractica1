@@ -48,15 +48,20 @@ export default function Pantalla_Preferits() {
 
   useEffect(() => {
     const cargarCrimenTypes = async () => {
-      const snap = await getDocs(collection(db, "crimenTypes"));
-      const map = {};
+  const snap = await getDocs(collection(db, "crimenTypes"));
+  const map = {};
 
-      snap.forEach(docSnap => {
-        map[docSnap.id] = docSnap.data().name;
-      });
+  snap.forEach(docSnap => {
+    const data = docSnap.data();
+    map[docSnap.id] = {
+      name: data.name,
+      peligrosidad: Number(data.Peligrosidad) // 👈 MUY IMPORTANTE
+    };
+  });
 
-      setCrimenTypesMap(map);
-    };  
+  setCrimenTypesMap(map);
+};
+ 
 
   
     cargarCrimenTypes();
@@ -97,19 +102,21 @@ export default function Pantalla_Preferits() {
 
           if (postSnap.exists()) {
             const data = postSnap.data();
+            const tipoId = String(data.tipoCrimen);
 
             postsData.push({
-              id: postSnap.id,
-              ...data,
-              coordenadas: {
-                latitude: data.Cordenadas?.latitude,
-                longitude: data.Cordenadas?.longitude,
-              },
-              tipoCrimenNombre:
-                crimenTypesMap[data.tipoCrimen] ?? "Crimen desconegut",
-              peligrosidad: Number(data.peligrosidad ?? 1),
-              ubicacion: data.ubicacion ?? "Ubicación desconocida",
-            });
+            id: postSnap.id,
+            ...data,
+            coordenadas: {
+              latitude: data.Cordenadas?.latitude,
+              longitude: data.Cordenadas?.longitude,
+            },
+            tipoCrimen: data.tags ?? "Crimen desconegut", // ✅ AQUÍ
+            peligrosidad: crimenTypesMap[tipoId]?.peligrosidad ?? 1,
+            ubicacion: data.ubicacion ?? "Ubicación desconocida",
+          });
+
+
           }
         }
 
@@ -176,7 +183,7 @@ export default function Pantalla_Preferits() {
               keyExtractor={(item) => item.id}
               renderItem={({ item }) => (
                 <Celda
-                  tipoCrimen={item.tipoCrimenNombre}
+                  tipoCrimen={item.tipoCrimen}
                   peligrosidad={item.peligrosidad}
                   ubicacion={item.ubicacion}
                   imagenUrl={item.imagenUrl}

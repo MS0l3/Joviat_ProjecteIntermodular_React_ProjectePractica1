@@ -15,7 +15,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from "@expo/vector-icons";
 import styles from '../Styles/LoginScreen.styles';
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../Firebase";
+import { auth } from "../../Firebase";
 
 const LoginScreen = () => {
   const navigation = useNavigation();

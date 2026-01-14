@@ -9,7 +9,7 @@ import Celda from "../Components/Celda.js";
 import { useEffect } from "react";
 import { getAuth } from "firebase/auth";
 import { getFirestore, doc, getDoc, collection, getDocs, query, where } from "firebase/firestore";
-import { app } from "../../Firebase"; // 👈 ajusta la ruta
+import { app, db } from "../../Firebase"; // 👈 ajusta la ruta
 
 
 export default function Pantalla_Preferits() {
@@ -39,6 +39,8 @@ export default function Pantalla_Preferits() {
   // 🔹 ESTADO DE LA TABBAR: selecciona cuál está activo
   const [selectedTab, setSelectedTab] = useState("Preferits");
   const [crimenTypesMap, setCrimenTypesMap] = useState({});
+  const [crimenTypes, setCrimenTypes] = useState({});
+
 
 
   const [postsPreferits, setPostsPreferits] = useState([]);
@@ -46,17 +48,16 @@ export default function Pantalla_Preferits() {
 
   useEffect(() => {
     const cargarCrimenTypes = async () => {
-    const snap = await getDocs(collection(db, "crimenTypes"));
-    const map = {};
+      const snap = await getDocs(collection(db, "crimenTypes"));
+      const map = {};
 
-    snap.forEach(doc => {
-      const data = doc.data();
-      // peligrosidad es string → lo pasamos a number
-      map[Number(data.peligrosidad)] = data.name;
-    });
+      snap.forEach(docSnap => {
+        map[docSnap.id] = docSnap.data().name;
+      });
 
-    setCrimenTypesMap(map);
-  };
+      setCrimenTypesMap(map);
+    };  
+
   
     cargarCrimenTypes();
 
@@ -104,8 +105,9 @@ export default function Pantalla_Preferits() {
                 latitude: data.Cordenadas?.latitude,
                 longitude: data.Cordenadas?.longitude,
               },
-              tipoCrimen: crimenTypesMap[Number(data.tipoCrimen)] ?? "Crimen desconegut",
-              peligrosidad: Number(data.tipoCrimen ?? 1),
+              tipoCrimenNombre:
+                crimenTypesMap[data.tipoCrimen] ?? "Crimen desconegut",
+              peligrosidad: Number(data.peligrosidad ?? 1),
               ubicacion: data.ubicacion ?? "Ubicación desconocida",
             });
           }
@@ -174,7 +176,7 @@ export default function Pantalla_Preferits() {
               keyExtractor={(item) => item.id}
               renderItem={({ item }) => (
                 <Celda
-                  tipoCrimen={item.tipoCrimen}
+                  tipoCrimen={item.tipoCrimenNombre}
                   peligrosidad={item.peligrosidad}
                   ubicacion={item.ubicacion}
                   imagenUrl={item.imagenUrl}

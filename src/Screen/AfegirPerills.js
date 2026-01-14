@@ -21,9 +21,9 @@ import { db } from "../../Firebase";
 import {
   collection,
   addDoc,
-  serverTimestamp
+  serverTimestamp,
+  GeoPoint
 } from "firebase/firestore";
-import { GeoPoint } from "firebase/firestore";
 
 export default function AfegirPerills() {
   const navigation = useNavigation();

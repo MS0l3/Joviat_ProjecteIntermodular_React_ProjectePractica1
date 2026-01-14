@@ -1,6 +1,6 @@
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "../../Firebase";
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { collection, addDoc } from "firebase/firestore";
 import { arrayUnion } from "firebase/firestore";
 
 // Función para crear un nuevo usuario en Firestore

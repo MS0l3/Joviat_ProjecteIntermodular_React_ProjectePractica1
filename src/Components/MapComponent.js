@@ -77,8 +77,8 @@ const MarkerAnimado = ({ post, isSelected, onPress }) => {
   return (
     <Marker
       coordinate={{
-        latitude: post.latitude,
-        longitude: post.longitude
+        latitude: post.coordenadas.latitude,
+        longitude: post.coordenadas.longitude
       }}
       onPress={handlePress}
     >
@@ -184,7 +184,7 @@ const Bombolla = ({ post, onClose, onObrir }) => {
   );
 };
 
-export default function MapComponent({ posts = [], onMarkerPress }) {
+export default function MapComponent({ posts = [] }) {
 
   const mapRef = useRef(null);
   const [selectedPost, setSelectedPost] = useState(null);
@@ -237,22 +237,20 @@ export default function MapComponent({ posts = [], onMarkerPress }) {
         showsMyLocationButton={false}
         loadingEnabled={true}
       >
-        {posts.map((post) => {
-          if (!post.coordenadas?.latitude) return null;
-
-          return (
+        {posts
+          .filter(
+            p =>
+              p.coordenadas?.latitude &&
+              p.coordenadas?.longitude
+          )
+          .map((post) => (
             <MarkerAnimado
               key={post.id}
-              post={{
-                ...post,
-                latitude: post.coordenadas.latitude,
-                longitude: post.coordenadas.longitude,
-              }}
+              post={post}
               isSelected={selectedPost?.id === post.id}
               onPress={() => handleMarkerPress(post)}
             />
-          );
-        })}
+        ))}
       </MapView>
 
       {/* Botón para centrar en ubicación del usuario (ORIGINAL) */}

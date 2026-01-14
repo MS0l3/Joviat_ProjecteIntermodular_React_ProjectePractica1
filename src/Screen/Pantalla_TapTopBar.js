@@ -125,12 +125,7 @@ export default function Pantalla_TapTopBar() {
       {/* ================= CONTENIDO ================= */}
       <View style={styles.mainContent}>
         {switchSeleccion === "Mapa" ? (
-          <MapComponent
-            posts={posts}
-            onMarkerPress={(post) =>
-              navigation.navigate("DetalleScreen", post)
-            }
-          />
+          <MapComponent posts={posts} />
         ) : (
           <ListaScreen
             data={posts}
@@ -141,7 +136,6 @@ export default function Pantalla_TapTopBar() {
           />
         )}
       </View>
-
       {/* ================= TAB BAR ================= */}
       <View style={styles.tabBar}>
         <TouchableOpacity

@@ -23,7 +23,6 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import ListaComponent from "../Components/ListaComponent.js";
 
 import ListaScreen from "../Components/ListaComponent";
-import styles from "../Styles/Style_TapTopBar";
 import { getPosts } from "../Components/PostService";
 
 export default function Pantalla_TapTopBar() {
@@ -46,7 +45,7 @@ export default function Pantalla_TapTopBar() {
     <SafeAreaView style={styles.container}>
       {/* HEADER */}
       <View style={styles.headerContainer}>
-        <TouchableOpacity style={styles.redButton}>
+        <TouchableOpacity style={styles.settingsButton}>
           <Ionicons name="settings-outline" size={24} color="#000" />
         </TouchableOpacity>
 

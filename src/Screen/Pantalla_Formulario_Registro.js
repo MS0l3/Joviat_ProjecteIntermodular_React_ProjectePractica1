@@ -17,7 +17,7 @@ import styles from "../Styles/Style_Formulario_Registro";
 import logo from "../../assets/Logo_DangerZone.png";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
-import { auth, db } from "../Firebase";
+import { auth, db } from "../../Firebase";
 import { serverTimestamp } from "firebase/firestore";
 
 export default function Pantalla_Formulario_Registro() {

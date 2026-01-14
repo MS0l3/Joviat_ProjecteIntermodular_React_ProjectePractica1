@@ -159,3 +159,4 @@ android/.idea/modules.xml
 android/.idea/navEditor.xml
 Firebase.js
 src/Firebase/firebaseConfig.js
+src/Firebase/Firebase.js

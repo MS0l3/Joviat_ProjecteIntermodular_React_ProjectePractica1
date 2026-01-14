@@ -32,11 +32,31 @@ const handleCrearUsuarioDemo = async () => {
 */
 
 // Función para crear un nuevo post en Firestore
-export const crearPost = async (postData) => {
-  await addDoc(collection(db, "posts"), {
-    ...postData,
-    createdAt: serverTimestamp(),
-  });
+export const crearPost = async ({
+  tipoCrimen,
+  descripcion,
+  tags,
+  coordenadas,
+  imagenes,
+  uid,
+}) => {
+  try {
+    const docRef = await addDoc(collection(db, "posts"), {
+      tipoCrimen,
+      descripcion,
+      tags,
+      ubicacion: "Ubicación seleccionada en mapa",
+      coordenadas,
+      imagenes,
+      createdAt: serverTimestamp(),
+      createdBy: uid ?? "anon",
+    });
+
+    return docRef.id;
+  } catch (error) {
+    console.error("🔥 Error Firestore:", error.code, error.message);
+    throw error;
+  }
 };
 
 /*
@@ -46,6 +66,7 @@ import { crearPost } from "../services/firestoreService";
 const handleCrearPost = async () => {
   await crearPost({
     tipoCrimen: 1,
+    peligrosidad: 3,
     ubicacion: "C/Tumadre 24",
     coordenadas: {
       latitude: 41.3851,
@@ -131,22 +152,3 @@ const toggleFavorito = async () => {
 
 */
 
-const calcularPeligrosidad = (tipoCrimen) => {
-  return tipoCrimen; // simple y claro
-};
-
-//
-/*import { useEffect, useState } from "react";
-import { getPosts } from "../services/postsService";
-
-const [ubicaciones, setUbicaciones] = useState([]);
-
-useEffect(() => {
-  const cargarPosts = async () => {
-    const data = await getPosts();
-    setUbicaciones(data);
-  };
-
-  cargarPosts();
-}, []);
-*/

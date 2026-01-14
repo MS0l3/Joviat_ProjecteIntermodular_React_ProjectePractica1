@@ -184,7 +184,7 @@ const Bombolla = ({ post, onClose, onObrir }) => {
   );
 };
 
-export default function MapComponent({ posts = [] }) {
+export default function MapComponent({ posts = [], onMarkerPress }) {
 
   const mapRef = useRef(null);
   const [selectedPost, setSelectedPost] = useState(null);

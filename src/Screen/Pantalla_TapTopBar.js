@@ -125,7 +125,21 @@ export default function Pantalla_TapTopBar() {
       {/* ================= CONTENIDO ================= */}
       <View style={styles.mainContent}>
         {switchSeleccion === "Mapa" ? (
-          <MapComponent posts={posts} />
+          <MapComponent
+            posts={posts}
+            onMarkerPress={(post) =>
+              navigation.navigate("DetalleScreen", {
+                postId: post.id,
+                ubicacion: post.ubicacion,
+                peligrosidad: post.peligrosidad,
+                tipoCrimen: post.tipoCrimen,
+                coordenadas: post.coordenadas,
+                imagenes: post.imagenes ?? [],
+                descripcion: post.descripcion ?? "",
+              })
+            }
+          />
+
         ) : (
           <ListaScreen
             data={posts}

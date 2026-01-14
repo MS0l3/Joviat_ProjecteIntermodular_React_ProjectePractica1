@@ -8,6 +8,12 @@ export const getPosts = async () => {
   return snapshot.docs.map((doc) => {
     const data = doc.data();
 
+    const geo =
+    data.coordenadas ||
+    data.Coordenadas ||
+    data.Cordenadas ||
+    null;
+
     return {
       // 🔑 ID CORRECTO
       id: doc.id,
@@ -19,10 +25,12 @@ export const getPosts = async () => {
       ubicacion: data.ubicacion ?? "Ubicación desconocida",
 
       // 📍 GeoPoint BIEN LEÍDO
-      coordenadas: {
-        latitude: data.Cordenadas?.latitude,
-        longitude: data.Cordenadas?.longitude,
-      },
+      coordenadas: geo
+        ? {
+            latitude: geo.latitude,
+            longitude: geo.longitude,
+          }
+        : null,
 
       descripcion: data.descripcion ?? "",
       imagenes: data.imagenes ?? [],

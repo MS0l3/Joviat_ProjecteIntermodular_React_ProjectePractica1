@@ -38,59 +38,96 @@ export default function Pantalla_Preferits() {
 
   // 🔹 ESTADO DE LA TABBAR: selecciona cuál está activo
   const [selectedTab, setSelectedTab] = useState("Preferits");
+  const [crimenTypesMap, setCrimenTypesMap] = useState({});
+
 
   const [postsPreferits, setPostsPreferits] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-  cargarPreferits();
-}, []);
+    const cargarCrimenTypes = async () => {
+    const snap = await getDocs(collection(db, "crimenTypes"));
+    const map = {};
+
+    snap.forEach(doc => {
+      const data = doc.data();
+      // peligrosidad es string → lo pasamos a number
+      map[Number(data.peligrosidad)] = data.name;
+    });
+
+    setCrimenTypesMap(map);
+  };
+  
+    cargarCrimenTypes();
+
+    const cargarFavoritos = async () => {
+      try {
+        const user = auth.currentUser;
+        if (!user) {
+          setPostsPreferits([]);
+          setLoading(false);
+          return;
+        }
+
+        // 1️⃣ Leer usuario
+        const userRef = doc(db, "users", user.uid);
+        const userSnap = await getDoc(userRef);
+
+        if (!userSnap.exists()) {
+          setPostsPreferits([]);
+          setLoading(false);
+          return;
+        }
+
+        // 2️⃣ Referencias a posts
+        const favoritosRefs = userSnap.data().favoritos ?? [];
+
+        if (favoritosRefs.length === 0) {
+          setPostsPreferits([]);
+          setLoading(false);
+          return;
+        }
+
+        // 3️⃣ Leer posts
+        const postsData = [];
+
+        for (const postRef of favoritosRefs) {
+          const postSnap = await getDoc(postRef);
+
+          if (postSnap.exists()) {
+            const data = postSnap.data();
+
+            postsData.push({
+              id: postSnap.id,
+              ...data,
+              coordenadas: {
+                latitude: data.Cordenadas?.latitude,
+                longitude: data.Cordenadas?.longitude,
+              },
+              tipoCrimen: crimenTypesMap[Number(data.tipoCrimen)] ?? "Crimen desconegut",
+              peligrosidad: Number(data.tipoCrimen ?? 1),
+              ubicacion: data.ubicacion ?? "Ubicación desconocida",
+            });
+          }
+        }
+
+        setPostsPreferits(postsData);
+      } catch (e) {
+        console.error("Error cargando favoritos:", e);
+        setPostsPreferits([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    cargarFavoritos();
+  }, []);
+
 
 
   // 🔹 FUNCIÓN PARA MANEJAR EL CLICK EN UNA CELDA
   const handlePressCelda = (item) => {
     // navigation.navigate("Pantalla_PostDetalle", { postId: item.id });
-  };
-
-  // 🔄 CARGAR POSTS PREFERIDOS DESDE FIREBASE
-  const cargarPreferits = async () => {
-    try {
-      const user = auth.currentUser;
-      if (!user) return;
-
-      // 1️⃣ Obtener documento del usuario
-      const userRef = doc(db, "users", user.uid);
-      const userSnap = await getDoc(userRef);
-
-      if (!userSnap.exists()) {
-        console.log("Usuario no encontrado");
-        return;
-      }
-
-      const favoritosIds = userSnap.data().favorites || [];
-
-      if (favoritosIds.length === 0) {
-        setPostsPreferits([]);
-        return;
-      }
-
-      // 2️⃣ Obtener los posts cuyos ID estén en favorites
-      const postsRef = collection(db, "posts");
-      const q = query(postsRef, where("__name__", "in", favoritosIds));
-      const querySnap = await getDocs(q);
-
-      const posts = querySnap.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      }));
-
-      setPostsPreferits(posts);
-
-    } catch (error) {
-      console.error("Error cargando preferits:", error);
-    } finally {
-      setLoading(false);
-    }
   };
 
   

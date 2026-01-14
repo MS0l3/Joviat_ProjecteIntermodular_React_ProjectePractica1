@@ -46,7 +46,7 @@ export default function Pantalla_TapTopBar() {
   }, []);
 
   const handleButtonPress = () => {
-    navigation.navigate("Pantalla_Ajustes");
+    navigation.navigate("Configuracio");
   };
 
   return (

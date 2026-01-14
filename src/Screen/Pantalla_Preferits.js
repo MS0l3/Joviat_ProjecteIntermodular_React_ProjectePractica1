@@ -6,9 +6,17 @@ import { Ionicons } from "@expo/vector-icons";
 import styles from "../Styles/Style_TapTopBar.js";
 import preferitsStyles from "../Styles/Style_Preferits.js"; // 👈 Nuevos estilos
 import Celda from "../Components/Celda.js";
+import { useEffect } from "react";
+import { getAuth } from "firebase/auth";
+import { getFirestore, doc, getDoc, collection, getDocs, query, where } from "firebase/firestore";
+import { app } from "../firebaseConfig"; // 👈 ajusta la ruta
+
 
 export default function Pantalla_Preferits() {
   const navigation = useNavigation();
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
 
   // 💡 CONSTANTE RETROCESO - En Preferits usamos modo ajustes (engranaje)
   const isSettingsMode = true;
@@ -31,82 +39,61 @@ export default function Pantalla_Preferits() {
   // 🔹 ESTADO DE LA TABBAR: selecciona cuál está activo
   const [selectedTab, setSelectedTab] = useState("Preferits");
 
-  // 🔹 DATOS DE EJEMPLO PARA LAS CELDAS (con URLs reales)
-  const [postsPreferits, setPostsPreferits] = useState([
-    {
-      id: '1',
-      tipoCrimen: 'Assassinat',
-      peligrosidad: 5,
-      ubicacion: 'C/ Carrer Casavendrals 45',
-      imagenUrl: 'https://picsum.photos/200/200?random=1'
-    },
-    {
-      id: '2',
-      tipoCrimen: 'Assetjament',
-      peligrosidad: 5,
-      ubicacion: 'C/ Carrer Legalitos 152',
-      imagenUrl: 'https://picsum.photos/200/200?random=2'
-    },
-    {
-      id: '3',
-      tipoCrimen: 'Robatori',
-      peligrosidad: 4,
-      ubicacion: 'C/ Carrer de las puntañas, 15',
-      imagenUrl: 'https://picsum.photos/200/200?random=3'
-    },
-    {
-      id: '4',
-      tipoCrimen: 'Baralles',
-      peligrosidad: 3,
-      ubicacion: 'C/ Cami del mirasol',
-      imagenUrl: null
-    },
-    {
-      id: '5',
-      tipoCrimen: 'Desordre public',
-      peligrosidad: 3,
-      ubicacion: 'C/ Carretera San Martí',
-      imagenUrl: 'https://picsum.photos/200/200?random=4'
-    }
-    ,
-    {
-      id: '6',
-      tipoCrimen: 'Desordre public',
-      peligrosidad: 3,
-      ubicacion: 'C/ Carretera San Martí',
-      imagenUrl: 'https://picsum.photos/200/200?random=4'
-    }
-    ,
-    {
-      id: '7',
-      tipoCrimen: 'Desordre public',
-      peligrosidad: 3,
-      ubicacion: 'C/ Carretera San Martí',
-      imagenUrl: 'https://picsum.photos/200/200?random=4'
-    }
-    ,
-    {
-      id: '8',
-      tipoCrimen: 'Desordre public',
-      peligrosidad: 3,
-      ubicacion: 'C/ Carretera San Martí',
-      imagenUrl: 'https://picsum.photos/200/200?random=4'
-    }
-    ,
-    {
-      id: '9',
-      tipoCrimen: 'Desordre public',
-      peligrosidad: 3,
-      ubicacion: 'C/ Carretera San Merino',
-      imagenUrl: 'https://picsum.photos/200/200?random=4'
-    }
-  ]);
+  const [postsPreferits, setPostsPreferits] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+  cargarPreferits();
+}, []);
+
 
   // 🔹 FUNCIÓN PARA MANEJAR EL CLICK EN UNA CELDA
   const handlePressCelda = (item) => {
     // navigation.navigate("Pantalla_PostDetalle", { postId: item.id });
   };
 
+  // 🔄 CARGAR POSTS PREFERIDOS DESDE FIREBASE
+  const cargarPreferits = async () => {
+    try {
+      const user = auth.currentUser;
+      if (!user) return;
+
+      // 1️⃣ Obtener documento del usuario
+      const userRef = doc(db, "users", user.uid);
+      const userSnap = await getDoc(userRef);
+
+      if (!userSnap.exists()) {
+        console.log("Usuario no encontrado");
+        return;
+      }
+
+      const favoritosIds = userSnap.data().favorites || [];
+
+      if (favoritosIds.length === 0) {
+        setPostsPreferits([]);
+        return;
+      }
+
+      // 2️⃣ Obtener los posts cuyos ID estén en favorites
+      const postsRef = collection(db, "posts");
+      const q = query(postsRef, where("__name__", "in", favoritosIds));
+      const querySnap = await getDocs(q);
+
+      const posts = querySnap.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+
+      setPostsPreferits(posts);
+
+    } catch (error) {
+      console.error("Error cargando preferits:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  
   return (
     <SafeAreaView style={styles.container}>
       {/* -------------------------------------------------------------

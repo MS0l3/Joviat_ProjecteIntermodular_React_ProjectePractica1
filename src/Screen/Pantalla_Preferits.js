@@ -9,7 +9,7 @@ import Celda from "../Components/Celda.js";
 import { useEffect } from "react";
 import { getAuth } from "firebase/auth";
 import { getFirestore, doc, getDoc, collection, getDocs, query, where } from "firebase/firestore";
-import { app } from "../firebaseConfig"; // 👈 ajusta la ruta
+import { app } from "../Firebase"; // 👈 ajusta la ruta
 
 
 export default function Pantalla_Preferits() {

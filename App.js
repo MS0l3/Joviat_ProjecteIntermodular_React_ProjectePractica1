@@ -25,7 +25,7 @@ import LoginScreen from "./src/Screen/LoginScreen";
 import Pantalla_Formulario_Registro from "./src/Screen/Pantalla_Formulario_Registro";
 import Pantalla_Preferits from "./src/Screen/Pantalla_Preferits";
 import Usuari from './src/Screen/usuari';
-import ElsMeusPosts from "./src/Screen/ElsMeusPosts";
+import ElsMeusPosts from "./src/Screen/elsMeusPosts";
 import Comentaris from "./src/Screen/Comentaris";
 import AfegirPerills from "./src/Screen/AfegirPerills";
 import DetalleScreen from './src/Screen/DetalleScreen';

@@ -22,6 +22,7 @@ export default function DetalleScreen() {
 
   // 📌 Datos recibidos desde ListaScreen
   const {
+    postId,
     ubicacion = "Sin nombre",
     peligrosidad = 3,
     tipoCrimen = 1,
@@ -260,7 +261,7 @@ export default function DetalleScreen() {
               borderRadius: 10,
               alignItems: "center",
             }}
-            onPress={() => navigation.navigate("Comentaris")} // 👈 Aquí pones tu pantalla
+            onPress={() => navigation.navigate("Comentaris", { postId })} // 👈 Aquí pones tu pantalla
           >
             <Text style={{ color: "#FFF", fontSize: 16 }}>
               Ver Comentarios 💬

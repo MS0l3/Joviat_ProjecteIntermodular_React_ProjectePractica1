@@ -79,12 +79,15 @@ const Celda = ({
     if (navigation) {
       // Si la pantalla DetalleScreen no existe, muestra un alert temporal
       navigation.navigate("DetalleScreen", {
-        ubicacion,
-        peligrosidad,
-        tipoCrimen,
-        coordenadas: safeCoords,
-        imagenUrl
+        postId: item.id,
+        ubicacion: item.ubicacion,
+        peligrosidad: item.peligrosidad,
+        tipoCrimen: item.tipoCrimen,
+        coordenadas: item.coordenadas,
+        imagenes: item.imagenes,
+        descripcion: item.descripcion,
       });
+
     } else {
       console.log("Navigation no disponible");
       // Opcional: Mostrar un alert

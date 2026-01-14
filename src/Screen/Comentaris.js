@@ -12,14 +12,36 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
-
 import styles from "../Styles/Style_TapTopBar.js";
 import comentarisStyles from "../Styles/Style_Comentaris.js";
 import CeldaComentari from "../Components/CeldaComentari.js";
+import { getAuth } from "firebase/auth";
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  query,
+  orderBy,
+  onSnapshot,
+  serverTimestamp
+} from "firebase/firestore";
+import { app } from "../../Firebase";
+import { useRoute } from "@react-navigation/native";
+import { useEffect } from "react";
 
 export default function Comentaris() {
   const navigation = useNavigation();
   const isSettingsMode = false;
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+  const route = useRoute();
+  const { postId } = route.params ?? {};
+
+  useEffect(() => {
+  console.log("POST ID:", postId);
+}, [postId]);
+
+
 
   const handleButtonPress = () => {
     if (isSettingsMode) {
@@ -32,31 +54,60 @@ export default function Comentaris() {
   const pantallaMarca = "Pantalla_TapTopBar";
   const pantallaUsuario = "Usuari";
 
-  const [comentaris, setComentaris] = useState([
-    { c_id: "1", autor: "Marc", comentari: "Això és molt perillós!", date: "20-01-1251" },
-    { c_id: "2", autor: "Laia", comentari: "Jo també ho he vist.", date: "30-2-6325" },
-    { c_id: "3", autor: "Pol", comentari: "Compte si passeu per aquí.", date: "6-11-2564" },
-    { c_id: "4", autor: "Marc", comentari: "Això és molt perillós!", date: "16-05-2021" },
-    { c_id: "5", autor: "Laia", comentari: "Jo també ho he vist.", date: "25-07-3012" },
-    { c_id: "6", autor: "Marc", comentari: "Això és molt perillós!", date: "11-09-2343" },
-    { c_id: "7", autor: "Laia", comentari: "Jo també ho he vist.", date: "01-01-0001" },
-  ]);
+  const [comentaris, setComentaris] = useState([]);
+
 
   const [nouComentari, setNouComentari] = useState("");
 
-  const handlePressCelda = (item) => {
-  };
+  const afegirComentari = async () => {
+ if (!postId) {
+  console.error("postId es undefined, no se puede añadir comentario");
+  return; }
 
-  const afegirComentari = () => {
-    if (nouComentari.trim() === "") return;
+  if (nouComentari.trim() === "") return;
 
-    const c_id = (comentaris.length + 1).toString();
-    setComentaris([
-      ...comentaris,
-      { c_id: c_id, autor: "Jo", comentari: nouComentari, date: "10-02-2414" }
-    ]);
+
+  const user = auth.currentUser;
+  if (!user) return;
+
+  try {
+    const comentarisRef = collection(db, "posts", postId, "comentaris");
+
+    await addDoc(comentarisRef, {
+      autor: user.displayName ?? "Anònim",
+      comentari: nouComentari,
+      date: serverTimestamp(),
+    });
+
     setNouComentari("");
-  };
+  } catch (e) {
+    console.error("Error afegint comentari:", e);
+  }
+};
+
+  useEffect(() => {
+  console.log("POST ID RECIBIDO:", postId);
+}, [postId]);
+
+useEffect(() => {
+  if (!postId) return;
+
+  const comentarisRef = collection(db, "posts", postId, "comentaris");
+  const q = query(comentarisRef, orderBy("date", "asc"));
+
+  const unsubscribe = onSnapshot(q, (snapshot) => {
+    const data = snapshot.docs.map(doc => ({
+      c_id: doc.id,
+      ...doc.data(),
+    }));
+    setComentaris(data);
+  });
+
+  return () => unsubscribe();
+}, [postId]);
+
+
+console.log("POST ID:", postId);
 
   return (
     <SafeAreaView style={comentarisStyles.container}>
@@ -104,20 +155,26 @@ export default function Comentaris() {
           <View style={[comentarisStyles.commentsContainer, { flex: 1 }]}>
             {comentaris.length > 0 ? (
               <FlatList
-                data={comentaris}
-                keyExtractor={(item) => item.c_id}
-                renderItem={({ item }) => (
-                  <CeldaComentari
-                    autor={item.autor}
-                    comentari={item.comentari}
-                    date={item.date}
-                    onPress={() => handlePressCelda(item)}
-                  />
-                )}
-                showsVerticalScrollIndicator={true}
-                contentContainerStyle={comentarisStyles.listaContent}
-                keyboardShouldPersistTaps="handled"
-              />
+  data={comentaris}
+  keyExtractor={(item) => item.c_id}
+  renderItem={({ item }) => (
+    <CeldaComentari
+      autor={item.autor}
+      comentari={item.comentari}
+      date={
+        item.date?.toDate
+          ? item.date.toDate().toLocaleString()
+          : ""
+      }
+    />
+  )}
+  showsVerticalScrollIndicator
+  contentContainerStyle={comentarisStyles.listaContent}
+  keyboardShouldPersistTaps="handled"
+/>
+
+
+
             ) : (
               <View style={comentarisStyles.emptyState}>
                 <Text style={comentarisStyles.emptyStateText}>Encara no hi ha comentaris</Text>

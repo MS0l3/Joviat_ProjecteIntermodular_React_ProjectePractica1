@@ -42,7 +42,7 @@ export default function ListaComponent({
               activeOpacity={0.85}
               onPress={() =>
                 onItemPress?.({
-                  id: item.id,
+                  postId: item.id,
                   ubicacion: item.ubicacion,
                   peligrosidad: item.peligrosidad,
                   tipoCrimen: item.tipoCrimen,
@@ -54,10 +54,13 @@ export default function ListaComponent({
               }
             >
               <CeldaMapa
+                postId={item.id}  // 👈 CLAVE
                 tipoCrimen={item.tipoCrimen}
                 peligrosidad={item.peligrosidad}
                 ubicacion={item.ubicacion}
                 coordenadas={item.coordenadas}
+                imagenes={item.imagenes ?? []}
+                descripcion={item.descripcion ?? ""}
                 interactivo={false}
               />
             </TouchableOpacity>

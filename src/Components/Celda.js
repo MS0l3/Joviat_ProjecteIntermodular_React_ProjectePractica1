@@ -11,15 +11,20 @@ import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from '@react-navigation/native'; // ✅ Importado
 import styles from '../Styles/Style_Celda.js';
 
-const Celda = ({ 
-  ubicacion,
-  peligrosidad,
-  tipoCrimen,
-  coordenadas: safeCoords,
-  imagenUrl, 
-  onPress 
-}) => {
-  const navigation = useNavigation(); // ✅ Añade esta línea
+const Celda = ({ item }) => {
+  const navigation = useNavigation();
+
+  const {
+    id,
+    tipoCrimen,
+    peligrosidad,
+    ubicacion,
+    coordenadas,
+    imagenUrl,
+    imagenes,
+    descripcion,
+  } = item;
+
   
   const [imageLoading, setImageLoading] = useState(false);
   const [imageError, setImageError] = useState(false);
@@ -58,14 +63,7 @@ const Celda = ({
   const handlePress = () => {
     setModalVisible(true);
     
-    if (onPress) {
-      onPress({
-        tipoCrimen,
-        peligrosidad,
-        ubicacion,
-        imagenUrl
-      });
-    }
+
   };
 
   const handleCloseModal = () => {
@@ -219,7 +217,7 @@ Celda.defaultProps = {
   peligrosidad: 3,
   ubicacion: 'Ubicación no disponible',
   imagenUrl: null,
-  onPress: () => {}
+ 
 };
 
 export default Celda;

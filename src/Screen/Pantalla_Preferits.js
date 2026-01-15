@@ -1,5 +1,5 @@
 // ✅ IMPORTS PRINCIPALES PARA ESTA PANTALLA
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { View, Text, TouchableOpacity, SafeAreaView, FlatList } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
@@ -47,98 +47,107 @@ export default function Pantalla_Preferits() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const cargarCrimenTypes = async () => {
-  const snap = await getDocs(collection(db, "crimenTypes"));
-  const map = {};
+  const cargarCrimenTypes = async () => {
+    const snap = await getDocs(collection(db, "crimenTypes"));
+    const map = {};
 
-  snap.forEach(docSnap => {
-    const data = docSnap.data();
-    map[docSnap.id] = {
-      name: data.name,
-      peligrosidad: Number(data.Peligrosidad) // 👈 MUY IMPORTANTE
+    snap.forEach(docSnap => {
+      const data = docSnap.data();
+      map[docSnap.id] = {
+        name: data.name,
+        peligrosidad: Number(data.Peligrosidad),
+      };
+    });
+
+    setCrimenTypesMap(map);
+  };
+
+  cargarCrimenTypes();
+}, []);
+
+
+    useEffect(() => {
+  if (Object.keys(crimenTypesMap).length === 0) return;
+
+  const cargarFavoritos = async () => {
+    try {
+      const user = auth.currentUser;
+      if (!user) return setPostsPreferits([]);
+
+      const userSnap = await getDoc(doc(db, "users", user.uid));
+      if (!userSnap.exists()) return setPostsPreferits([]);
+
+      const favoritosRefs = userSnap.data().favoritos ?? [];
+      const postsData = [];
+
+      for (const postRef of favoritosRefs) {
+        const postSnap = await getDoc(postRef);
+        if (!postSnap.exists()) continue;
+
+        const data = postSnap.data();
+
+        console.log("POST ID:", postSnap.id);
+console.log("tipoCrimen RAW:", data.tipoCrimen);
+console.log(
+  "tipoCrimen typeof:",
+  typeof data.tipoCrimen,
+  "isRef:",
+  data.tipoCrimen?.id
+);
+
+
+        let tipoCrimenId = "desconocido";
+
+if (data.tipoCrimen?.id) {
+  // DocumentReference
+  tipoCrimenId = data.tipoCrimen.id;
+} else if (typeof data.tipoCrimen === "number") {
+  tipoCrimenId = String(data.tipoCrimen);
+} else if (typeof data.tipoCrimen === "string") {
+  tipoCrimenId = data.tipoCrimen;
+}
+
+postsData.push({
+  id: postSnap.id,
+  ...data,
+  tipoCrimen: String(data.tipoCrimen), // 🔴 FORZAMOS STRING
+  ubicacion: data.ubicacion ?? "Ubicación desconocida",
+});
+
+
+      }
+
+      setPostsPreferits(postsData);
+    } catch (e) {
+      console.error("Error cargando favoritos:", e);
+      setPostsPreferits([]);
+    }
+  };
+
+  cargarFavoritos();
+}, [crimenTypesMap]);
+
+const postsPreferitsUI = useMemo(() => {
+  return postsPreferits.map(post => {
+    const tipoId = String(post.tipoCrimen); // 🔴 CLAVE
+
+    const crimenType = crimenTypesMap[tipoId];
+
+    return {
+      ...post,
+      tipoCrimen: crimenType?.name ?? "Crimen desconegut",
+      peligrosidad: crimenType?.peligrosidad ?? 1,
     };
   });
-
-  setCrimenTypesMap(map);
-};
- 
-
-  
-    cargarCrimenTypes();
-
-    const cargarFavoritos = async () => {
-      try {
-        const user = auth.currentUser;
-        if (!user) {
-          setPostsPreferits([]);
-          setLoading(false);
-          return;
-        }
-
-        // 1️⃣ Leer usuario
-        const userRef = doc(db, "users", user.uid);
-        const userSnap = await getDoc(userRef);
-
-        if (!userSnap.exists()) {
-          setPostsPreferits([]);
-          setLoading(false);
-          return;
-        }
-
-        // 2️⃣ Referencias a posts
-        const favoritosRefs = userSnap.data().favoritos ?? [];
-
-        if (favoritosRefs.length === 0) {
-          setPostsPreferits([]);
-          setLoading(false);
-          return;
-        }
-
-        // 3️⃣ Leer posts
-        const postsData = [];
-
-        for (const postRef of favoritosRefs) {
-          const postSnap = await getDoc(postRef);
-
-          if (postSnap.exists()) {
-            const data = postSnap.data();
-            const tipoId = String(data.tipoCrimen);
-
-            postsData.push({
-            id: postSnap.id,
-            ...data,
-            coordenadas: {
-              latitude: data.Cordenadas?.latitude,
-              longitude: data.Cordenadas?.longitude,
-            },
-            tipoCrimen: data.tags ?? "Crimen desconegut", // ✅ AQUÍ
-            peligrosidad: crimenTypesMap[tipoId]?.peligrosidad ?? 1,
-            ubicacion: data.ubicacion ?? "Ubicación desconocida",
-          });
-
-
-          }
-        }
-
-        setPostsPreferits(postsData);
-      } catch (e) {
-        console.error("Error cargando favoritos:", e);
-        setPostsPreferits([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    cargarFavoritos();
-  }, []);
-
+}, [postsPreferits, crimenTypesMap]);
 
 
   // 🔹 FUNCIÓN PARA MANEJAR EL CLICK EN UNA CELDA
   const handlePressCelda = (item) => {
     // navigation.navigate("Pantalla_PostDetalle", { postId: item.id });
   };
-
+console.log("MAP:", crimenTypesMap);
+console.log("POST:", postsPreferits);
   
   return (
     <SafeAreaView style={styles.container}>
@@ -179,20 +188,14 @@ export default function Pantalla_Preferits() {
         <View style={preferitsStyles.recuadroLista}>
           {postsPreferits.length > 0 ? (
             <FlatList
-              data={postsPreferits}
-              keyExtractor={(item) => item.id}
-              renderItem={({ item }) => (
-                <Celda
-                  tipoCrimen={item.tipoCrimen}
-                  peligrosidad={item.peligrosidad}
-                  ubicacion={item.ubicacion}
-                  imagenUrl={item.imagenUrl}
-                  onPress={() => handlePressCelda(item)}
-                />
-              )}
-              showsVerticalScrollIndicator={false}
-              contentContainerStyle={preferitsStyles.listaContent}
-            />
+  data={postsPreferitsUI}
+  keyExtractor={(item) => item.id}
+  renderItem={({ item }) => (
+  <Celda item={item} />
+)}
+
+/>
+
           ) : (
             <View style={preferitsStyles.emptyState}>
               <Text style={preferitsStyles.emptyStateText}>

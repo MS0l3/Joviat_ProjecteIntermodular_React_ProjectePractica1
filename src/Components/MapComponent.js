@@ -4,6 +4,9 @@ import { View, StyleSheet, Dimensions, TouchableOpacity, Text, Animated } from '
 import MapView, { Marker } from 'react-native-maps';
 import { Ionicons } from '@expo/vector-icons';
 import { PeligrosidadTriangulos } from '../Components/PeligrosidadTriangulos';
+import { useEffect, useMemo } from 'react';
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "../../Firebase";
 
 const { width, height } = Dimensions.get('window');
 
@@ -107,11 +110,11 @@ const MarkerAnimado = ({ post, isSelected, onPress }) => {
           
           {/* Icono interior según tipo de crimen (ORIGINAL) */}
           <View style={styles.markerIcon}>
-            <Ionicons 
-              name={getMarkerIcon(post.tipoCrimen)} 
-              size={10} 
-              color="white" 
-            />
+            <Ionicons
+  name={getMarkerIcon(post.tipoCrimenNombre)}
+  size={10}
+  color="white"
+/>
           </View>
         </Animated.View>
       </View>
@@ -155,7 +158,7 @@ const Bombolla = ({ post, onClose, onObrir }) => {
     >
       {/* Cabecera con tipo de crimen y peligrosidad (ORIGINAL) */}
       <View style={styles.bombollaHeader}>
-        <Text style={styles.bombollaTitulo}>{post.tipoCrimen}</Text>
+        <Text style={styles.bombollaTitulo}>{post.tipoCrimenNombre}</Text>
         <PeligrosidadTriangulos 
           nivel={post.peligrosidad} 
           size={18}
@@ -167,7 +170,7 @@ const Bombolla = ({ post, onClose, onObrir }) => {
 
       {/* Descripción del crimen (ORIGINAL) */}
       <Text style={styles.bombollaDescripcion}>
-        {post.descripcion || `Incident de ${post.tipoCrimen.toLowerCase()} reportat a ${post.ubicacion}`}
+        {post.descripcion || `Incident de ${post.tipoCrimenNombre.toLowerCase()} reportat a ${post.ubicacion}`}
       </Text>
 
       {/* Botón Obrir (ORIGINAL) */}
@@ -188,6 +191,7 @@ export default function MapComponent({ posts = [], onMarkerPress }) {
 
   const mapRef = useRef(null);
   const [selectedPost, setSelectedPost] = useState(null);
+  const [crimenTypesMap, setCrimenTypesMap] = useState({});
 
   const initialRegion = {
     latitude: 41.3851,
@@ -225,6 +229,63 @@ export default function MapComponent({ posts = [], onMarkerPress }) {
       }, 1000);
     }
   };
+  useEffect(() => {
+  const cargarCrimenTypes = async () => {
+    const snap = await getDocs(collection(db, "crimenTypes"));
+    const map = {};
+
+    snap.forEach(docSnap => {
+      const data = docSnap.data();
+      map[docSnap.id] = {
+        name: data.name,
+        peligrosidad: Number(data.Peligrosidad),
+      };
+    });
+
+    setCrimenTypesMap(map);
+  };
+
+  cargarCrimenTypes();
+}, []);
+const postsTransformados = useMemo(() => {
+  return posts.map(post => {
+    const tipoNombre =
+      Array.isArray(post.tags) && post.tags.length > 0
+        ? post.tags[0]
+        : 'Crimen desconegut';
+
+    return {
+      ...post,
+
+      // ID intacto
+      tipoCrimen: post.tipoCrimen,
+
+      // ✅ NOMBRE REAL (como en Preferits)
+      tipoCrimenNombre: tipoNombre,
+
+      // peligrosidad desde crimenTypes si existe
+      peligrosidad:
+        crimenTypesMap[String(post.tipoCrimen)]?.peligrosidad ??
+        post.peligrosidad ??
+        1,
+    };
+  });
+}, [posts, crimenTypesMap]);
+
+
+useEffect(() => {
+  if (!selectedPost) return;
+
+  const updated = postsTransformados.find(
+    p => p.id === selectedPost.id
+  );
+
+  if (updated) {
+    setSelectedPost(updated);
+  }
+}, [postsTransformados]);
+
+
 
   return (
     <View style={styles.container}>
@@ -237,13 +298,13 @@ export default function MapComponent({ posts = [], onMarkerPress }) {
         showsMyLocationButton={false}
         loadingEnabled={true}
       >
-        {posts
-          .filter(
-            p =>
-              p.coordenadas?.latitude &&
-              p.coordenadas?.longitude
-          )
-          .map((post) => (
+        {postsTransformados
+  .filter(
+    p =>
+      p.coordenadas?.latitude &&
+      p.coordenadas?.longitude
+  )
+  .map((post) => (
             <MarkerAnimado
               key={post.id}
               post={post}

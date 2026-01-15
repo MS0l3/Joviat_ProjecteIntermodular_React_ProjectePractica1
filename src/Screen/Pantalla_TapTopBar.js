@@ -48,6 +48,7 @@ export default function Pantalla_TapTopBar() {
   const handleButtonPress = () => {
     navigation.navigate("Configuracio");
   };
+  
 
   return (
     <SafeAreaView style={styles.container}>

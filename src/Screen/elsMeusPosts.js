@@ -1,20 +1,35 @@
 // ✅ IMPORTS PRINCIPALES PARA ESTA PANTALLA
-import React, { useState } from "react";
-import { View, Text, TouchableOpacity, SafeAreaView, FlatList } from "react-native";
+import React, { useEffect, useState } from "react";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  SafeAreaView,
+  FlatList
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
+
+import { getAuth } from "firebase/auth";
+import {
+  collection,
+  getDocs,
+  query,
+  where
+} from "firebase/firestore";
+import { app, db } from "../../Firebase";
+
 import styles from "../Styles/Style_TapTopBar.js";
-import preferitsStyles from "../Styles/Style_elsMeusPosts.js";
+import meusPostsStyles from "../Styles/Style_elsMeusPosts.js";
 import Celda from "../Components/Celda.js";
 
 export default function ElsMeusPosts() {
   const navigation = useNavigation();
+  const auth = getAuth(app);
 
   // 💡 CONSTANTE RETROCESO
-  // Cambia esto a "true" cuando quieras mostrar el modo AJUSTES (⚙️)
-  const isSettingsMode = false; // ← canvia a true per veure l’engranatge
+  const isSettingsMode = false;
 
-  // 🔄 FUNCIONALIDAD DEL BOTÓN SUPERIOR IZQUIERDO
   const handleButtonPress = () => {
     if (isSettingsMode) {
       navigation.navigate("Configuracio");
@@ -27,20 +42,49 @@ export default function ElsMeusPosts() {
   const pantallaMarca = "Pantalla_TapTopBar";
   const pantallaUsuario = "Usuari";
 
-  // 🔹 ESTADO DE LA TABBAR
+  // 🔹 ESTADO TABBAR
   const [selectedTab, setSelectedTab] = useState("");
 
-  // 🔹 DATOS DE EJEMPLO
-  const [postsPreferits, setPostsPreferits] = useState([
-    { id: '1', tipoCrimen: 'Assassinat', peligrosidad: 5, ubicacion: 'C/ Casavendrals 45', imagenUrl: 'https://picsum.photos/200/200?random=1' },
-    { id: '2', tipoCrimen: 'Assetjament', peligrosidad: 5, ubicacion: 'C/ Legalitos 152', imagenUrl: 'https://picsum.photos/200/200?random=2' },
-    { id: '3', tipoCrimen: 'Robatori', peligrosidad: 4, ubicacion: 'C/ de les Puntañes, 15', imagenUrl: 'https://picsum.photos/200/200?random=3' },
-  ]);
+  // 🔹 POSTS DEL USUARIO
+  const [meusPosts, setMeusPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // 🔹 FUNCIÓN PARA MANEJAR EL CLICK EN UNA CELDA
-  const handlePressCelda = (item) => {
-    // navigation.navigate("Pantalla_PostDetalle", { postId: item.id });
-  };
+  // 🔥 CARGAR POSTS DEL USUARIO DESDE FIREBASE
+  useEffect(() => {
+    const cargarMeusPosts = async () => {
+      try {
+        const user = auth.currentUser;
+        if (!user) {
+          setMeusPosts([]);
+          return;
+        }
+
+        const q = query(
+          collection(db, "posts"),
+          where("createdBy", "==", user.uid)
+        );
+
+        const snap = await getDocs(q);
+        const posts = [];
+
+        snap.forEach(docSnap => {
+          posts.push({
+            id: docSnap.id,
+            ...docSnap.data(),
+          });
+        });
+
+        setMeusPosts(posts);
+      } catch (error) {
+        console.error("Error cargando mis posts:", error);
+        setMeusPosts([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    cargarMeusPosts();
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -48,9 +92,8 @@ export default function ElsMeusPosts() {
          🟥 CABECERA SUPERIOR
       ------------------------------------------------------------- */}
       <View style={styles.headerContainer}>
-        {/* ⬅️ BOTÓN ENRERE / AJUSTES */}
         <TouchableOpacity
-          style={[styles.settingsButton,styles.redButton]}
+          style={[styles.settingsButton, styles.redButton]}
           onPress={handleButtonPress}
         >
           <Ionicons
@@ -60,7 +103,6 @@ export default function ElsMeusPosts() {
           />
         </TouchableOpacity>
 
-        {/* 🔸 BOTÓN MARCA */}
         <TouchableOpacity
           style={styles.botonMarca}
           onPress={() => navigation.navigate(pantallaMarca)}
@@ -68,7 +110,6 @@ export default function ElsMeusPosts() {
           <Text style={styles.textoMarca}>DangerZone</Text>
         </TouchableOpacity>
 
-        {/* 👤 BOTÓN USUARIO */}
         <TouchableOpacity
           style={styles.botonUsuario}
           onPress={() => navigation.navigate(pantallaUsuario)}
@@ -78,18 +119,18 @@ export default function ElsMeusPosts() {
       </View>
 
       {/* -------------------------------------------------------------
-         🏷️ TÍTOL “ELS MEUS POSTS”
+         🏷️ TÍTOL
       ------------------------------------------------------------- */}
-      <Text style={preferitsStyles.titol}>Els meus posts</Text>
+      <Text style={meusPostsStyles.titol}>Els meus posts</Text>
 
       {/* -------------------------------------------------------------
-         📍 CONTINGUT PRINCIPAL - LLISTA DE POSTS
+         📍 CONTENIDO PRINCIPAL
       ------------------------------------------------------------- */}
       <View style={styles.mainContent}>
-        <View style={preferitsStyles.recuadroLista}>
-          {postsPreferits.length > 0 ? (
+        <View style={meusPostsStyles.recuadroLista}>
+          {meusPosts.length > 0 ? (
             <FlatList
-              data={postsPreferits}
+              data={meusPosts}
               keyExtractor={(item) => item.id}
               renderItem={({ item }) => (
                 <Celda
@@ -97,16 +138,16 @@ export default function ElsMeusPosts() {
                   peligrosidad={item.peligrosidad}
                   ubicacion={item.ubicacion}
                   imagenUrl={item.imagenUrl}
-                  onPress={() => handlePressCelda(item)}
+                  coordenadas={item.coordenadas}
                 />
               )}
               showsVerticalScrollIndicator={false}
-              contentContainerStyle={preferitsStyles.listaContent}
+              contentContainerStyle={meusPostsStyles.listaContent}
             />
           ) : (
-            <View style={preferitsStyles.emptyState}>
-              <Text style={preferitsStyles.emptyStateText}>
-                Encara no tens cap post guardat als preferits
+            <View style={meusPostsStyles.emptyState}>
+              <Text style={meusPostsStyles.emptyStateText}>
+                Encara no has publicat cap alerta
               </Text>
             </View>
           )}
@@ -114,11 +155,14 @@ export default function ElsMeusPosts() {
       </View>
 
       {/* -------------------------------------------------------------
-         🔻 MENÚ INFERIOR (TABBAR)
+         🔻 MENÚ INFERIOR
       ------------------------------------------------------------- */}
       <View style={styles.tabBar}>
         <TouchableOpacity
-          style={[styles.tabButton, selectedTab === "Explorar" && styles.tabButtonActivo]}
+          style={[
+            styles.tabButton,
+            selectedTab === "Explorar" && styles.tabButtonActivo
+          ]}
           onPress={() => {
             setSelectedTab("Explorar");
             navigation.navigate("Pantalla_TapTopBar");
@@ -130,15 +174,22 @@ export default function ElsMeusPosts() {
             color={selectedTab === "Explorar" ? "#B3261E" : "#000"}
           />
           <Text
-            style={[styles.tabText, selectedTab === "Explorar" && styles.tabTextActivo]}
+            style={[
+              styles.tabText,
+              selectedTab === "Explorar" && styles.tabTextActivo
+            ]}
           >
             Explorar
           </Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={[styles.tabButton, selectedTab === "Preferits" && styles.tabButtonActivo]}
-          onPress={() => {setSelectedTab("Preferits");
+          style={[
+            styles.tabButton,
+            selectedTab === "Preferits" && styles.tabButtonActivo
+          ]}
+          onPress={() => {
+            setSelectedTab("Preferits");
             navigation.navigate("Pantalla_Preferits");
           }}
         >
@@ -148,14 +199,20 @@ export default function ElsMeusPosts() {
             color={selectedTab === "Preferits" ? "#B3261E" : "#000"}
           />
           <Text
-            style={[styles.tabText, selectedTab === "Preferits" && styles.tabTextActivo]}
+            style={[
+              styles.tabText,
+              selectedTab === "Preferits" && styles.tabTextActivo
+            ]}
           >
             Preferits
           </Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={[styles.tabButton, selectedTab === "AfegirAlertes" && styles.tabButtonActivo]}
+          style={[
+            styles.tabButton,
+            selectedTab === "AfegirAlertes" && styles.tabButtonActivo
+          ]}
           onPress={() => {
             setSelectedTab("AfegirAlertes");
             navigation.navigate("AfegirPerills");
@@ -167,7 +224,10 @@ export default function ElsMeusPosts() {
             color={selectedTab === "AfegirAlertes" ? "#B3261E" : "#000"}
           />
           <Text
-            style={[styles.tabText, selectedTab === "AfegirAlertes" && styles.tabTextActivo]}
+            style={[
+              styles.tabText,
+              selectedTab === "AfegirAlertes" && styles.tabTextActivo
+            ]}
           >
             Afegir Alertes
           </Text>

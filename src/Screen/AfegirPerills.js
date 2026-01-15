@@ -25,8 +25,20 @@ import {
   GeoPoint
 } from "firebase/firestore";
 
+import { getAuth } from "firebase/auth";
+import { app } from "../../Firebase";
+
+
 export default function AfegirPerills() {
   const navigation = useNavigation();
+  const auth = getAuth(app);
+  const user = auth.currentUser;
+
+  if (!user) {
+    console.error("Usuario no autenticado");
+    return;
+  }
+
 
   // Formulari
   const [selectedTags, setSelectedTags] = useState([]);
@@ -115,14 +127,14 @@ const defaultRegion = {
         markerPosition.latitude,
         markerPosition.longitude
       ),
-      ubicacion: "C/Tumadre 24", // luego lo hacéis dinámico
+      ubicacion: "C/Barcelona 24", // luego lo hacéis dinámico
       descripcion: description,
       tags: selectedTags,
       tipoCrimen: highestLevel,
       comentarios: [],
       imagenes: images,
       createdAt: serverTimestamp(),
-      createdBy: "UID_FAKE_DE_MOMENTO"
+      createdBy: user.uid
     };
 
     await addDoc(collection(db, "posts"), nuevoPost);
